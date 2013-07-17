@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\</OutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\</OutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -43,114 +43,113 @@
     <Reference Include="Mono.C5" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manos\DeleteAttribute.cs" />
-    <Compile Include="Manos\GetAttribute.cs" />
-    <Compile Include="Manos\HeadAttribute.cs" />
-    <Compile Include="Manos\HttpMethodAttribute.cs" />
-    <Compile Include="Manos\IgnoreAttribute.cs" />
-    <Compile Include="Manos\ManosApp.cs" />
-    <Compile Include="Manos\ManosContext.cs" />
-    <Compile Include="Manos\IManosModule.cs" />
-    <Compile Include="Manos\ManosModule.cs" />
-    <Compile Include="Manos\ManosMimeTypes.cs" />
-    <Compile Include="Manos\OptionsAttribute.cs" />
-    <Compile Include="Manos\PostAttribute.cs" />
-    <Compile Include="Manos\PutAttribute.cs" />
-    <Compile Include="Manos\TraceAttribute.cs" />
-    <Compile Include="Manos.Http\HState.cs" />
-    <Compile Include="Manos.Http\HttpCallback.cs" />
-    <Compile Include="Manos.Http\HttpCookie.cs" />
-    <Compile Include="Manos.Http\HttpDataCallback.cs" />
-    <Compile Include="Manos.Http\HttpErrorCallback.cs" />
-    <Compile Include="Manos.Http\HttpFormDataHandler.cs" />
-    <Compile Include="Manos.Http\HttpMethod.cs" />
-    <Compile Include="Manos.Http\HttpMultiPartFormDataHandler.cs" />
-    <Compile Include="Manos.Http\HttpParser.cs" />
-    <Compile Include="Manos.Http\HttpStream.cs" />
-    <Compile Include="Manos.Http\HttpStreamWriterWrapper.cs" />
-    <Compile Include="Manos.Http\IHttpBodyHandler.cs" />
-    <Compile Include="Manos.Http\ParserSettings.cs" />
-    <Compile Include="Manos.Http\ParserType.cs" />
-    <Compile Include="Manos.Http\State.cs" />
-    <Compile Include="Manos.Http\HttpEntity.cs" />
-    <Compile Include="Manos.Http\HttpException.cs" />
-    <Compile Include="Manos.Http\HttpHeaders.cs" />
-    <Compile Include="Manos.Http\HttpRequest.cs" />
-    <Compile Include="Manos.Http\HttpResponse.cs" />
-    <Compile Include="Manos.Http\HttpServer.cs" />
-    <Compile Include="Manos.Http\HttpTransaction.cs" />
-    <Compile Include="Manos.Http\HttpUtility.cs" />
-    <Compile Include="Manos.Http\IHttpRequest.cs" />
-    <Compile Include="Manos.Http\IHttpResponse.cs" />
-    <Compile Include="Manos.Http\IHttpTransaction.cs" />
-    <Compile Include="Manos.Http\UploadedFile.cs" />
-    <Compile Include="Manos.Routing\RouteHandler.cs" />
-    <Compile Include="Manos\IManosContext.cs" />
-    <Compile Include="Manos.Logging\IManosLogger.cs" />
-    <Compile Include="Manos.Logging\ManosConsoleLogger.cs" />
-    <Compile Include="Manos.Logging\LogLevel.cs" />
-    <Compile Include="Manos.Testing\MockManosModule.cs" />
-    <Compile Include="Manos.Http.Testing\MockHttpTransaction.cs" />
-    <Compile Include="Manos.Http.Testing\MockHttpRequest.cs" />
-    <Compile Include="Manos.Routing\IMatchOperation.cs" />
-    <Compile Include="Manos.Routing\RegexMatchOperation.cs" />
-    <Compile Include="Manos.Routing\MatchOperationFactory.cs" />
-    <Compile Include="Manos.Routing\StringMatchOperation.cs" />
-    <Compile Include="Manos.Routing\NopMatchOperation.cs" />
-    <Compile Include="Manos.Routing\MatchType.cs" />
-    <Compile Include="Manos\HttpMethods.cs" />
     <Compile Include="Assembly\AssemblyInfo.cs" />
-    <Compile Include="Manos\AppHost.cs" />
-    <Compile Include="Manos.Caching\CacheItemCallback.cs" />
-    <Compile Include="Manos.Caching\CacheOpCallback.cs" />
-    <Compile Include="Manos.Caching\IManosCache.cs" />
-    <Compile Include="Manos.Caching\ManosInProcCache.cs" />
-    <Compile Include="Manos.Testing\ManosContextStub.cs" />
-    <Compile Include="Manos.Testing\ManosAppStub.cs" />
-    <Compile Include="Manos.Testing\ManosBrowser.cs" />
-    <Compile Include="Manos.Routing\ActionTarget.cs" />
-    <Compile Include="Manos.Routing\IManosTarget.cs" />
-    <Compile Include="Manos.Routing\ParameterizedAction.cs" />
-    <Compile Include="Manos.Routing\ParameterizedActionFactory.cs" />
-    <Compile Include="Manos.Routing.Testing\MockManosTarget.cs" />
-    <Compile Include="Manos.Routing\ParameterizedActionTarget.cs" />
-    <Compile Include="Manos.Routing\ManosAction.cs" />
-    <Compile Include="Manos.Routing\SimpleMatchOperation.cs" />
-    <Compile Include="Manos\IManosPipe.cs" />
-    <Compile Include="Manos\ManosPipe.cs" />
-    <Compile Include="Manos\Pipeline.cs" />
-    <Compile Include="Manos.Collections\DataDictionary.cs" />
-    <Compile Include="Manos\RouteAttribute.cs" />
-    <Compile Include="Manos\UnsafeString.cs" />
-    <Compile Include="Manos.Routing\HtmlFormDataTypeConverter.cs" />
-    <Compile Include="Manos.Template\TemplateEnvironment.cs" />
-    <Compile Include="Manos.Template\TemplateLibrary.cs" />
-    <Compile Include="Manos.Template\TemplateParser.cs" />
-    <Compile Include="Manos.Template\TemplateTokenizer.cs" />
-    <Compile Include="Manos.Template\TemplateEngine.cs" />
-    <Compile Include="Manos.Template\ManosTemplate.cs" />
-    <Compile Include="Manos.Template\IManosTemplate.cs" />
-    <Compile Include="Manos.Template\ITemplateCodegen.cs" />
-    <Compile Include="Manos.Template\Expression.cs" />
-    <Compile Include="Manos.Template\TemplateFactory.cs" />
-    <Compile Include="Manos.Http.Testing\MockHttpResponse.cs" />
-    <Compile Include="Manos.Http\HttpBufferedBodyHandler.cs" />
-    <Compile Include="Manos\IManosRun.cs" />
-    <Compile Include="Manos\ManosConfig.cs" />
-    <Compile Include="Manos.Threading\Boundary.cs" />
-    <Compile Include="Manos.Threading\BoundaryExtensions.cs" />
-    <Compile Include="Manos.Threading\IBoundary.cs" />
-    <Compile Include="Manos.IO\StreamCopySequencer.cs" />
-    <Compile Include="Manos\InfiniteRepeatBehavior.cs" />
-    <Compile Include="Manos\IRepeatBehavior.cs" />
-    <Compile Include="Manos\IterativeRepeatBehavior.cs" />
-    <Compile Include="Manos\RepeatBehavior.cs" />
-    <Compile Include="Manos\Timeout.cs" />
-    <Compile Include="Manos\TimeoutCallback.cs" />
+    <Compile Include="Waser\DeleteAttribute.cs" />
+    <Compile Include="Waser\GetAttribute.cs" />
+    <Compile Include="Waser\HeadAttribute.cs" />
+    <Compile Include="Waser\HttpMethodAttribute.cs" />
+    <Compile Include="Waser\IgnoreAttribute.cs" />
+    <Compile Include="Waser\ManosApp.cs" />
+    <Compile Include="Waser\ManosContext.cs" />
+    <Compile Include="Waser\IManosModule.cs" />
+    <Compile Include="Waser\ManosModule.cs" />
+    <Compile Include="Waser\ManosMimeTypes.cs" />
+    <Compile Include="Waser\OptionsAttribute.cs" />
+    <Compile Include="Waser\PostAttribute.cs" />
+    <Compile Include="Waser\PutAttribute.cs" />
+    <Compile Include="Waser\TraceAttribute.cs" />
+    <Compile Include="Waser\IManosContext.cs" />
+    <Compile Include="Waser\HttpMethods.cs" />
+    <Compile Include="Waser\AppHost.cs" />
+    <Compile Include="Waser\IManosPipe.cs" />
+    <Compile Include="Waser\ManosPipe.cs" />
+    <Compile Include="Waser\Pipeline.cs" />
+    <Compile Include="Waser\RouteAttribute.cs" />
+    <Compile Include="Waser\UnsafeString.cs" />
+    <Compile Include="Waser\IManosRun.cs" />
+    <Compile Include="Waser\InfiniteRepeatBehavior.cs" />
+    <Compile Include="Waser\IRepeatBehavior.cs" />
+    <Compile Include="Waser\IterativeRepeatBehavior.cs" />
+    <Compile Include="Waser\RepeatBehavior.cs" />
+    <Compile Include="Waser\Timeout.cs" />
+    <Compile Include="Waser\TimeoutCallback.cs" />
+    <Compile Include="Waser.Caching\CacheItemCallback.cs" />
+    <Compile Include="Waser.Caching\CacheOpCallback.cs" />
+    <Compile Include="Waser.Caching\IManosCache.cs" />
+    <Compile Include="Waser.Caching\ManosInProcCache.cs" />
+    <Compile Include="Waser.Collections\DataDictionary.cs" />
+    <Compile Include="Waser.Http\HState.cs" />
+    <Compile Include="Waser.Http\HttpCallback.cs" />
+    <Compile Include="Waser.Http\HttpCookie.cs" />
+    <Compile Include="Waser.Http\HttpDataCallback.cs" />
+    <Compile Include="Waser.Http\HttpErrorCallback.cs" />
+    <Compile Include="Waser.Http\HttpFormDataHandler.cs" />
+    <Compile Include="Waser.Http\HttpMethod.cs" />
+    <Compile Include="Waser.Http\HttpMultiPartFormDataHandler.cs" />
+    <Compile Include="Waser.Http\HttpParser.cs" />
+    <Compile Include="Waser.Http\HttpStream.cs" />
+    <Compile Include="Waser.Http\HttpStreamWriterWrapper.cs" />
+    <Compile Include="Waser.Http\IHttpBodyHandler.cs" />
+    <Compile Include="Waser.Http\ParserSettings.cs" />
+    <Compile Include="Waser.Http\ParserType.cs" />
+    <Compile Include="Waser.Http\State.cs" />
+    <Compile Include="Waser.Http\HttpEntity.cs" />
+    <Compile Include="Waser.Http\HttpException.cs" />
+    <Compile Include="Waser.Http\HttpHeaders.cs" />
+    <Compile Include="Waser.Http\HttpRequest.cs" />
+    <Compile Include="Waser.Http\HttpResponse.cs" />
+    <Compile Include="Waser.Http\HttpServer.cs" />
+    <Compile Include="Waser.Http\HttpTransaction.cs" />
+    <Compile Include="Waser.Http\HttpUtility.cs" />
+    <Compile Include="Waser.Http\IHttpRequest.cs" />
+    <Compile Include="Waser.Http\IHttpResponse.cs" />
+    <Compile Include="Waser.Http\IHttpTransaction.cs" />
+    <Compile Include="Waser.Http\UploadedFile.cs" />
+    <Compile Include="Waser.Http\HttpBufferedBodyHandler.cs" />
+    <Compile Include="Waser.Http.Testing\MockHttpTransaction.cs" />
+    <Compile Include="Waser.Http.Testing\MockHttpRequest.cs" />
+    <Compile Include="Waser.Http.Testing\MockHttpResponse.cs" />
+    <Compile Include="Waser.IO\StreamCopySequencer.cs" />
+    <Compile Include="Waser.Threading\Boundary.cs" />
+    <Compile Include="Waser.Threading\BoundaryExtensions.cs" />
+    <Compile Include="Waser.Threading\IBoundary.cs" />
+    <Compile Include="Waser.Testing\MockManosModule.cs" />
+    <Compile Include="Waser.Testing\ManosContextStub.cs" />
+    <Compile Include="Waser.Testing\ManosAppStub.cs" />
+    <Compile Include="Waser.Testing\ManosBrowser.cs" />
+    <Compile Include="Waser.Template\TemplateEnvironment.cs" />
+    <Compile Include="Waser.Template\TemplateLibrary.cs" />
+    <Compile Include="Waser.Template\TemplateParser.cs" />
+    <Compile Include="Waser.Template\TemplateTokenizer.cs" />
+    <Compile Include="Waser.Template\TemplateEngine.cs" />
+    <Compile Include="Waser.Template\ManosTemplate.cs" />
+    <Compile Include="Waser.Template\IManosTemplate.cs" />
+    <Compile Include="Waser.Template\ITemplateCodegen.cs" />
+    <Compile Include="Waser.Template\Expression.cs" />
+    <Compile Include="Waser.Template\TemplateFactory.cs" />
+    <Compile Include="Waser.Routing.Testing\MockManosTarget.cs" />
+    <Compile Include="Waser.Routing\RouteHandler.cs" />
+    <Compile Include="Waser.Routing\IMatchOperation.cs" />
+    <Compile Include="Waser.Routing\RegexMatchOperation.cs" />
+    <Compile Include="Waser.Routing\MatchOperationFactory.cs" />
+    <Compile Include="Waser.Routing\StringMatchOperation.cs" />
+    <Compile Include="Waser.Routing\NopMatchOperation.cs" />
+    <Compile Include="Waser.Routing\MatchType.cs" />
+    <Compile Include="Waser.Routing\ActionTarget.cs" />
+    <Compile Include="Waser.Routing\IManosTarget.cs" />
+    <Compile Include="Waser.Routing\ParameterizedAction.cs" />
+    <Compile Include="Waser.Routing\ParameterizedActionFactory.cs" />
+    <Compile Include="Waser.Routing\ParameterizedActionTarget.cs" />
+    <Compile Include="Waser.Routing\ManosAction.cs" />
+    <Compile Include="Waser.Routing\SimpleMatchOperation.cs" />
+    <Compile Include="Waser.Routing\HtmlFormDataTypeConverter.cs" />
+    <Compile Include="Waser.Logging\IManosLogger.cs" />
+    <Compile Include="Waser.Logging\ManosConsoleLogger.cs" />
+    <Compile Include="Waser.Logging\LogLevel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="Manos.Templates.Testing\ManosTemplateStub.cs" />
+    <None Include="Waser.Templates.Testing\ManosTemplateStub.cs" />
   </ItemGroup>
   <Target Name="ListSources">
     <Message Text="@(Compile)" Importance="High" />
@@ -165,9 +164,9 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Folder Include="Manos.Threading\" />
-    <Folder Include="Manos.IO\" />
-    <Folder Include="Manos.Collections\" />
+    <Folder Include="Waser.Collections\" />
+    <Folder Include="Waser.IO\" />
+    <Folder Include="Waser.Threading\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Waser.IO\Waser.IO.csproj">

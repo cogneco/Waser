@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\</OutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\</OutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -44,18 +44,12 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Assembly\" />
-    <Folder Include="Manos.IO\" />
-    <Folder Include="Manos.IO.Libev\" />
-    <Folder Include="Manos.IO.Managed\" />
+    <Folder Include="Waser.IO\" />
+    <Folder Include="Waser.IO.Libev\" />
+    <Folder Include="Waser.IO.Managed\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembly\AssemblyInfo.cs" />
-    <Compile Include="Manos.IO\ByteBuffer.cs" />
-    <Compile Include="Manos.IO\ISendfileCapable.cs" />
-    <Compile Include="Manos.IO\IBaseWatcher.cs" />
-    <Compile Include="Manos.IO\IPrepareWatcher.cs" />
-    <Compile Include="Manos.IO\ICheckWatcher.cs" />
-    <Compile Include="Manos.IO\IAsyncWatcher.cs" />
     <Compile Include="Libev\AsyncWatcher.cs" />
     <Compile Include="Libev\CheckWatcher.cs" />
     <Compile Include="Libev\EventTypes.cs" />
@@ -67,55 +61,61 @@
     <Compile Include="Libev\UnloopType.cs" />
     <Compile Include="Libev\UnmanagedWatcherCallback.cs" />
     <Compile Include="Libev\Watcher.cs" />
-    <Compile Include="Manos.IO\ITimerWatcher.cs" />
     <Compile Include="Libev\IdleWatcher.cs" />
-    <Compile Include="Manos.IO\IIdleWatcher.cs" />
-    <Compile Include="Manos.IO\Context.cs" />
-    <Compile Include="Manos.IO.Libev\Context.cs" />
-    <Compile Include="Manos.IO.Libev\Libeio.cs" />
-    <Compile Include="Manos.IO.Libev\EioContext.cs" />
-    <Compile Include="Manos.IO.Libev\EventedStream.cs" />
-    <Compile Include="Manos.IO.Libev\SendFileOperation.cs" />
-    <Compile Include="Manos.IO.Libev\FileStream.cs" />
-    <Compile Include="Manos.IO.Managed\Context.cs" />
-    <Compile Include="Manos.IO.Managed\Watcher.cs" />
-    <Compile Include="Manos.IO.Managed\AsyncWatcher.cs" />
-    <Compile Include="Manos.IO.Managed\PrepareWatcher.cs" />
-    <Compile Include="Manos.IO.Managed\CheckWatcher.cs" />
-    <Compile Include="Manos.IO.Managed\IdleWatcher.cs" />
-    <Compile Include="Manos.IO.Managed\FileStream.cs" />
-    <Compile Include="Manos.IO.Managed\TimerWatcher.cs" />
-    <Compile Include="Manos.IO.Managed\UdpSocket.cs" />
-    <Compile Include="Manos.IO\AddressFamily.cs" />
-    <Compile Include="Manos.IO\FragmentStream.cs" />
-    <Compile Include="Manos.IO\UdpPacket.cs" />
-    <Compile Include="Manos.IO\IStream.cs" />
-    <Compile Include="Manos.IO\IByteStream.cs" />
-    <Compile Include="Manos.IO.Libev\EventedByteStream.cs" />
-    <Compile Include="Manos.IO.Managed\ManagedByteStream.cs" />
-    <Compile Include="Manos.IO.Managed\ManagedStream.cs" />
-    <Compile Include="Manos.IO\ISocket.cs" />
-    <Compile Include="Manos.IO\ITcpSocket.cs" />
-    <Compile Include="Manos.IO\IUdpSocket.cs" />
-    <Compile Include="Manos.IO\Socket.cs" />
-    <Compile Include="Manos.IO.Libev\IPSocket.cs" />
-    <Compile Include="Manos.IO.Libev\SocketFunctions.cs" />
-    <Compile Include="Manos.IO.Libev\ManosIPEndpoint.cs" />
-    <Compile Include="Manos.IO\ProtocolFamily.cs" />
-    <Compile Include="Manos.IO.Libev\UdpSocket.cs" />
-    <Compile Include="Manos.IO.Libev\TcpSocket.cs" />
-    <Compile Include="Manos.IO\IStreamSocket.cs" />
-    <Compile Include="Manos.IO\ITcpServerSocket.cs" />
-    <Compile Include="Manos.IO.Managed\TcpSocket.cs" />
-    <Compile Include="Manos.IO.Managed\IPSocket.cs" />
-    <Compile Include="Manos.IO\SocketException.cs" />
-    <Compile Include="Manos.IO\EndPoint.cs" />
-    <Compile Include="Manos.IO\IPEndPoint.cs" />
-    <Compile Include="Manos.IO\IPAddress.cs" />
-    <Compile Include="Manos.IO\SocketError.cs" />
-    <Compile Include="Manos.IO\Errors.cs" />
-    <Compile Include="Manos.IO\IOException.cs" />
-    <Compile Include="Manos.IO\OpenMode.cs" />
+    <Compile Include="Waser.IO\ByteBuffer.cs" />
+    <Compile Include="Waser.IO\ISendfileCapable.cs" />
+    <Compile Include="Waser.IO\IBaseWatcher.cs" />
+    <Compile Include="Waser.IO\IPrepareWatcher.cs" />
+    <Compile Include="Waser.IO\ICheckWatcher.cs" />
+    <Compile Include="Waser.IO\IAsyncWatcher.cs" />
+    <Compile Include="Waser.IO\ITimerWatcher.cs" />
+    <Compile Include="Waser.IO\IIdleWatcher.cs" />
+    <Compile Include="Waser.IO\Context.cs" />
+    <Compile Include="Waser.IO\AddressFamily.cs" />
+    <Compile Include="Waser.IO\FragmentStream.cs" />
+    <Compile Include="Waser.IO\UdpPacket.cs" />
+    <Compile Include="Waser.IO\IStream.cs" />
+    <Compile Include="Waser.IO\IByteStream.cs" />
+    <Compile Include="Waser.IO\ISocket.cs" />
+    <Compile Include="Waser.IO\ITcpSocket.cs" />
+    <Compile Include="Waser.IO\IUdpSocket.cs" />
+    <Compile Include="Waser.IO\Socket.cs" />
+    <Compile Include="Waser.IO\ProtocolFamily.cs" />
+    <Compile Include="Waser.IO\IStreamSocket.cs" />
+    <Compile Include="Waser.IO\ITcpServerSocket.cs" />
+    <Compile Include="Waser.IO\SocketException.cs" />
+    <Compile Include="Waser.IO\EndPoint.cs" />
+    <Compile Include="Waser.IO\IPEndPoint.cs" />
+    <Compile Include="Waser.IO\IPAddress.cs" />
+    <Compile Include="Waser.IO\SocketError.cs" />
+    <Compile Include="Waser.IO\Errors.cs" />
+    <Compile Include="Waser.IO\IOException.cs" />
+    <Compile Include="Waser.IO\OpenMode.cs" />
+    <Compile Include="Waser.IO.Libev\Context.cs" />
+    <Compile Include="Waser.IO.Libev\Libeio.cs" />
+    <Compile Include="Waser.IO.Libev\EioContext.cs" />
+    <Compile Include="Waser.IO.Libev\EventedStream.cs" />
+    <Compile Include="Waser.IO.Libev\SendFileOperation.cs" />
+    <Compile Include="Waser.IO.Libev\FileStream.cs" />
+    <Compile Include="Waser.IO.Libev\EventedByteStream.cs" />
+    <Compile Include="Waser.IO.Libev\IPSocket.cs" />
+    <Compile Include="Waser.IO.Libev\SocketFunctions.cs" />
+    <Compile Include="Waser.IO.Libev\ManosIPEndpoint.cs" />
+    <Compile Include="Waser.IO.Libev\UdpSocket.cs" />
+    <Compile Include="Waser.IO.Libev\TcpSocket.cs" />
+    <Compile Include="Waser.IO.Managed\Context.cs" />
+    <Compile Include="Waser.IO.Managed\Watcher.cs" />
+    <Compile Include="Waser.IO.Managed\AsyncWatcher.cs" />
+    <Compile Include="Waser.IO.Managed\PrepareWatcher.cs" />
+    <Compile Include="Waser.IO.Managed\CheckWatcher.cs" />
+    <Compile Include="Waser.IO.Managed\IdleWatcher.cs" />
+    <Compile Include="Waser.IO.Managed\FileStream.cs" />
+    <Compile Include="Waser.IO.Managed\TimerWatcher.cs" />
+    <Compile Include="Waser.IO.Managed\UdpSocket.cs" />
+    <Compile Include="Waser.IO.Managed\ManagedByteStream.cs" />
+    <Compile Include="Waser.IO.Managed\ManagedStream.cs" />
+    <Compile Include="Waser.IO.Managed\TcpSocket.cs" />
+    <Compile Include="Waser.IO.Managed\IPSocket.cs" />
   </ItemGroup>
   <Target Name="ListSources">
     <Message Text="@(Compile)" Importance="High" />

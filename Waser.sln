@@ -1,8 +1,11 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waser", "Waser\Waser.csproj", "{2548B25A-2E1F-4E21-BC43-7E39B1F6F23F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waser.IO", "Waser.IO\Waser.IO.csproj", "{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waser.Demo", "Waser.Demo\Waser.Demo.csproj", "{9354C6A3-176A-4C6E-B359-08ACC216BF7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,9 +39,21 @@ Global
 		{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}.Release|Win32.ActiveCfg = Release|Any CPU
 		{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}.Release|Win32.Build.0 = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9354C6A3-176A-4C6E-B359-08ACC216BF7F}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Waser\Waser.csproj
+		StartupItem = Waser.Demo\Waser.Demo.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.inheritsSet = null
