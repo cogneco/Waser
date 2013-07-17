@@ -3,15 +3,15 @@ using System;
 namespace Waser.Demo
 {
 	public class Resource : 
-		Manos.ManosModule 
+		Waser.ManosModule 
 	{
 		string folder;
 		public Resource ()
 		{
-			this.Get (".*", Manos.Routing.MatchType.Regex, this.Content);
+			this.Get (".*", Waser.Routing.MatchType.Regex, this.Content);
 			this.folder = System.IO.Path.GetFullPath ("resource");
 		}
-		public void Content (Manos.IManosContext context)
+		public void Content (Waser.IManosContext context)
 		{
 			string path = context.Request.Path;
 			Console.WriteLine(path);
@@ -20,7 +20,7 @@ namespace Waser.Demo
 
 			if (this.ValidFile (path)) 
 			{
-				context.Response.Headers.SetNormalizedHeader ("Content-Type", Manos.ManosMimeTypes.GetMimeType (path));
+				context.Response.Headers.SetNormalizedHeader ("Content-Type", Waser.ManosMimeTypes.GetMimeType (path));
 				context.Response.SendFile (path);
 			} 
 			else

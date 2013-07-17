@@ -31,9 +31,9 @@
 using System;
 using System.IO;
 
-using Manos.IO;
+using Waser.IO;
 
-namespace Manos.Http {
+namespace Waser.Http {
 
 	public class HttpParser {
 

@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using Manos.IO;
+using Waser.IO;
 
 namespace Libev
 {

@@ -10,8 +10,8 @@ namespace Waser.Demo
 		}
 		static void Run ()
 		{
-			Manos.AppHost.ListenAt (new Manos.IO.IPEndPoint (Manos.IO.IPAddress.Any, 8080));
-			Manos.AppHost.Start (new Demo.Application());
+			Waser.AppHost.ListenAt (new Waser.IO.IPEndPoint (Waser.IO.IPAddress.Any, 8080));
+			Waser.AppHost.Start (new Demo.Application());
 		}
 	}
 }

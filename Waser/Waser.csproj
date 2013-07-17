@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2548B25A-2E1F-4E21-BC43-7E39B1F6F23F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Manos</RootNamespace>
-    <AssemblyName>Manos</AssemblyName>
+    <RootNamespace>Waser</RootNamespace>
+    <AssemblyName>Waser</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -117,16 +117,6 @@
     <Compile Include="Waser.Testing\ManosContextStub.cs" />
     <Compile Include="Waser.Testing\ManosAppStub.cs" />
     <Compile Include="Waser.Testing\ManosBrowser.cs" />
-    <Compile Include="Waser.Template\TemplateEnvironment.cs" />
-    <Compile Include="Waser.Template\TemplateLibrary.cs" />
-    <Compile Include="Waser.Template\TemplateParser.cs" />
-    <Compile Include="Waser.Template\TemplateTokenizer.cs" />
-    <Compile Include="Waser.Template\TemplateEngine.cs" />
-    <Compile Include="Waser.Template\ManosTemplate.cs" />
-    <Compile Include="Waser.Template\IManosTemplate.cs" />
-    <Compile Include="Waser.Template\ITemplateCodegen.cs" />
-    <Compile Include="Waser.Template\Expression.cs" />
-    <Compile Include="Waser.Template\TemplateFactory.cs" />
     <Compile Include="Waser.Routing.Testing\MockManosTarget.cs" />
     <Compile Include="Waser.Routing\RouteHandler.cs" />
     <Compile Include="Waser.Routing\IMatchOperation.cs" />
@@ -146,6 +136,16 @@
     <Compile Include="Waser.Logging\IManosLogger.cs" />
     <Compile Include="Waser.Logging\ManosConsoleLogger.cs" />
     <Compile Include="Waser.Logging\LogLevel.cs" />
+    <Compile Include="Waser.Templates\TemplateEnvironment.cs" />
+    <Compile Include="Waser.Templates\TemplateLibrary.cs" />
+    <Compile Include="Waser.Templates\TemplateParser.cs" />
+    <Compile Include="Waser.Templates\TemplateTokenizer.cs" />
+    <Compile Include="Waser.Templates\TemplateEngine.cs" />
+    <Compile Include="Waser.Templates\ManosTemplate.cs" />
+    <Compile Include="Waser.Templates\IManosTemplate.cs" />
+    <Compile Include="Waser.Templates\ITemplateCodegen.cs" />
+    <Compile Include="Waser.Templates\Expression.cs" />
+    <Compile Include="Waser.Templates\TemplateFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

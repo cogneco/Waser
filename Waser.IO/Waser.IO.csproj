@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Manos.IO</RootNamespace>
-    <AssemblyName>Manos.IO</AssemblyName>
+    <RootNamespace>Waser.IO</RootNamespace>
+    <AssemblyName>Waser.IO</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
