@@ -32,59 +32,59 @@ using Waser.Logging;
 
 namespace Waser
 {
-	public interface IManosModule 
+	public interface IModule 
 	{
 		RouteHandler Routes { get; }
-		IManosCache Cache { get; }
+		ICache Cache { get; }
 		IManosLogger Log { get; }
 		
-		RouteHandler Route (string pattern, IManosModule module);
+		RouteHandler Route (string pattern, IModule module);
 		RouteHandler Route (string pattern, ManosAction action);
 		RouteHandler Route (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Route (ManosAction action, params string [] patterns);
-		RouteHandler Route (IManosModule module, params string [] patterns);
+		RouteHandler Route (IModule module, params string [] patterns);
 		
-		RouteHandler Get (string pattern, IManosModule module);
+		RouteHandler Get (string pattern, IModule module);
 		RouteHandler Get (string pattern, ManosAction action);
 		RouteHandler Get (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Get (ManosAction action, params string [] patterns);
-		RouteHandler Get (IManosModule module, params string [] patterns);
+		RouteHandler Get (IModule module, params string [] patterns);
 		
-	 	RouteHandler Put (string pattern, IManosModule module);
+	 	RouteHandler Put (string pattern, IModule module);
 		RouteHandler Put (string pattern, ManosAction action);
 		RouteHandler Put (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Put (ManosAction action, params string [] patterns);
-		RouteHandler Put (IManosModule module, params string [] patterns);
+		RouteHandler Put (IModule module, params string [] patterns);
 		
-		RouteHandler Post (string pattern, IManosModule module);
+		RouteHandler Post (string pattern, IModule module);
 		RouteHandler Post (string pattern, ManosAction action);
 		RouteHandler Post (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Post (ManosAction action, params string [] patterns);
-		RouteHandler Post (IManosModule module, params string [] patterns);
+		RouteHandler Post (IModule module, params string [] patterns);
 		
-		RouteHandler Delete (string pattern, IManosModule module);
+		RouteHandler Delete (string pattern, IModule module);
 		RouteHandler Delete (string pattern, ManosAction action);
 		RouteHandler Delete (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Delete (ManosAction action, params string [] patterns);
-		RouteHandler Delete (IManosModule module, params string [] patterns);
+		RouteHandler Delete (IModule module, params string [] patterns);
 		
-		RouteHandler Head (string pattern, IManosModule module);
+		RouteHandler Head (string pattern, IModule module);
 		RouteHandler Head (string pattern, ManosAction action);
 		RouteHandler Head (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Head (ManosAction action, params string [] patterns);
-		RouteHandler Head (IManosModule module, params string [] patterns);
+		RouteHandler Head (IModule module, params string [] patterns);
 		
-		RouteHandler Options (string pattern, IManosModule module);
+		RouteHandler Options (string pattern, IModule module);
 		RouteHandler Options (string pattern, ManosAction action);
 		RouteHandler Options (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Options (ManosAction action, params string [] patterns);
-		RouteHandler Options (IManosModule module, params string [] patterns);
+		RouteHandler Options (IModule module, params string [] patterns);
 		
-		RouteHandler Trace (string pattern, IManosModule module);
+		RouteHandler Trace (string pattern, IModule module);
 		RouteHandler Trace (string pattern, ManosAction action);
 		RouteHandler Trace (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
 		RouteHandler Trace (ManosAction action, params string [] patterns);
-		RouteHandler Trace (IManosModule module, params string [] patterns);
+		RouteHandler Trace (IModule module, params string [] patterns);
 
 		void StartInternal ();
 	}

@@ -32,7 +32,7 @@ namespace Waser.Templates
 {
 	public abstract class ManosTemplate
 	{
-		public void Render (IManosContext context, object the_arg)
+		public void Render (IContext context, object the_arg)
 		{
 			RenderToResponse (context.Response, the_arg);
 		}

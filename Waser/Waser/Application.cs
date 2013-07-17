@@ -38,13 +38,13 @@ namespace Waser {
 	/// <remarks>
 	/// This is similar in concept to the HttpApplication in the ASP.Net stack.
 	/// </remarks>
-	public class ManosApp : ManosModule {
+	public class Application : Module {
 		
-		public ManosApp ()
+		public Application ()
 		{
 		}
 
-		public void HandleTransaction (ManosApp app, IHttpTransaction con)
+		public void HandleTransaction (Application app, IHttpTransaction con)
 		{
 			Pipeline pipeline = new Pipeline (app, con);
 

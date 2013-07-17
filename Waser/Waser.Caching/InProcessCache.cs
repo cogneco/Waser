@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace Waser.Caching
 {
-	public class ManosInProcCache : IManosCache
+	public class InProcessCache : ICache
 	{
 		public class CacheItem {
 			public bool IsRemoved;
@@ -84,7 +84,7 @@ namespace Waser.Caching
 		{
 			CacheItem item = SetInternal (key, value);
 			
-			AppHost.AddTimeout (expires, RepeatBehavior.Single, item, HandleExpires);
+			ApplicationHost.AddTimeout (expires, RepeatBehavior.Single, item, HandleExpires);
 
 			if (callback != null)
 				callback (key, value);
@@ -135,7 +135,7 @@ namespace Waser.Caching
 			return item;
 		}
 		
-		protected virtual void HandleExpires (ManosApp app, object obj_item)
+		protected virtual void HandleExpires (Application app, object obj_item)
 		{
 			CacheItem item = (CacheItem) obj_item;
 			if (item.IsRemoved)

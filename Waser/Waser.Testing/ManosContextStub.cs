@@ -28,7 +28,7 @@ using Waser.Http;
 
 namespace Waser.Testing
 {
-	public class ManosContextStub : IManosContext
+	public class ManosContextStub : IContext
 	{
 		public ManosContextStub ()
 		{

@@ -40,30 +40,30 @@ namespace Waser
 	/// <summary>
 	/// The app runner. This is where the magic happens.
 	/// </summary>
-	public static class AppHost
+	public static class ApplicationHost
 	{
-		private static ManosApp app;
+		private static Application app;
 		private static List<IPEndPoint> listenEndPoints = new List<IPEndPoint> ();
 		private static Dictionary<IPEndPoint, Tuple<string, string>> secureListenEndPoints = new Dictionary<IPEndPoint, Tuple<string, string>> ();
 		private static List<HttpServer> servers = new List<HttpServer> ();
-		private static IManosCache cache;
+		private static ICache cache;
 		private static IManosLogger log;
-		private static List<IManosPipe> pipes;
-		private static Context context;
+		private static List<IPipe> pipes;
+		private static IO.Context context;
 
-		static AppHost ()
+		static ApplicationHost ()
 		{
-			context = Context.Create ();
+			context = IO.Context.Create ();
 		}
 
-		public static ManosApp App {
+		public static Application App {
 			get { return app; }	
 		}
 
-		public static IManosCache Cache {
+		public static ICache Cache {
 			get {
 				if (cache == null)
-					cache = new ManosInProcCache ();
+					cache = new InProcessCache ();
 				return cache;
 			}
 		}
@@ -76,11 +76,11 @@ namespace Waser
 			}
 		}
 
-		public static Context Context {
+		public static IO.Context Context {
 			get { return context; }	
 		}
 
-		public static IList<IManosPipe> Pipes {
+		public static IList<IPipe> Pipes {
 			get { return pipes; }
 		}
 
@@ -141,7 +141,7 @@ namespace Waser
 
 #endif
 
-		public static void Start (ManosApp application)
+		public static void Start (Application application)
 		{
 			if (application == null)
 				throw new ArgumentNullException ("application");
@@ -178,10 +178,10 @@ namespace Waser
 			app.HandleTransaction (app, con);
 		}
 
-		public static void AddPipe (IManosPipe pipe)
+		public static void AddPipe (IPipe pipe)
 		{
 			if (pipes == null)
-				pipes = new List<IManosPipe> ();
+				pipes = new List<IPipe> ();
 			pipes.Add (pipe);
 		}
 

@@ -49,24 +49,16 @@
     <Compile Include="Waser\HeadAttribute.cs" />
     <Compile Include="Waser\HttpMethodAttribute.cs" />
     <Compile Include="Waser\IgnoreAttribute.cs" />
-    <Compile Include="Waser\ManosApp.cs" />
-    <Compile Include="Waser\ManosContext.cs" />
-    <Compile Include="Waser\IManosModule.cs" />
     <Compile Include="Waser\ManosModule.cs" />
-    <Compile Include="Waser\ManosMimeTypes.cs" />
     <Compile Include="Waser\OptionsAttribute.cs" />
     <Compile Include="Waser\PostAttribute.cs" />
     <Compile Include="Waser\PutAttribute.cs" />
     <Compile Include="Waser\TraceAttribute.cs" />
-    <Compile Include="Waser\IManosContext.cs" />
     <Compile Include="Waser\HttpMethods.cs" />
-    <Compile Include="Waser\AppHost.cs" />
-    <Compile Include="Waser\IManosPipe.cs" />
     <Compile Include="Waser\ManosPipe.cs" />
     <Compile Include="Waser\Pipeline.cs" />
     <Compile Include="Waser\RouteAttribute.cs" />
     <Compile Include="Waser\UnsafeString.cs" />
-    <Compile Include="Waser\IManosRun.cs" />
     <Compile Include="Waser\InfiniteRepeatBehavior.cs" />
     <Compile Include="Waser\IRepeatBehavior.cs" />
     <Compile Include="Waser\IterativeRepeatBehavior.cs" />
@@ -146,6 +138,14 @@
     <Compile Include="Waser.Templates\ITemplateCodegen.cs" />
     <Compile Include="Waser.Templates\Expression.cs" />
     <Compile Include="Waser.Templates\TemplateFactory.cs" />
+    <Compile Include="Waser\IContext.cs" />
+    <Compile Include="Waser\Application.cs" />
+    <Compile Include="Waser\Context.cs" />
+    <Compile Include="Waser\IModule.cs" />
+    <Compile Include="Waser\MimeTypes.cs" />
+    <Compile Include="Waser\ApplicationHost.cs" />
+    <Compile Include="Waser\IPipe.cs" />
+    <Compile Include="Waser\IManosRun.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

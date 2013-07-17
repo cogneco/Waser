@@ -82,7 +82,7 @@ namespace Waser.Templates {
 
 	public interface ITemplatePage {
 
-		void Render (IManosContext context, Stream stream, object the_arg);
+		void Render (IContext context, Stream stream, object the_arg);
 	}
 }
 

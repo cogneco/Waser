@@ -25,7 +25,7 @@
 using System;
 
 namespace Waser {
-	public interface IManosRun {
+	public interface IRun {
 		int Main(string [] args);
 	}
 }

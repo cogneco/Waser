@@ -36,9 +36,9 @@ namespace Waser {
 	/// <remarks>
 	/// Similar in concept to HttpContext under the ASP.Net stack.
 	/// </remarks>
-	public class ManosContext : IManosContext {
+	public class Context : IContext {
 
-		public ManosContext (IHttpTransaction transaction)
+		public Context (IHttpTransaction transaction)
 		{
 			Transaction = transaction;
 		}

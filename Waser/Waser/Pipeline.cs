@@ -51,20 +51,20 @@ namespace Waser {
 	/// </remarks>
 	public class Pipeline {
 
-		private ManosApp app;
-		private ManosContext ctx;
+		private Application app;
+		private Context ctx;
 		private IHttpTransaction transaction;
 
 		private int pending;
 		private PipelineStep step;
 		private GCHandle handle;
 
-		public Pipeline (ManosApp app, IHttpTransaction transaction)
+		public Pipeline (Application app, IHttpTransaction transaction)
 		{
 			this.app = app;
 			this.transaction = transaction;
 
-			pending = AppHost.Pipes == null ? 1 : AppHost.Pipes.Count;
+			pending = ApplicationHost.Pipes == null ? 1 : ApplicationHost.Pipes.Count;
 			step = PipelineStep.PreProcess;
 			handle = GCHandle.Alloc (this);
 
@@ -73,12 +73,12 @@ namespace Waser {
 
 		public void Begin ()
 		{
-			if (AppHost.Pipes == null) {
+			if (ApplicationHost.Pipes == null) {
 				StepCompleted ();
 				return;
 			}
 
-			foreach (IManosPipe pipe in AppHost.Pipes) {
+			foreach (IPipe pipe in ApplicationHost.Pipes) {
 				try {
 					pipe.OnPreProcessRequest (app, transaction, StepCompleted);
 					
@@ -97,7 +97,7 @@ namespace Waser {
 		{
 			step = PipelineStep.WaitingForEnd;
 
-			ctx = new ManosContext (transaction);
+			ctx = new Context (transaction);
 
 			var handler = app.Routes.Find (transaction.Request);
 
@@ -142,10 +142,10 @@ namespace Waser {
 		
 		private void PipePreProcessTarget(Action<IManosTarget> callback)
 		{
-			if (null != AppHost.Pipes) {
-				for (int i = 0; i < AppHost.Pipes.Count; ++i)
+			if (null != ApplicationHost.Pipes) {
+				for (int i = 0; i < ApplicationHost.Pipes.Count; ++i)
 				{
-					IManosPipe pipe = AppHost.Pipes[i];
+					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
 						pipe.OnPreProcessTarget (ctx, callback);
 					} catch (Exception e) {
@@ -158,12 +158,12 @@ namespace Waser {
 
 		private void PipePostProcessTarget(IManosTarget handler)
 		{
-			if (null != AppHost.Pipes) {
+			if (null != ApplicationHost.Pipes) {
 				// reset pending pipes
-				pending = AppHost.Pipes == null ? 1 : AppHost.Pipes.Count;
+				pending = ApplicationHost.Pipes == null ? 1 : ApplicationHost.Pipes.Count;
 		
-				for (int i = AppHost.Pipes.Count - 1; i >= 0 ; --i)	{
-					IManosPipe pipe = AppHost.Pipes[i];
+				for (int i = ApplicationHost.Pipes.Count - 1; i >= 0 ; --i)	{
+					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
 						pipe.OnPostProcessTarget (ctx, handler, StepCompleted);
 					} catch (Exception e) {
@@ -176,17 +176,17 @@ namespace Waser {
 
 		private void PostProcess ()
 		{
-			if (AppHost.Pipes == null) {
+			if (ApplicationHost.Pipes == null) {
 				StepCompleted ();
 				return;
 			}
 
-			if (null != AppHost.Pipes) {
+			if (null != ApplicationHost.Pipes) {
 				// reset pending pipes
-				pending = AppHost.Pipes == null ? 1 : AppHost.Pipes.Count;
+				pending = ApplicationHost.Pipes == null ? 1 : ApplicationHost.Pipes.Count;
 			
-				for (int i = AppHost.Pipes.Count - 1; i >= 0 ; --i)	{
-					IManosPipe pipe = AppHost.Pipes[i];
+				for (int i = ApplicationHost.Pipes.Count - 1; i >= 0 ; --i)	{
+					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
 						pipe.OnPostProcessRequest (app, transaction, StepCompleted);
 
@@ -214,7 +214,7 @@ namespace Waser {
 			if (--pending > 0)
 				return;
 
-			pending = AppHost.Pipes == null ? 1 : AppHost.Pipes.Count;
+			pending = ApplicationHost.Pipes == null ? 1 : ApplicationHost.Pipes.Count;
 			step++;
 			
 			switch (step) {

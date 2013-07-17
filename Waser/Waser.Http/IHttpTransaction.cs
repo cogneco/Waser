@@ -34,7 +34,7 @@ namespace Waser.Http {
 
 	public interface IHttpTransaction {
 		
-		Context Context {
+		IO.Context Context {
 			get;
 		}
 

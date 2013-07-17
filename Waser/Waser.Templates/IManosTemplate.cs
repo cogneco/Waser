@@ -31,7 +31,7 @@ namespace Waser.Templates {
 	
 	public interface IManosTemplate
 	{
-		void Render (IManosContext context, Stream stream, object the_arg);
+		void Render (IContext context, Stream stream, object the_arg);
 	}	
 }
 

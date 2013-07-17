@@ -34,11 +34,11 @@ using System.Collections.Generic;
 
 namespace Waser
 {
-	public static class ManosMimeTypes
+	public static class MimeTypes
 	{
 		static Dictionary <string, string> mimeTypes;
 		
-		static ManosMimeTypes ()
+		static MimeTypes ()
 		{
 			mimeTypes = new Dictionary <string, string> (StringComparer.OrdinalIgnoreCase);
 			mimeTypes.Add ("323", "text/h323");

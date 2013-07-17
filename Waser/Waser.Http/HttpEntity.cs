@@ -67,14 +67,14 @@ namespace Waser.Http {
 
 		private IAsyncWatcher end_watcher;
 
-		public HttpEntity (Context context)
+		public HttpEntity (IO.Context context)
 		{
 			this.Context = context;
 			end_watcher = context.CreateAsyncWatcher (HandleEnd);
 			end_watcher.Start ();
 		}
 		
-		public Context Context {
+		public IO.Context Context {
 			get;
 			private set;
 		}

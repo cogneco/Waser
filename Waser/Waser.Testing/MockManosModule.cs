@@ -30,7 +30,7 @@ using Waser;
 
 namespace Waser.Testing
 {
-	public class MockManosModule : ManosModule
+	public class MockManosModule : Module
 	{
 
 	}

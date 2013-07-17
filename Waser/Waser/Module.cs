@@ -44,11 +44,11 @@ namespace Waser {
 	/// <summary>
 	/// A pre-packaged set of routes/actions that can be registered in the constructor of a ManoApp-derived class.
 	/// </summary>
-	public class ManosModule : IManosModule {
+	public class Module : IModule {
 
 		private RouteHandler routes = new RouteHandler ();
 
-		public ManosModule ()
+		public Module ()
 		{
 			//StartInternal ();
 		}
@@ -57,15 +57,15 @@ namespace Waser {
 			get { return routes; }
 		}
 
-		public IManosCache Cache {
+		public ICache Cache {
 			get {
-				return AppHost.Cache;	
+				return ApplicationHost.Cache;	
 			}
 		}
 
 		public IManosLogger Log {
 			get {
-				return AppHost.Log;
+				return ApplicationHost.Log;
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Waser {
 			return default500;
 		}
 		
-		private RouteHandler AddRouteHandler (IManosModule module, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (IModule module, string [] patterns, HttpMethod [] methods)
 		{
 			if (module == null)
 				throw new ArgumentNullException ("module");
@@ -140,12 +140,12 @@ namespace Waser {
 			return res;
 		}
 		
-		private RouteHandler AddImplicitRouteHandlerForModule (IManosModule module, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, string [] patterns, HttpMethod [] methods)
 		{
 			return AddImplicitRouteHandlerForModule (module, StringOpsForPatterns (patterns), methods);
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForModule (IManosModule module, IMatchOperation [] ops, HttpMethod [] methods)
+		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, IMatchOperation [] ops, HttpMethod [] methods)
 		{
 			module.StartInternal ();
 
@@ -192,7 +192,7 @@ namespace Waser {
 			return ops;
 		}
 
-		public RouteHandler Route (string pattern, IManosModule module)
+		public RouteHandler Route (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.RouteMethods);
 		}
@@ -214,12 +214,12 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.RouteMethods);
 		}
 
-		public RouteHandler Route (IManosModule module, params string [] patterns)
+		public RouteHandler Route (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.RouteMethods);
 		}
 
-		public RouteHandler Get (string pattern, IManosModule module)
+		public RouteHandler Get (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.GetMethods);
 		}
@@ -241,14 +241,14 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.GetMethods);
 		}
 
-		public RouteHandler Get (IManosModule module, params string [] patterns)
+		public RouteHandler Get (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.GetMethods);
 		}
 		
 		//
 		
-		public RouteHandler Put (string pattern, IManosModule module)
+		public RouteHandler Put (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.PutMethods);
 		}
@@ -270,12 +270,12 @@ namespace Waser {
 			return AddRouteHandler (action, ops, HttpMethods.PutMethods);
 		}
 
-		public RouteHandler Put (IManosModule module, params string [] patterns)
+		public RouteHandler Put (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.PutMethods);
 		}
 		
-		public RouteHandler Post (string pattern, IManosModule module)
+		public RouteHandler Post (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.PostMethods);
 		}
@@ -297,14 +297,14 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.PostMethods);
 		}
 
-		public RouteHandler Post (IManosModule module, params string [] patterns)
+		public RouteHandler Post (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.PostMethods);
 		}
 		
 		//
 		
-		public RouteHandler Delete (string pattern, IManosModule module)
+		public RouteHandler Delete (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.DeleteMethods);
 		}
@@ -326,14 +326,14 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.DeleteMethods);
 		}
 
-		public RouteHandler Delete (IManosModule module, params string [] patterns)
+		public RouteHandler Delete (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.DeleteMethods);
 		}
 		
 		//
 		
-		public RouteHandler Head (string pattern, IManosModule module)
+		public RouteHandler Head (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.HeadMethods);
 		}
@@ -355,14 +355,14 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.HeadMethods);
 		}
 
-		public RouteHandler Head (IManosModule module, params string [] patterns)
+		public RouteHandler Head (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.HeadMethods);
 		}
 		
 		//
 		
-		public RouteHandler Options (string pattern, IManosModule module)
+		public RouteHandler Options (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.OptionsMethods);
 		}
@@ -384,14 +384,14 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.OptionsMethods);
 		}
 
-		public RouteHandler Options (IManosModule module, params string [] patterns)
+		public RouteHandler Options (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.OptionsMethods);
 		}
 		
 		//
 		
-		public RouteHandler Trace (string pattern, IManosModule module)
+		public RouteHandler Trace (string pattern, IModule module)
 		{
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.TraceMethods);
 		}
@@ -413,7 +413,7 @@ namespace Waser {
 			return AddRouteHandler (action, patterns, HttpMethods.TraceMethods);
 		}
 
-		public RouteHandler Trace (IManosModule module, params string [] patterns)
+		public RouteHandler Trace (IModule module, params string [] patterns)
 		{
 			return AddRouteHandler (module, patterns, HttpMethods.TraceMethods);
 		}
@@ -435,15 +435,15 @@ namespace Waser {
 		
 		public static Timeout AddTimeout (TimeSpan timespan, IRepeatBehavior repeat, object data, TimeoutCallback callback)
 		{
-			return AppHost.AddTimeout (timespan, repeat, data, callback);
+			return ApplicationHost.AddTimeout (timespan, repeat, data, callback);
 		}
 
-		public static void AddPipe (ManosPipe pipe)
+		public static void AddPipe (Pipe pipe)
 		{
-			AppHost.AddPipe (pipe);
+			ApplicationHost.AddPipe (pipe);
 		}
 
-		public static void RenderTemplate (ManosContext ctx, string template, object data)
+		public static void RenderTemplate (Context ctx, string template, object data)
 		{
 			TemplateEngine.RenderToStream (template, ctx.Response.Writer, data);
 		}
@@ -479,7 +479,7 @@ namespace Waser {
 			PropertyInfo [] properties = GetType ().GetProperties ();
 			
 			foreach (PropertyInfo prop in properties) {
-				if (!typeof (ManosModule).IsAssignableFrom (prop.PropertyType))
+				if (!typeof (Module).IsAssignableFrom (prop.PropertyType))
 					continue;
 				
 				if (IsIgnored (prop))
@@ -494,10 +494,10 @@ namespace Waser {
 			if (parameters.Length != 1)
 				return false;
 
-			if (method.DeclaringType.Assembly == typeof (ManosModule).Assembly)
+			if (method.DeclaringType.Assembly == typeof (Module).Assembly)
 				return false;
 
-			if (parameters [0].ParameterType != typeof (IManosContext))
+			if (parameters [0].ParameterType != typeof (IContext))
 				return false;
 
 			return true;
@@ -509,10 +509,10 @@ namespace Waser {
 				return false;
 			}
 
-			if (method.DeclaringType.Assembly == typeof (ManosModule).Assembly)
+			if (method.DeclaringType.Assembly == typeof (Module).Assembly)
 				return false;
 
-			if (parameters [0].ParameterType != typeof (IManosContext))
+			if (parameters [0].ParameterType != typeof (IContext))
 				return false;
 			
 			return true;
@@ -604,11 +604,11 @@ namespace Waser {
 		
 		private void AddImplicitModule (PropertyInfo prop)
 		{
-			var value = (ManosModule) prop.GetValue (this, null);
+			var value = (Module) prop.GetValue (this, null);
 			
 			if (value == null) {
 				try {
-					value = (ManosModule) Activator.CreateInstance (prop.PropertyType);
+					value = (Module) Activator.CreateInstance (prop.PropertyType);
 				} catch (Exception e) {
 					throw new Exception (String.Format ("Unable to create default property value for '{0}'", prop), e);
 				}

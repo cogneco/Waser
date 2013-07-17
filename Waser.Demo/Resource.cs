@@ -3,7 +3,7 @@ using System;
 namespace Waser.Demo
 {
 	public class Resource : 
-		Waser.ManosModule 
+		Waser.Module 
 	{
 		string folder;
 		public Resource ()
@@ -11,7 +11,7 @@ namespace Waser.Demo
 			this.Get (".*", Waser.Routing.MatchType.Regex, this.Content);
 			this.folder = System.IO.Path.GetFullPath ("resource");
 		}
-		public void Content (Waser.IManosContext context)
+		public void Content (Waser.IContext context)
 		{
 			string path = context.Request.Path;
 			Console.WriteLine(path);
@@ -20,7 +20,7 @@ namespace Waser.Demo
 
 			if (this.ValidFile (path)) 
 			{
-				context.Response.Headers.SetNormalizedHeader ("Content-Type", Waser.ManosMimeTypes.GetMimeType (path));
+				context.Response.Headers.SetNormalizedHeader ("Content-Type", Waser.MimeTypes.GetMimeType (path));
 				context.Response.SendFile (path);
 			} 
 			else

@@ -26,7 +26,7 @@ using System;
 
 namespace Waser.Testing
 {
-	public class ManosAppStub : ManosApp
+	public class ManosAppStub : Application
 	{
 		public ManosAppStub ()
 		{

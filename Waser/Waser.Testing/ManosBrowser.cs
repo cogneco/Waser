@@ -79,9 +79,9 @@ namespace Waser.Testing
 		public MockHttpResponse Response { get; private set; }
 		public MockHttpTransaction Transaction { get; private set; }
 		
-		private ManosApp _app;
+		private Application _app;
 
-		public ManosBrowser (ManosApp app)
+		public ManosBrowser (Application app)
 		{
 			_app = app;
 			_app.StartInternal ();

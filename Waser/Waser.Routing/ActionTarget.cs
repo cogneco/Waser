@@ -36,7 +36,7 @@ namespace Waser.Routing
 			Action = action;
 		}
 	
-		public void Invoke (ManosApp app, IManosContext ctx)
+		public void Invoke (Application app, IContext ctx)
 		{
 			action (ctx);
 		}

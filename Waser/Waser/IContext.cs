@@ -22,26 +22,41 @@
 //
 //
 
+
 using System;
 
+using Waser.Http;
 
-namespace Waser.Caching
+namespace Waser
 {
-	public interface IManosCache
+	/// <summary>
+	/// Relevent information related to the request initiated by an HTTP client.
+	/// </summary>
+	/// <remarks>
+	/// Similar in concept to HttpContext under the ASP.Net stack.
+	/// </remarks>
+	public interface IContext
 	{
-		void Get (string key, CacheItemCallback callback);
-		
-		void Set (string key, object obj);
-		void Set (string key, object value, TimeSpan expires);
+		HttpServer Server {
+			get;
+		}
 
-		void Set (string key, object obj, CacheItemCallback callback);
-		void Set (string key, object value, TimeSpan expires, CacheItemCallback callback);
+		IHttpTransaction Transaction {
+			get;
+		}
 		
-		void Remove (string key);
-		void Remove (string key, CacheItemCallback callback);
+		/// <summary>
+		/// Information related to the request initiated by the client.
+		/// </summary>
+		IHttpRequest Request {
+			get;
+		}
 		
-		void Clear ();
-		void Clear (CacheOpCallback callback);
+		/// <summary>
+		/// Information related to how this server will respond to the client's request.
+		/// </summary>
+		IHttpResponse Response {
+			get;
+		}
 	}
 }
-

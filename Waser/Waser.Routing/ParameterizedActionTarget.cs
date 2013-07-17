@@ -67,7 +67,7 @@ namespace Waser.Routing
 			}
 		}
 		
-		public void Invoke (ManosApp app, IManosContext ctx)
+		public void Invoke (Application app, IContext ctx)
 		{
 			object [] data;
 			
@@ -87,14 +87,14 @@ namespace Waser.Routing
 			return method.GetParameters ();
 		}
 		
-		public static bool TryGetDataForParamList (ParameterInfo [] parameters, ManosApp app, IManosContext ctx, out object [] data)
+		public static bool TryGetDataForParamList (ParameterInfo [] parameters, Application app, IContext ctx, out object [] data)
 		{
 			data = new object [parameters.Length];
 			
 			int param_start = 1;
 			data [0] = ctx;
 			
-			if (typeof (ManosApp).IsAssignableFrom (parameters [1].ParameterType)) {
+			if (typeof (Application).IsAssignableFrom (parameters [1].ParameterType)) {
 				data [1] = app;
 				++param_start;
 			}
@@ -109,7 +109,7 @@ namespace Waser.Routing
 			return true;
 		}
 
-		public static bool TryConvertType (IManosContext ctx, string name, ParameterInfo param, out object data)
+		public static bool TryConvertType (IContext ctx, string name, ParameterInfo param, out object data)
 		{
 			Type dest = param.ParameterType;
 			
@@ -161,7 +161,7 @@ namespace Waser.Routing
 			return TryConvertUnsafeString (ctx, dest, param, strd, out data);
 		}
 
-		public static bool TryConvertUnsafeString (IManosContext ctx, Type type, ParameterInfo param, UnsafeString unsafe_str_value, out object data)
+		public static bool TryConvertUnsafeString (IContext ctx, Type type, ParameterInfo param, UnsafeString unsafe_str_value, out object data)
 		{
 			if (type == typeof (UnsafeString)) {
 				data = unsafe_str_value;

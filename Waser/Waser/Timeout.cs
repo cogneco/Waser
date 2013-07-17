@@ -62,9 +62,9 @@ namespace Waser
 		/// Causes the action specified in the constructor to be executed. Infrastructure.
 		/// </summary>
 		/// <param name="app">
-		/// A <see cref="ManosApp"/>
+		/// A <see cref="Application"/>
 		/// </param>
-		public void Run (ManosApp app)
+		public void Run (Application app)
 		{
 			if (stopped)
 				return;

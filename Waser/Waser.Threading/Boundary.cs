@@ -37,18 +37,18 @@ namespace Waser.Threading
 
 		static Boundary ()
 		{
-			Instance = new Boundary (AppHost.Context);
+			Instance = new Boundary (ApplicationHost.Context);
 		}
 
 		private readonly IAsyncWatcher asyncWatcher;
 		private readonly ConcurrentQueue<Action> workQueue;
 		private int maxWorkPerLoop;
 
-		public Boundary (Context context) : this (context, 18)
+		public Boundary (IO.Context context) : this (context, 18)
 		{
 		}
 
-		public Boundary (Context context, int maxWorkPerLoop)
+		public Boundary (IO.Context context, int maxWorkPerLoop)
 		{
 			asyncWatcher = context.CreateAsyncWatcher (ProcessWork);
 			asyncWatcher.Start ();

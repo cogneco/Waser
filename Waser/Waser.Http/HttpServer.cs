@@ -55,7 +55,7 @@ namespace Waser.Http
             ServerVersion = "Manos/" + v.ToString();
         }
 
-        public HttpServer(Context context, HttpConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
+        public HttpServer(IO.Context context, HttpConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
         {
             this.callback = callback;
             this.socket = socket;
@@ -63,7 +63,7 @@ namespace Waser.Http
 			this.Context = context;
         }
 
-        public Context Context
+        public IO.Context Context
         {
 			get;
 			private set;

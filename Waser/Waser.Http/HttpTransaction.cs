@@ -75,7 +75,7 @@ namespace Waser.Http
 				gc_handle.Free ();
 		}
 		
-		public Context Context {
+		public IO.Context Context {
 			get;
 			private set;
 		}

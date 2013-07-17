@@ -44,7 +44,7 @@ namespace Waser.Http {
 		private StreamWriter writer;
 		private Dictionary<string, HttpCookie> cookies;
 
-		public HttpResponse (Context context, IHttpRequest request, ITcpSocket socket)
+		public HttpResponse (IO.Context context, IHttpRequest request, ITcpSocket socket)
 			: base (context)
 		{
 			Request = request;

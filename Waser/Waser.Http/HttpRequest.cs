@@ -48,7 +48,7 @@ namespace Waser.Http {
 		private DataDictionary cookies;
 
 		
-		public HttpRequest (Context context, string address)
+		public HttpRequest (IO.Context context, string address)
 			: base (context)
 		{
 			Uri uri = null;
@@ -65,7 +65,7 @@ namespace Waser.Http {
 			MinorVersion = 1;
 		}
 
-		public HttpRequest (Context context, string remote_address, int port)
+		public HttpRequest (IO.Context context, string remote_address, int port)
 			: this (context, remote_address)
 		{
 			RemotePort = port;

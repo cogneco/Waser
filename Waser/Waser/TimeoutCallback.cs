@@ -27,7 +27,7 @@ using System;
 
 namespace Waser
 {
-	public delegate void TimeoutCallback (ManosApp app, object data);
+	public delegate void TimeoutCallback (Application app, object data);
 	
 }
 

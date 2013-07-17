@@ -33,7 +33,7 @@ namespace Waser.Routing.Testing
 		{
 		}
 		
-		public void Invoke (ManosApp app, IManosContext ctx)
+		public void Invoke (Application app, IContext ctx)
 		{
 			throw new System.NotImplementedException();
 		}

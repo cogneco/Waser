@@ -22,50 +22,26 @@
 //
 //
 
-
 using System;
 
-using Waser.Http;
-using Waser.Routing;
 
-namespace Waser
+namespace Waser.Caching
 {
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class ManosPipe : IManosPipe
+	public interface ICache
 	{
-		public ManosPipe ()
-		{
-		}
-			
-		public virtual void OnPreProcessRequest (ManosApp app, IHttpTransaction transaction, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPreProcessTarget (IManosContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
-		}
-
-		public virtual void OnPostProcessTarget (IManosContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPostProcessRequest (ManosApp app, IHttpTransaction transaction, Action complete)
-		{
-			complete ();
-		}
+		void Get (string key, CacheItemCallback callback);
 		
-		public virtual void OnError (IManosContext ctx, Action complete)
-		{
-			complete ();
-		}
+		void Set (string key, object obj);
+		void Set (string key, object value, TimeSpan expires);
+
+		void Set (string key, object obj, CacheItemCallback callback);
+		void Set (string key, object value, TimeSpan expires, CacheItemCallback callback);
+		
+		void Remove (string key);
+		void Remove (string key, CacheItemCallback callback);
+		
+		void Clear ();
+		void Clear (CacheOpCallback callback);
 	}
 }
 
