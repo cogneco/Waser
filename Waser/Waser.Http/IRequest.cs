@@ -35,7 +35,7 @@ using Waser.Collections;
 
 namespace Waser.Http {
 
-	public interface IHttpRequest : IDisposable {
+	public interface IRequest : IDisposable {
 		
 		Method Method {
 			get;

@@ -27,11 +27,11 @@ using System;
 
 namespace Waser.Routing
 {
-	public class ActionTarget : IManosTarget
+	public class ActionTarget : ITarget
 	{
-		private ManosAction action;
+		private Action action;
 		
-		public ActionTarget (ManosAction action)
+		public ActionTarget (Action action)
 		{
 			Action = action;
 		}
@@ -46,7 +46,7 @@ namespace Waser.Routing
 			set {
 				if (value == null)
 					throw new ArgumentNullException ("action");
-				ManosAction a = value as ManosAction;
+				Action a = value as Action;
 				if (a == null)
 					throw new InvalidOperationException ("A ManosActionTarget::Action can only be of type ManosAction.");
 				action = a;

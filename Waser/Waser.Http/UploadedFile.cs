@@ -85,7 +85,7 @@ namespace Waser.Http {
 		 	get;
 		 }
 
-		 public abstract Stream Contents {
+		 public abstract System.IO.Stream Contents {
 		 	get;
 		 }
 
@@ -108,7 +108,7 @@ namespace Waser.Http {
 			}
 		 }
 
-		 public override Stream Contents {
+		 public override System.IO.Stream Contents {
 		 	get {
 				return stream;
 			}
@@ -141,7 +141,7 @@ namespace Waser.Http {
 			}
 		 }
 
-		 public override Stream Contents {
+		 public override System.IO.Stream Contents {
 		 	get {
 				if (stream == null)
 					stream = File.Open (TempFile, FileMode.Open, FileAccess.ReadWrite);

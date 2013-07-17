@@ -27,13 +27,13 @@ using System;
 
 namespace Waser.Http {
 
-	public class HttpException : Exception {
+	public class Exception : System.Exception {
 
-		public HttpException (string error)
+		public Exception (string error)
 		{
 		}
 
-		public HttpException (string error, Exception cause) : base (error, cause)
+		public Exception (string error, System.Exception cause) : base (error, cause)
 		{
 		}
 	}

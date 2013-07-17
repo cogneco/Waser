@@ -29,11 +29,11 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public class HttpBufferedBodyHandler : IHttpBodyHandler {
+	public class BufferedBodyHandler : IBodyHandler {
 
 		private StringBuilder builder;
 
-		public void HandleData (HttpEntity entity, ByteBuffer data, int pos, int len)
+		public void HandleData (Entity entity, ByteBuffer data, int pos, int len)
 		{
 			if (builder == null)
 				builder = new StringBuilder ();
@@ -42,7 +42,7 @@ namespace Waser.Http {
 			builder.Append (str);
 		}
 
-		public void Finish (HttpEntity entity)
+		public void Finish (Entity entity)
 		{
 			entity.PostBody = builder.ToString ();
 		}

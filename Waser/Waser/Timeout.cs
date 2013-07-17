@@ -33,7 +33,7 @@ namespace Waser
 	/// 
 	/// Timeouts will never run before the specified TimeSpan has elapsed.
 	/// 
-	/// Use the method <see cref="M:Manos.AppHost.AddTimeout"/> method to register each Timeout.
+	/// Use the method <see cref="M:Waser.AppHost.AddTimeout"/> method to register each Timeout.
 	/// </summary>
 	public class Timeout
 	{
@@ -71,7 +71,7 @@ namespace Waser
 
 			try {
 				callback (app, data);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.Error.WriteLine ("Exception in timeout callback.");
 				Console.Error.WriteLine (e);
 			}

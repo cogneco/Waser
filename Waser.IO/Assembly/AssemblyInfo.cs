@@ -31,7 +31,7 @@ using System.Security.Permissions;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle ("Manos.IO.dll")]
+[assembly: AssemblyTitle ("Waser.IO.dll")]
 [assembly: AssemblyVersion("0.1.3")]
 
 

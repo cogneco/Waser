@@ -1,5 +1,5 @@
 // 
-// AbstractManosLogger.cs
+// ConsoleLogger.cs
 //  
 // Author:
 //       Anirudh Sanjeev <anirudh@anirudhsanjeev.org>
@@ -29,7 +29,7 @@ using System;
 
 namespace Waser.Logging
 {
-	public class ManosConsoleLogger : ILogger {
+	public class ConsoleLogger : ILogger {
 
 		private string name;
 		private LogLevel level;
@@ -38,7 +38,7 @@ namespace Waser.Logging
 			get { return level; }
 		}
 
-		public ManosConsoleLogger (string name, LogLevel level)
+		public ConsoleLogger (string name, LogLevel level)
 		{
 			this.name = name;
 			this.level = level;

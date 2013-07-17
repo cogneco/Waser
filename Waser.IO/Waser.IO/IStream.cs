@@ -32,7 +32,7 @@ namespace Waser.IO
 		/// <exception cref='ArgumentNullException'>
 		/// Is thrown when any argument passed to the method is <see langword="null" /> .
 		/// </exception>
-		IDisposable Read (Action<TFragment> onData, Action<Exception> onError, Action onEndOfStream);
+		IDisposable Read (Action<TFragment> onData, Action<System.Exception> onError, Action onEndOfStream);
 
 		/// <summary>
 		/// Places a sequence of fragments into the write queue.

@@ -3,7 +3,7 @@ using System;
 namespace Waser.IO
 {
 	[Serializable]
-	public class SocketException : Exception
+	public class SocketException : System.Exception
 	{
 		public SocketError ErrorCode {
 			get;
@@ -35,7 +35,7 @@ namespace Waser.IO
 		/// <param name="message">A <see cref="T:System.String"/> that describes the exception. </param>
 		/// <param name="code">Error code of the operation that failed.</param>
 		/// <param name="inner">The exception that is the cause of the current exception. </param>
-		public SocketException (string message, SocketError code, Exception inner)
+		public SocketException (string message, SocketError code, System.Exception inner)
 			: base (message, inner)
 		{
 			this.ErrorCode = code;

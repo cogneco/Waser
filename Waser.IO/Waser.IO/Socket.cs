@@ -44,7 +44,7 @@ namespace Waser.IO
 		
 		public abstract void Bind (TEndPoint endpoint);
 		
-		public abstract void Connect (TEndPoint endpoint, Action callback, Action<Exception> error);
+		public abstract void Connect (TEndPoint endpoint, Action callback, Action<System.Exception> error);
 		
 		public abstract TStream GetSocketStream ();
 		

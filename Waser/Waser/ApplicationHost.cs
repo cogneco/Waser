@@ -47,7 +47,7 @@ namespace Waser
 		private static Dictionary<IPEndPoint, Tuple<string, string>> secureListenEndPoints = new Dictionary<IPEndPoint, Tuple<string, string>> ();
 		private static List<Server> servers = new List<Server> ();
 		private static ICache cache;
-		private static IManosLogger log;
+		private static ILogger log;
 		private static List<IPipe> pipes;
 		private static IO.Context context;
 
@@ -68,10 +68,10 @@ namespace Waser
 			}
 		}
 
-		public static IManosLogger Log {
+		public static ILogger Log {
 			get {
 				if (log == null)
-					log = new Waser.Logging.ManosConsoleLogger ("manos", LogLevel.Debug);
+					log = new Waser.Logging.ConsoleLogger ("Waser", LogLevel.Debug);
 				return log;
 			}
 		}

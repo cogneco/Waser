@@ -130,7 +130,7 @@ namespace Waser.IO.Managed
 		{
 		}
 		
-		public override void Connect (IPEndPoint endpoint, Action callback, Action<Exception> error)
+		public override void Connect (IPEndPoint endpoint, Action callback, Action<System.Exception> error)
 		{
 			if (callback == null)
 				throw new ArgumentNullException ("callback");

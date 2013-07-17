@@ -35,7 +35,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public class HttpParser {
+	public class Parser {
 
 		private ParserType type;
 
@@ -51,11 +51,11 @@ namespace Waser.Http {
 		
 		protected bool upgrade; 
 
-		public HttpParser () : this (ParserType.HTTP_BOTH)
+		public Parser () : this (ParserType.HTTP_BOTH)
 		{
 		}
 
-		public HttpParser (ParserType type)
+		public Parser (ParserType type)
 		{
 			this.type = type;
 
@@ -70,7 +70,7 @@ namespace Waser.Http {
 				this.state = State.start_res_or_res;
 				break;
 			default:
-				throw new Exception ("can't happen, invalid ParserType enum");
+				throw new System.Exception ("can't happen, invalid ParserType enum");
 			}
 		}
 

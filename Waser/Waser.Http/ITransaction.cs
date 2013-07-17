@@ -32,7 +32,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public interface IHttpTransaction {
+	public interface ITransaction {
 		
 		IO.Context Context {
 			get;

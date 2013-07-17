@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 namespace Waser.Routing
 {
-	public class ParameterizedActionTarget : IManosTarget
+	public class ParameterizedActionTarget : ITarget
 	{
 		private object target;
 		private ParameterizedAction action;
@@ -139,9 +139,9 @@ namespace Waser.Routing
 					if (dest.IsGenericType) {
 						Type [] args = dest.GetGenericArguments ();
 						if (args.Length != 2)
-							throw new Exception ("Generic Dictionaries must contain two generic type arguments.");
+							throw new System.Exception ("Generic Dictionaries must contain two generic type arguments.");
 						if (args [0] != typeof (string))
-							throw new Exception ("Generic Dictionaries must use strings for their keys.");
+							throw new System.Exception ("Generic Dictionaries must use strings for their keys.");
 						eltype = args [1]; // ie the TValue in Dictionary<TKey,TValue>
 					}
 					foreach (string key in dict.Keys) {

@@ -35,7 +35,7 @@ namespace Waser.Routing {
 	/// ATT: is this really necessary? Action&gt;IManosContext&lt; could be used in place of this, 
 	/// and would require consumers of Waser to understand fewer classes.
 	/// </remarks>
-	public delegate void ManosAction (IContext context);
+	public delegate void Action (IContext context);
 	
 }
 

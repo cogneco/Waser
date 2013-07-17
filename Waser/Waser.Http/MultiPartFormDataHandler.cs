@@ -32,7 +32,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public class HttpMultiPartFormDataHandler : IBodyHandler {
+	public class MultiPartFormDataHandler : IBodyHandler {
 
 		private enum State {
 
@@ -74,7 +74,7 @@ namespace Waser.Http {
 		
 		private char[] quotation_mark = {'\"'};
 
-		public HttpMultiPartFormDataHandler (string boundary, Encoding encoding, IUploadedFileCreator file_creator)
+		public MultiPartFormDataHandler (string boundary, Encoding encoding, IUploadedFileCreator file_creator)
 		{
 			this.boundary = "--" + boundary.TrimStart(quotation_mark).TrimEnd(quotation_mark);
 			this.encoding = encoding;
@@ -150,11 +150,11 @@ namespace Waser.Http {
 						break;
 					}
 
-					throw new Exception (String.Format ("Invalid post boundary char '{0}'", c));
+					throw new System.Exception (String.Format ("Invalid post boundary char '{0}'", c));
 
 				case State.PostBoundaryComplete:
 					if (c != '-')
-						throw new Exception (String.Format ("Invalid char '{0}' in boundary complete.", c));
+						throw new System.Exception (String.Format ("Invalid char '{0}' in boundary complete.", c));
 
 					state = State.Finished;
 					break;
@@ -184,7 +184,7 @@ namespace Waser.Http {
 
 				case State.PostHeader1:
 					if (c != '\n')
-						throw new Exception (String.Format ("Invalid char '{0}' in post header 1.", c));
+						throw new System.Exception (String.Format ("Invalid char '{0}' in post header 1.", c));
 					state = State.PostHeader2;
 					break;
 
@@ -210,7 +210,7 @@ namespace Waser.Http {
 						uploaded_file.Contents.WriteByte (c);
 					break;
 				default:
-					throw new Exception (String.Format ("Unhandled state: {0}", state));
+					throw new System.Exception (String.Format ("Unhandled state: {0}", state));
 				}
 
 				not_boundary = false;

@@ -33,7 +33,7 @@ namespace Libev
 				var handle = GCHandle.FromIntPtr (data);
 				var watcher = (IOWatcher) handle.Target;
 				watcher.callback (watcher, revents);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.Error.WriteLine ("Error handling IO readyness event: {0}", e.Message);
 				Console.Error.WriteLine (e.StackTrace);
 			}

@@ -57,7 +57,7 @@ namespace Libev
 				var handle = GCHandle.FromIntPtr (data);
 				var watcher = (AsyncWatcher) handle.Target;
 				watcher.callback (watcher, revents);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.Error.WriteLine ("Error handling async event: {0}", e.Message);
 				Console.Error.WriteLine (e.StackTrace);
 			}

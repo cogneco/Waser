@@ -39,7 +39,7 @@ namespace Waser.Routing {
 
 	public class RouteHandler : IEnumerable<RouteHandler> {
 
-		private List<HttpMethod> methods;
+		private List<Method> methods;
 
 		private IMatchOperation [] match_ops;
 
@@ -54,32 +54,32 @@ namespace Waser.Routing {
 				throw new InvalidOperationException ("Can not add Children to a RouteHandler that has a Target set.");	
 		}
 
-		public RouteHandler (IMatchOperation op, HttpMethod [] methods) : this (new IMatchOperation [] { op }, methods)
+		public RouteHandler (IMatchOperation op, Method [] methods) : this (new IMatchOperation [] { op }, methods)
 		{
 		}
 		
-		public RouteHandler (IMatchOperation op, HttpMethod [] methods, IManosTarget target) : this (new IMatchOperation [] { op }, methods, target)
+		public RouteHandler (IMatchOperation op, Method [] methods, ITarget target) : this (new IMatchOperation [] { op }, methods, target)
 		{
 		}
 		
-		public RouteHandler (IMatchOperation op, HttpMethod method) : this (new IMatchOperation [] { op }, new HttpMethod [] { method })
+		public RouteHandler (IMatchOperation op, Method method) : this (new IMatchOperation [] { op }, new Method [] { method })
 		{
 		}
 		
-		public RouteHandler (IMatchOperation op, HttpMethod method, IManosTarget target) : this (new IMatchOperation [] { op }, new HttpMethod [] { method }, target)
+		public RouteHandler (IMatchOperation op, Method method, ITarget target) : this (new IMatchOperation [] { op }, new Method [] { method }, target)
 		{
 		}
 		
-		public RouteHandler (IMatchOperation [] ops, HttpMethod [] methods) : this (ops, methods, null)
+		public RouteHandler (IMatchOperation [] ops, Method [] methods) : this (ops, methods, null)
 		{
 		}
 
-		public RouteHandler (IMatchOperation [] ops, HttpMethod [] methods, IManosTarget target)
+		public RouteHandler (IMatchOperation [] ops, Method [] methods, ITarget target)
 		{
 			Target = target;
 
 			match_ops = ops;
-			this.methods = new List<HttpMethod> (methods);
+			this.methods = new List<Method> (methods);
 
 			SetupChildrenCollection ();
 		}
@@ -105,17 +105,17 @@ namespace Waser.Routing {
 			set { match_ops = value; }
 		}
 
-		public IList<HttpMethod> Methods {
+		public IList<Method> Methods {
 			get { return methods; }
 			set {
 				if (value == null)
 					methods = null;
 				else
-					methods = new List<HttpMethod> (value); 
+					methods = new List<Method> (value); 
 			}
 		}
 
-		public IManosTarget Target {
+		public ITarget Target {
 			get;
 			set;
 		}
@@ -156,12 +156,12 @@ namespace Waser.Routing {
 			Children.Add (child);	
 		}
 		
-		public IManosTarget Find (IHttpRequest request)
+		public ITarget Find (IRequest request)
 		{
 			return Find (request, 0);
 		}
 		
-		private IManosTarget Find (IHttpRequest request, int uri_start)
+		private ITarget Find (IRequest request, int uri_start)
 		{
 			if (!IsMethodMatch (request))
 				return null;
@@ -184,7 +184,7 @@ namespace Waser.Routing {
 			}
 
 			foreach (RouteHandler handler in Children) {
-				IManosTarget res = handler.Find (request, uri_start);
+				ITarget res = handler.Find (request, uri_start);
 				if (res != null) {
 					if (uri_data != null)
 						request.UriData.Children.Add (uri_data);
@@ -216,7 +216,7 @@ namespace Waser.Routing {
 			return false;
 		}
 		
-		public bool IsMethodMatch (IHttpRequest request)
+		public bool IsMethodMatch (IRequest request)
 		{
 			if (methods != null)
 				return methods.Contains (request.Method);

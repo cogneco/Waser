@@ -31,7 +31,7 @@ using Waser.Routing;
 namespace Waser
 {
 	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
+	/// ManosPipe provides a mechanism to intercept calls before or after the standard Waser Routing has taking place.
 	/// (For example, Gzip compression module could compress content post process)
 	/// </summary>
 	/// <remarks>
@@ -42,27 +42,27 @@ namespace Waser
 		{
 		}
 			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
+		public virtual void OnPreProcessRequest (Application application, ITransaction transaction, System.Action complete)
 		{
 			complete ();
 		}
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
+		public virtual void OnPreProcessTarget (IContext context, Action<ITarget> changeHandler)
 		{
 			// default: don't change the handler
 		}
 
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
+		public virtual void OnPostProcessTarget (IContext context, ITarget target, System.Action complete)
 		{
 			complete ();
 		}
 
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
+		public virtual void OnPostProcessRequest (Application application, ITransaction transaction, System.Action complete)
 		{
 			complete ();
 		}
 		
-		public virtual void OnError (IContext ctx, Action complete)
+		public virtual void OnError (IContext context, System.Action complete)
 		{
 			complete ();
 		}

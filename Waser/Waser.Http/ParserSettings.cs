@@ -38,25 +38,25 @@ namespace Waser.Http {
 
 	public class ParserSettings {
 	
-		public HttpCallback       OnMessageBegin;
-		public HttpDataCallback   OnPath;
-		public HttpDataCallback   OnQueryString;
-		public HttpDataCallback   OnUrl;
-		public HttpDataCallback   OnFragment;
-		public HttpDataCallback   OnHeaderField;
-		public HttpDataCallback   OnHeaderValue;
-		public HttpCallback       OnHeadersComplete;
-		public HttpDataCallback   OnBody;
-		public HttpCallback       OnMessageComplete;
-		public HttpErrorCallback  OnError;
+		public Callback       OnMessageBegin;
+		public DataCallback   OnPath;
+		public DataCallback   OnQueryString;
+		public DataCallback   OnUrl;
+		public DataCallback   OnFragment;
+		public DataCallback   OnHeaderField;
+		public DataCallback   OnHeaderValue;
+		public Callback       OnHeadersComplete;
+		public DataCallback   OnBody;
+		public Callback       OnMessageComplete;
+		public ErrorCallback  OnError;
 
 
-		public void RaiseOnMessageBegin (HttpParser p)
+		public void RaiseOnMessageBegin (Parser p)
 		{
 			Raise (OnMessageBegin, p);
 		}
 
-		public void RaiseOnMessageComplete (HttpParser p)
+		public void RaiseOnMessageComplete (Parser p)
 		{
 			Raise (OnMessageComplete, p);
 		}
@@ -69,7 +69,7 @@ namespace Waser.Http {
 		// in the buffer around the error we can use to print pretty error
 		// messages.
 
-		public void RaiseOnError (HttpParser p, string message, ByteBuffer buf, int ini_pos)
+		public void RaiseOnError (Parser p, string message, ByteBuffer buf, int ini_pos)
 		{
 			if (null != OnError)
 				OnError (p, message, buf, ini_pos);
@@ -79,57 +79,57 @@ namespace Waser.Http {
 			// will attempt to continue parsing, which it can't because it's
 			// in an invalid state.
 			Console.WriteLine ("ERROR: '{0}'", message);
-			throw new HttpException (message);
+			throw new System.Exception (message);
 		}
 
-		public void RaiseOnHeaderField (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnHeaderField (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnHeaderField, p, buf, pos, len);
 		}
 
-		public void RaiseOnQueryString (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnQueryString (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnQueryString, p, buf, pos, len);
 		}
 
-		public void RaiseOnFragment (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnFragment (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnFragment, p, buf, pos, len);
 		}
 
-		public void RaiseOnPath (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnPath (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnPath, p, buf, pos, len);
 		}
 
-		public void RaiseOnHeaderValue (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnHeaderValue (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnHeaderValue, p, buf, pos, len);
 		}
 
-		public void RaiseOnUrl (HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnUrl (Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnUrl, p, buf, pos, len);
 		}
 
-		public void RaiseOnBody(HttpParser p, ByteBuffer buf, int pos, int len)
+		public void RaiseOnBody(Parser p, ByteBuffer buf, int pos, int len)
 		{
 			Raise (OnBody, p, buf, pos, len);
 		}
 
-		public int RaiseOnHeadersComplete (HttpParser p)
+		public int RaiseOnHeadersComplete (Parser p)
 		{
 			return Raise (OnHeadersComplete, p);
 		}
 
-		private int Raise (HttpCallback cb, HttpParser p)
+		private int Raise (Callback cb, Parser p)
 		{
 			if (cb == null)
 				return 0;
 
 			try {
 				return cb (p);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.WriteLine (e);
 
 				RaiseOnError (p, e.Message, null, -1);
@@ -137,14 +137,14 @@ namespace Waser.Http {
 			}
 		}
 
-		private int Raise (HttpDataCallback cb, HttpParser p, ByteBuffer buf, int pos, int len)
+		private int Raise (DataCallback cb, Parser p, ByteBuffer buf, int pos, int len)
 		{
 			if (cb == null || pos == -1)
 				return 0;
 
 			try {
 				return cb (p,buf,pos,len);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.WriteLine (e);
 
 				RaiseOnError (p, e.Message, buf, pos);

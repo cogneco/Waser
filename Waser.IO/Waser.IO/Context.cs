@@ -17,14 +17,14 @@ namespace Waser.IO
 	public abstract class Context : IDisposable
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Manos.IO.Context"/> class.
+		/// Initializes a new instance of the <see cref="Waser.IO.Context"/> class.
 		/// </summary>
 		protected Context ()
 		{
 		}
 		
 		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the <see cref="Manos.IO.Context"/> is
+		/// Releases unmanaged resources and performs other cleanup operations before the <see cref="Waser.IO.Context"/> is
 		/// reclaimed by garbage collection.
 		/// </summary>
 		~Context ()
@@ -60,13 +60,13 @@ namespace Waser.IO
 		}
 		
 		/// <summary>
-		/// Releases all resource used by the <see cref="Manos.IO.Context"/> object.
+		/// Releases all resource used by the <see cref="Waser.IO.Context"/> object.
 		/// </summary>
 		/// <remarks>
-		/// Call <see cref="Dispose()"/> when you are finished using the <see cref="Manos.IO.Context"/>. The
-		/// <see cref="Dispose()"/> method leaves the <see cref="Manos.IO.Context"/> in an unusable state. After calling
-		/// <see cref="Dispose()"/>, you must release all references to the <see cref="Manos.IO.Context"/> so the garbage
-		/// collector can reclaim the memory that the <see cref="Manos.IO.Context"/> was occupying.
+		/// Call <see cref="Dispose()"/> when you are finished using the <see cref="Waser.IO.Context"/>. The
+		/// <see cref="Dispose()"/> method leaves the <see cref="Waser.IO.Context"/> in an unusable state. After calling
+		/// <see cref="Dispose()"/>, you must release all references to the <see cref="Waser.IO.Context"/> so the garbage
+		/// collector can reclaim the memory that the <see cref="Waser.IO.Context"/> was occupying.
 		/// </remarks>
 		public void Dispose ()
 		{

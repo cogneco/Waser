@@ -6,7 +6,7 @@ namespace Waser.IO
 	/// <summary>
 	/// Every socket is bound to an event loop and has it's end points identified by an appropriate
 	/// implementing class of <see cref="System.Net.EndPoint"/>.
-	/// <seealso cref="Manos.IO.IStream{TFragment}"/>
+	/// <seealso cref="Waser.IO.IStream{TFragment}"/>
 	/// </summary>
 	public interface ISocket<TEndPoint> : IDisposable
 		where TEndPoint : EndPoint

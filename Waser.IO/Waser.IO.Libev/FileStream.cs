@@ -88,7 +88,7 @@ namespace Waser.IO.Libev
 			Write (new ByteBuffer (data));
 		}
 
-		public override IDisposable Read (Action<ByteBuffer> onData, Action<Exception> onError, Action onClose)
+		public override IDisposable Read (Action<ByteBuffer> onData, Action<System.Exception> onError, Action onClose)
 		{
 			var result = base.Read (onData, onError, onClose);
 			ResumeReading ();

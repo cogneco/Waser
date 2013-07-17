@@ -30,7 +30,7 @@ using Waser.Routing;
 namespace Waser
 {
 	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
+	/// ManosPipe provides a mechanism to intercept calls before or after the standard Waser Routing has taking place.
 	/// (For example, Gzip compression module could compress content post process)
 	/// </summary>
 	/// <remarks>
@@ -42,31 +42,31 @@ namespace Waser
 		///  request.  There is not a valid Response object on the transaction yet and the
 		///  routing information has not been looked up.
 		/// </summary>
-		void OnPreProcessRequest (Application app, ITransaction transaction, Action complete);
+		void OnPreProcessRequest (Application application, ITransaction transaction, System.Action complete);
 
 		/// <summary>
 		///  Called after the response object has been created but before any routing has been done
 		///  if you would like to override the default routing you can do it here, by changing the
 		///  IManosTarget returned in the complete Action.
 		/// </summary>
-		void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler);
+		void OnPreProcessTarget (IContext context, Action<ITarget> changeHandler);
 
 		/// <summary>
 		///  The default routing information has been looked up, but the actual action execution
 		///  has not occurred yet.
 		/// </summary>
-		void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete);
+		void OnPostProcessTarget (IContext context, ITarget target, System.Action complete);
 
 		/// <summary>
 		///  The action has been invoked and has had its End method called.  This is the final
 		///  step in the pipeline.
 		/// </summary>
-		void OnPostProcessRequest (Application app, ITransaction transaction, Action complete);
+		void OnPostProcessRequest (Application application, ITransaction transaction, System.Action complete);
 
 		/// <summary>
-		///  An error has been raised by Manos. (Currently unimplemented).
+		///  An error has been raised by Waser. (Currently unimplemented).
 		/// </summary>
-		void OnError (IContext ctx, Action complete);
+		void OnError (IContext context, System.Action complete);
 		
 	}
 }

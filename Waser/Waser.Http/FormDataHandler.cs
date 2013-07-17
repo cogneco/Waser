@@ -29,7 +29,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public class HttpFormDataHandler : IBodyHandler {
+	public class FormDataHandler : IBodyHandler {
 
 		private enum State {
 			InKey,
@@ -44,7 +44,7 @@ namespace Waser.Http {
 		{
 			string str_data = entity.ContentEncoding.GetString (data.Bytes, pos, len);
 
-			str_data = HttpUtility.HtmlDecode (str_data);
+			str_data = Utility.HtmlDecode (str_data);
 
 			pos = 0;
 			len = str_data.Length;
@@ -81,7 +81,7 @@ namespace Waser.Http {
 		public void Finish (Entity entity)
 		{
 			if (state == State.InKey && key_buffer.Length > 0)
-				throw new Exception ("Malformed POST data, key found without value.");
+				throw new System.Exception ("Malformed POST data, key found without value.");
 
 			FinishPair (entity);
 		}
@@ -89,11 +89,11 @@ namespace Waser.Http {
 		private void FinishPair (Entity entity)
 		{
 			if (key_buffer.Length == 0)
-				throw new Exception ("zero length key in www-form data.");
+				throw new System.Exception ("zero length key in www-form data.");
 
 			Encoding e =  entity.ContentEncoding;
-			entity.PostData.Set (HttpUtility.UrlDecode (key_buffer.ToString (), e),
-					HttpUtility.UrlDecode (value_buffer.ToString (), e));
+			entity.PostData.Set (Utility.UrlDecode (key_buffer.ToString (), e),
+					Utility.UrlDecode (value_buffer.ToString (), e));
 
 			key_buffer.Length = 0;
 			value_buffer.Length = 0;

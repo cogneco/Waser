@@ -39,7 +39,7 @@ using Waser.Collections;
 
 namespace Waser.Http {
 
-	public class HttpRequest : Entity, IHttpRequest {
+	public class Request : Entity, IRequest {
 		
 		private StringBuilder query_data_builder = new StringBuilder ();
 
@@ -48,13 +48,13 @@ namespace Waser.Http {
 		private DataDictionary cookies;
 
 		
-		public HttpRequest (IO.Context context, string address)
+		public Request (IO.Context context, string address)
 			: base (context)
 		{
 			Uri uri = null;
 
 			if (!Uri.TryCreate (address, UriKind.Absolute, out uri))
-				throw new Exception ("Invalid URI: '" + address + "'.");
+				throw new System.Exception ("Invalid URI: '" + address + "'.");
 
 			RemoteAddress = uri.Host;
 			RemotePort = uri.Port;
@@ -65,13 +65,13 @@ namespace Waser.Http {
 			MinorVersion = 1;
 		}
 
-		public HttpRequest (IO.Context context, string remote_address, int port)
+		public Request (IO.Context context, string remote_address, int port)
 			: this (context, remote_address)
 		{
 			RemotePort = port;
 		}
 
-		public HttpRequest (IHttpTransaction transaction, ITcpSocket stream)
+		public Request (ITransaction transaction, ITcpSocket stream)
 			: base (transaction.Context)
 		{
 			Transaction = transaction;
@@ -80,7 +80,7 @@ namespace Waser.Http {
 			RemotePort = stream.RemoteEndpoint.Port;
 		}
 
-		public IHttpTransaction Transaction {
+		public ITransaction Transaction {
 			get;
 			private set;
 		}
@@ -151,7 +151,7 @@ namespace Waser.Http {
 		{
 			string str = Encoding.ASCII.GetString (data.Bytes, pos, len);
 
-			str = HttpUtility.UrlDecode (str, Encoding.ASCII);
+			str = Utility.UrlDecode (str, Encoding.ASCII);
 			Path = Path == null ? str : String.Concat (Path, str);
 			return 0;
 		}
@@ -173,7 +173,7 @@ namespace Waser.Http {
 			Method = parser.HttpMethod;
 
 			if (query_data_builder.Length != 0) {
-				QueryData = HttpUtility.ParseUrlEncodedData (query_data_builder.ToString ());
+				QueryData = Utility.ParseUrlEncodedData (query_data_builder.ToString ());
 				query_data_builder.Length = 0;
 			}
 
@@ -195,7 +195,7 @@ namespace Waser.Http {
 			var remote = new IPEndPoint(IPAddress.Parse (RemoteAddress), RemotePort);
 			Socket = this.Context.CreateTcpSocket (remote.AddressFamily);
 			Socket.Connect (remote, delegate {
-				Stream = new HttpStream (this, Socket.GetSocketStream ());
+				Stream = new Stream (this, Socket.GetSocketStream ());
 				Stream.Chunked = false;
 				Stream.AddHeaders = false;
 
@@ -207,7 +207,7 @@ namespace Waser.Http {
 				}
 
 				Stream.End (() => {
-					HttpResponse response = new HttpResponse (Context, this, Socket);
+					Response response = new Response (Context, this, Socket);
 
 //					response.OnCompleted += () => {
 //						if (OnResponse != null)
@@ -236,7 +236,7 @@ namespace Waser.Http {
 			Headers.Write (builder, null, Encoding.ASCII);
 		}
 
-		public event Action<IHttpResponse> OnResponse;
+		public event Action<IResponse> OnResponse;
 	}
 }
 

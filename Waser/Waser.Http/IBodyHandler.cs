@@ -28,11 +28,11 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public interface IHttpBodyHandler {
+	public interface IBodyHandler {
 
-		void HandleData (HttpEntity entity, ByteBuffer data, int pos, int len);
+		void HandleData (Entity entity, ByteBuffer data, int pos, int len);
 
-		void Finish (HttpEntity entity);
+		void Finish (Entity entity);
 	}
 }
 

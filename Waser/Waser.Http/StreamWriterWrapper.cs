@@ -35,11 +35,11 @@ using Waser.IO;
 
 namespace Waser.Http
 {
-	public class HttpStreamWriterWrapper : System.IO.Stream
+	public class StreamWriterWrapper : System.IO.Stream
 	{
 		private Stream stream;
 
-		public HttpStreamWriterWrapper (Stream stream)
+		public StreamWriterWrapper (Stream stream)
 		{
 			this.stream = stream;
 		}

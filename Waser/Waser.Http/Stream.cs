@@ -34,7 +34,7 @@ using Mono.Unix.Native;
 
 namespace Waser.Http
 {
-	public class HttpStream : System.IO.Stream, IDisposable
+	public class Stream : System.IO.Stream, IDisposable
 	{
 		private long length;
 		private bool chunk_encode = true;
@@ -42,7 +42,7 @@ namespace Waser.Http
 		private bool final_chunk_sent;
 		private Queue<object> write_ops;
 
-		public HttpStream (Entity entity, Waser.IO.IByteStream stream)
+		public Stream (Entity entity, Waser.IO.IByteStream stream)
 		{
 			HttpEntity = entity;
 			SocketStream = stream;

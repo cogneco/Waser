@@ -36,54 +36,54 @@ namespace Waser
 	{
 		RouteHandler Routes { get; }
 		ICache Cache { get; }
-		IManosLogger Log { get; }
+		ILogger Log { get; }
 		
 		RouteHandler Route (string pattern, IModule module);
-		RouteHandler Route (string pattern, ManosAction action);
-		RouteHandler Route (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Route (ManosAction action, params string [] patterns);
+		RouteHandler Route (string pattern, Routing.Action action);
+		RouteHandler Route (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Route (Routing.Action action, params string [] patterns);
 		RouteHandler Route (IModule module, params string [] patterns);
 		
 		RouteHandler Get (string pattern, IModule module);
-		RouteHandler Get (string pattern, ManosAction action);
-		RouteHandler Get (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Get (ManosAction action, params string [] patterns);
+		RouteHandler Get (string pattern, Routing.Action action);
+		RouteHandler Get (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Get (Routing.Action action, params string [] patterns);
 		RouteHandler Get (IModule module, params string [] patterns);
 		
 	 	RouteHandler Put (string pattern, IModule module);
-		RouteHandler Put (string pattern, ManosAction action);
-		RouteHandler Put (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Put (ManosAction action, params string [] patterns);
+		RouteHandler Put (string pattern, Routing.Action action);
+		RouteHandler Put (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Put (Routing.Action action, params string [] patterns);
 		RouteHandler Put (IModule module, params string [] patterns);
 		
 		RouteHandler Post (string pattern, IModule module);
-		RouteHandler Post (string pattern, ManosAction action);
-		RouteHandler Post (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Post (ManosAction action, params string [] patterns);
+		RouteHandler Post (string pattern, Routing.Action action);
+		RouteHandler Post (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Post (Routing.Action action, params string [] patterns);
 		RouteHandler Post (IModule module, params string [] patterns);
 		
 		RouteHandler Delete (string pattern, IModule module);
-		RouteHandler Delete (string pattern, ManosAction action);
-		RouteHandler Delete (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Delete (ManosAction action, params string [] patterns);
+		RouteHandler Delete (string pattern, Routing.Action action);
+		RouteHandler Delete (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Delete (Routing.Action action, params string [] patterns);
 		RouteHandler Delete (IModule module, params string [] patterns);
 		
 		RouteHandler Head (string pattern, IModule module);
-		RouteHandler Head (string pattern, ManosAction action);
-		RouteHandler Head (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Head (ManosAction action, params string [] patterns);
+		RouteHandler Head (string pattern, Routing.Action action);
+		RouteHandler Head (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Head (Routing.Action action, params string [] patterns);
 		RouteHandler Head (IModule module, params string [] patterns);
 		
 		RouteHandler Options (string pattern, IModule module);
-		RouteHandler Options (string pattern, ManosAction action);
-		RouteHandler Options (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Options (ManosAction action, params string [] patterns);
+		RouteHandler Options (string pattern, Routing.Action action);
+		RouteHandler Options (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Options (Routing.Action action, params string [] patterns);
 		RouteHandler Options (IModule module, params string [] patterns);
 		
 		RouteHandler Trace (string pattern, IModule module);
-		RouteHandler Trace (string pattern, ManosAction action);
-		RouteHandler Trace (string pattern, Waser.Routing.MatchType matchType, ManosAction action);
-		RouteHandler Trace (ManosAction action, params string [] patterns);
+		RouteHandler Trace (string pattern, Routing.Action action);
+		RouteHandler Trace (string pattern, Waser.Routing.MatchType matchType, Routing.Action action);
+		RouteHandler Trace (Routing.Action action, params string [] patterns);
 		RouteHandler Trace (IModule module, params string [] patterns);
 
 		void StartInternal ();

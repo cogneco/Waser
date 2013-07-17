@@ -30,11 +30,11 @@ using Waser.Collections;
 
 namespace Waser.Http
 {
-	public class HttpCookie
+	public class Cookie
 	{
 		private Dictionary<string,string> values;
 		
-		public HttpCookie (string name, string value)
+		public Cookie (string name, string value)
 		{
 			if (name == null)
 				throw new ArgumentNullException ("name");
@@ -74,7 +74,7 @@ namespace Waser.Http
 			set;
 		}
 		
-		public void WriteHeader (IHttpResponse response)
+		public void WriteHeader (IResponse response)
 		{
 			// TODO: Eventually I'd like to make this write as it goes instead of
 			// buffering into a stream, but I need to create the ResponseStream

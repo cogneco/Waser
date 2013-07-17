@@ -36,51 +36,75 @@ using System.Collections.Generic;
 
 namespace Waser.Http {
 	
-	public enum HttpMethod {
-		ERROR = -1,
+	public enum Method {
+		Error = -1,
 		
-		HTTP_DELETE,
-		HTTP_GET,
-		HTTP_HEAD,
-		HTTP_POST,
-		HTTP_PUT,
-		HTTP_CONNECT,
-		HTTP_OPTIONS,
-		HTTP_TRACE,
-		HTTP_COPY,
-		HTTP_LOCK,
-		HTTP_MKCOL,
-		HTTP_MOVE,
-		HTTP_PROPFIND,
-		HTTP_PROPPATCH,
-		HTTP_UNLOCK,
-		HTTP_REPORT,
-		HTTP_MKACTIVITY,
-		HTTP_CHECKOUT,
-		HTTP_MERGE,
+		Delete,
+		Get,
+		Head,
+		Post,
+		Put,
+		Connect,
+		Options,
+		Trace,
+		Copy,
+		Lock,
+		MakeCollection,
+		Move,
+		PropertyFind,
+		PropertyPatch,
+		Unlock,
+		Report,
+		MakeActivity,
+		Checkout,
+		Merge,
 	}
 
-	public static class HttpMethodBytes {
+	public static class MethodBytes {
 
 		private static object lock_obj = new object ();
-		private static Dictionary<HttpMethod,byte[]> methods = new Dictionary<HttpMethod,byte[]> ();
+		private static Dictionary<Method,byte[]> methods = new Dictionary<Method,byte[]> ();
 
-		static HttpMethodBytes ()
+		static MethodBytes ()
 		{
 			lock (lock_obj) {
-				foreach (HttpMethod m in Enum.GetValues (typeof (HttpMethod))) {
-					Init (m);
+				foreach (Method m in Enum.GetValues (typeof (Method))) {
+					Initialize (m);
 				}
 			}
 		}
 
-		public static void Init (HttpMethod method)
+		public static void Initialize (Method method)
 		{
-			methods [method] = Encoding.ASCII.GetBytes (method.ToString ().Substring (5));
+			byte[] result;
+			switch (method) {
+			default:
+			case Method.Error: result = Encoding.ASCII.GetBytes ("ERROR"); break;
+			case Method.Delete: result = Encoding.ASCII.GetBytes ("DELETE"); break;
+			case Method.Get: result = Encoding.ASCII.GetBytes ("GET"); break;
+			case Method.Head: result = Encoding.ASCII.GetBytes ("HEAD"); break;
+			case Method.Post: result = Encoding.ASCII.GetBytes ("POST"); break;
+			case Method.Put: result = Encoding.ASCII.GetBytes ("PUT"); break;
+			case Method.Connect: result = Encoding.ASCII.GetBytes ("CONNECT"); break;
+			case Method.Options: result = Encoding.ASCII.GetBytes ("OPTIONS"); break;
+			case Method.Trace: result = Encoding.ASCII.GetBytes ("TRACE"); break;
+			case Method.Copy: result = Encoding.ASCII.GetBytes ("COPY"); break;
+			case Method.Lock: result = Encoding.ASCII.GetBytes ("LOCK"); break;
+			case Method.MakeCollection: result = Encoding.ASCII.GetBytes ("MKCOL"); break;
+			case Method.Move: result = Encoding.ASCII.GetBytes ("MOVE"); break;
+			case Method.PropertyFind: result = Encoding.ASCII.GetBytes ("PROPFIND"); break;
+			case Method.PropertyPatch: result = Encoding.ASCII.GetBytes ("PROPPATCH"); break;
+			case Method.Unlock: result = Encoding.ASCII.GetBytes ("UNLOCK"); break;
+			case Method.Report: result = Encoding.ASCII.GetBytes ("REPORT"); break;
+			case Method.MakeActivity: result = Encoding.ASCII.GetBytes ("MKACTIVITY"); break;
+			case Method.Checkout: result = Encoding.ASCII.GetBytes ("CHECKOUT"); break;
+			case Method.Merge: result = Encoding.ASCII.GetBytes ("MERGE"); break;
+			}
+			methods [method] = result;
 		}
 
 		// TODO: This is good enough for now, but we shouldn't be allocing
-		public static byte [] GetBytes (HttpMethod method)
+		public static byte [] GetBytes (Method method)
 		{
 			byte [] bytes;
 			if (!methods.TryGetValue (method, out bytes))

@@ -26,7 +26,7 @@ namespace Libev
 			_native = ev_loop_new (0);
 			
 			if (_native == IntPtr.Zero)
-				throw new Exception ("Unable to create native loop");
+				throw new System.Exception ("Unable to create native loop");
 			
 			_handle = GCHandle.Alloc (this);
 		}

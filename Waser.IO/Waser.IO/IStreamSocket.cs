@@ -7,7 +7,7 @@ namespace Waser.IO
 	/// Every stream socket is bound to an event loop, delivers data in a stream of fragments
 	/// via an appropriate stream, and has it's end points identified by an appropriate
 	/// implementing class of <see cref="System.Net.EndPoint"/>.
-	/// <seealso cref="Manos.IO.IStream{TFragment}"/>
+	/// <seealso cref="Waser.IO.IStream{TFragment}"/>
 	/// </summary>
 	public interface IStreamSocket<TFragment, TStream, TEndPoint> : ISocket<TEndPoint>
 		where TFragment : class
@@ -35,7 +35,7 @@ namespace Waser.IO
 		/// <param name="error">
 		/// Callback to invoke on error.
 		/// </param>
-		void Connect (TEndPoint endpoint, Action callback, Action<Exception> error);
+		void Connect (TEndPoint endpoint, Action callback, Action<System.Exception> error);
 	}
 }
 

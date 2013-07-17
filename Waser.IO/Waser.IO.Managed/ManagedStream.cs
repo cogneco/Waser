@@ -87,7 +87,7 @@ namespace Waser.IO.Managed
 			}
 		}
 
-		public override IDisposable Read (Action<TFragment> onData, Action<Exception> onError, Action onClose)
+		public override IDisposable Read (Action<TFragment> onData, Action<System.Exception> onError, Action onClose)
 		{
 			var result = base.Read (onData, onError, onClose);
 			ResumeReading ();

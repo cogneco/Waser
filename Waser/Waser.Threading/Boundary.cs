@@ -72,7 +72,7 @@ namespace Waser.Threading
 				if (workQueue.TryDequeue (out action)) {
 					try {
 						action ();
-					} catch (Exception ex) {
+					} catch (System.Exception ex) {
 						Console.WriteLine ("Error in processing synchronized action");
 						Console.WriteLine (ex);
 					}

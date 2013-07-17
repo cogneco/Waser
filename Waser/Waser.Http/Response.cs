@@ -39,12 +39,12 @@ using Waser.Collections;
 
 namespace Waser.Http {
 
-	public class HttpResponse : Entity, IHttpResponse {
+	public class Response : Entity, IResponse {
 
 		private StreamWriter writer;
 		private Dictionary<string, Cookie> cookies;
 
-		public HttpResponse (IO.Context context, IRequest request, ITcpSocket socket)
+		public Response (IO.Context context, IRequest request, ITcpSocket socket)
 			: base (context)
 		{
 			Request = request;
@@ -54,7 +54,7 @@ namespace Waser.Http {
 
 			WriteHeaders = true;
 
-			Stream = new HttpStream (this, socket.GetSocketStream ());
+			Stream = new Stream (this, socket.GetSocketStream ());
 			Stream.Chunked = (request.MajorVersion > 0 && request.MinorVersion > 0);
 		}
 
@@ -66,7 +66,7 @@ namespace Waser.Http {
 		public StreamWriter Writer {
 			get {
 				if (writer == null)
-					writer = new StreamWriter (new HttpStreamWriterWrapper (Stream));
+					writer = new StreamWriter (new StreamWriterWrapper (Stream));
 				return writer;
 			}
 		}

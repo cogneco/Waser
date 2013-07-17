@@ -37,7 +37,7 @@ using System.Collections.Specialized;
 
 namespace Waser.Http {
 
-	public class HttpHeaders {
+	public class Headers {
 
 		public static readonly string CONTENT_LENGTH_KEY = "Content-Length";
 		
@@ -46,7 +46,7 @@ namespace Waser.Http {
 
 		Dictionary<string,string> items = new Dictionary<string,string> ();
 
-		public HttpHeaders ()
+		public Headers ()
 		{
 		}
 
@@ -85,7 +85,7 @@ namespace Waser.Http {
 				return;
 			}
 
-			string charset = HttpHeaders.GetAttribute (content, "; charset=");
+			string charset = Headers.GetAttribute (content, "; charset=");
 			if (charset == null) {
 				encoding = Encoding.Default;
 				return;
@@ -93,7 +93,7 @@ namespace Waser.Http {
 
 			try {
 				encoding = Encoding.GetEncoding (charset);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.Error.WriteLine ("[non-fatal] Exception while setting encoding:");
 				Console.Error.WriteLine (e);
 
@@ -137,22 +137,22 @@ namespace Waser.Http {
 					return;
 				
 				if (Char.IsWhiteSpace (line [0]))
-					throw new Exception ("Malformed HTTP header. Found whitespace before data.");
+					throw new System.Exception ("Malformed HTTP header. Found whitespace before data.");
 				
 				while (Char.IsWhiteSpace (line [line_end])) {
 					line_end--;
 					if (line_end == 0)
-						throw new Exception ("Malformed HTTP header. No data found.");
+						throw new System.Exception ("Malformed HTTP header. No data found.");
 				}
 
 				int colon = line.IndexOf (':');
 				if (colon <= 0) 
-					throw new Exception ("Malformed HTTP header. No colon found.");
+					throw new System.Exception ("Malformed HTTP header. No colon found.");
 				if (colon >= line_end)
-					throw new Exception ("Malformed HTTP header. No value found.");
+					throw new System.Exception ("Malformed HTTP header. No value found.");
 				string value = line.Substring (colon + 1, line_end - colon).TrimStart ();
 				if (value.Length == 0)
-					throw new Exception ("Malformed HTTP header. No Value found.");
+					throw new System.Exception ("Malformed HTTP header. No Value found.");
 				
 				string key = line.Substring (0, colon);
 				

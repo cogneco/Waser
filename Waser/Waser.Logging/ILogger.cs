@@ -26,7 +26,7 @@ using System;
 
 namespace Waser.Logging
 {
-	public interface IManosLogger
+	public interface ILogger
 	{
 		LogLevel Level {
 			get;

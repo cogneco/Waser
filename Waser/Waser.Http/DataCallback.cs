@@ -34,7 +34,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public delegate int HttpDataCallback (HttpParser parser, ByteBuffer data, int pos, int len);
+	public delegate int DataCallback (Parser parser, ByteBuffer data, int pos, int len);
 
 }
 

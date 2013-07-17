@@ -45,13 +45,13 @@ namespace Waser.Http {
 	///  A base class for HttpRequest and HttpResponse.  Generally user code should not care at all about
 	///  this class, it just exists to eliminate some code duplication between the two derived types.
 	/// </summary>
-	public abstract class HttpEntity : IDisposable {
+	public abstract class Entity : IDisposable {
 
 		private static readonly long MAX_BUFFERED_CONTENT_LENGTH = 2621440; // 2.5MB (Eventually this will be an environment var)
 
-		private HttpHeaders headers;
+		private Headers headers;
 
-		private HttpParser parser;
+		private Parser parser;
 		private ParserSettings parser_settings;
 		private StringBuilder current_header_field = new StringBuilder ();
 		private StringBuilder current_header_value = new StringBuilder ();
@@ -67,7 +67,7 @@ namespace Waser.Http {
 
 		private IAsyncWatcher end_watcher;
 
-		public HttpEntity (IO.Context context)
+		public Entity (IO.Context context)
 		{
 			this.Context = context;
 			end_watcher = context.CreateAsyncWatcher (HandleEnd);
@@ -79,7 +79,7 @@ namespace Waser.Http {
 			private set;
 		}
 
-		~HttpEntity ()
+		~Entity ()
 		{
 			Dispose ();
 		}
@@ -104,15 +104,15 @@ namespace Waser.Http {
 			protected set;
 		}
 
-		public HttpStream Stream {
+		public Stream Stream {
 			get;
 			protected set;
 		}
 
-		public HttpHeaders Headers {
+		public Headers Headers {
 			get {
 				if (headers == null)
-					headers = new HttpHeaders ();
+					headers = new Headers ();
 				return headers;
 			}
 			set {
@@ -120,7 +120,7 @@ namespace Waser.Http {
 			}
 		}
 
-		public HttpMethod Method {
+		public Method Method {
 			get;
 			set;
 		}
@@ -265,12 +265,12 @@ namespace Waser.Http {
 			parser_settings.OnHeadersComplete = OnHeadersComplete;
 		}
 
-		private int OnMessageBegin (HttpParser parser)
+		private int OnMessageBegin (Parser parser)
 		{
 			return 0;
 		}
 
-		private int OnMessageComplete (HttpParser parser)
+		private int OnMessageComplete (Parser parser)
 		{
 			// Upgrade connections will raise this event at the end of OnBytesRead
 			if (!parser.Upgrade) 
@@ -279,7 +279,7 @@ namespace Waser.Http {
 			return 0;
 		}
 
-		public int OnHeaderField (HttpParser parser, ByteBuffer data, int pos, int len)
+		public int OnHeaderField (Parser parser, ByteBuffer data, int pos, int len)
 		{
 			string str = Encoding.ASCII.GetString (data.Bytes, pos, len);
 
@@ -290,12 +290,12 @@ namespace Waser.Http {
 			return 0;
 		}
 
-		public int OnHeaderValue (HttpParser parser, ByteBuffer data, int pos, int len)
+		public int OnHeaderValue (Parser parser, ByteBuffer data, int pos, int len)
 		{
 			string str = Encoding.ASCII.GetString (data.Bytes, pos, len);
 
 			if (current_header_field.Length == 0)
-				throw new HttpException ("Header Value raised with no header field set.");
+				throw new System.Exception ("Header Value raised with no header field set.");
 
 			current_header_value.Append (str);
 			return 0;
@@ -305,16 +305,16 @@ namespace Waser.Http {
 		{
 			try {
 				if (headers == null)
-					headers = new HttpHeaders ();
+					headers = new Headers ();
 				headers.SetHeader (current_header_field.ToString (), current_header_value.ToString ());
 				current_header_field.Length = 0;
 				current_header_value.Length = 0;
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.WriteLine (e);
 			}
 		}
 
-		protected virtual int OnHeadersComplete (HttpParser parser)
+		protected virtual int OnHeadersComplete (Parser parser)
 		{
 			if (current_header_field.Length != 0)
 				FinishCurrentHeader ();
@@ -326,7 +326,7 @@ namespace Waser.Http {
 			return 0;
 		}
 
-		public int OnBody (HttpParser parser, ByteBuffer data, int pos, int len)
+		public int OnBody (Parser parser, ByteBuffer data, int pos, int len)
 		{
 			if (body_handler == null)
 				CreateBodyHandler ();
@@ -348,7 +348,7 @@ namespace Waser.Http {
 			}
 
 			if (ct.StartsWith ("application/x-www-form-urlencoded", StringComparison.InvariantCultureIgnoreCase)) {
-				body_handler = new HttpFormDataHandler ();
+				body_handler = new FormDataHandler ();
 				return;
 			}
 
@@ -356,7 +356,7 @@ namespace Waser.Http {
 				string boundary = ParseBoundary (ct);
 				IUploadedFileCreator file_creator = GetFileCreator ();
 
-				body_handler = new HttpMultiPartFormDataHandler (boundary, ContentEncoding, file_creator);
+				body_handler = new MultiPartFormDataHandler (boundary, ContentEncoding, file_creator);
 				return;
 			}
 
@@ -370,7 +370,7 @@ namespace Waser.Http {
 			return new InMemoryUploadedFileCreator ();
 		}
 
-		private void OnParserError (HttpParser parser, string message, ByteBuffer buffer, int initial_position)
+		private void OnParserError (Parser parser, string message, ByteBuffer buffer, int initial_position)
 		{
 			// Transaction.Abort (-1, "HttpParser error: {0}", message);
 			Socket.Close ();
@@ -390,7 +390,7 @@ namespace Waser.Http {
 			if (parser_settings == null)
 				CreateParserSettingsInternal ();
 
-			parser = new HttpParser ();
+			parser = new Parser ();
 		}
 		
 		public void Read ()
@@ -408,7 +408,7 @@ namespace Waser.Http {
 		{
 			try {
 				parser.Execute (parser_settings, bytes);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.WriteLine ("Exception while parsing");
 				Console.WriteLine (e);
 			}
@@ -433,7 +433,7 @@ namespace Waser.Http {
 			}
 		}
 
-		protected virtual void OnFinishedReading (HttpParser parser)
+		protected virtual void OnFinishedReading (Parser parser)
 		{
 			if (body_handler != null) {
 				body_handler.Finish (this);

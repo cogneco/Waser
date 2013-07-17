@@ -51,17 +51,17 @@ namespace Waser {
 	/// </remarks>
 	public class Pipeline {
 
-		private Application app;
-		private Context ctx;
+		private Application application;
+		private Context context;
 		private ITransaction transaction;
 
 		private int pending;
 		private PipelineStep step;
 		private GCHandle handle;
 
-		public Pipeline (Application app, ITransaction transaction)
+		public Pipeline (Application application, ITransaction transaction)
 		{
-			this.app = app;
+			this.application = application;
 			this.transaction = transaction;
 
 			pending = ApplicationHost.Pipes == null ? 1 : ApplicationHost.Pipes.Count;
@@ -80,7 +80,7 @@ namespace Waser {
 
 			foreach (IPipe pipe in ApplicationHost.Pipes) {
 				try {
-					pipe.OnPreProcessRequest (app, transaction, StepCompleted);
+					pipe.OnPreProcessRequest (application, transaction, StepCompleted);
 					
 					if (transaction.Aborted)
 						return;
@@ -97,9 +97,9 @@ namespace Waser {
 		{
 			step = PipelineStep.WaitingForEnd;
 
-			ctx = new Context (transaction);
+			context = new Context (transaction);
 
-			var handler = app.Routes.Find (transaction.Request);
+			var handler = application.Routes.Find (transaction.Request);
 
 			PipePreProcessTarget((newHandler) => {
 					if(newHandler != handler) {
@@ -108,20 +108,20 @@ namespace Waser {
 				});
 						
 			if (handler == null) {
-				ctx.Response.StatusCode = 404;
-				ctx.Response.End (app.Get404Response());
+				context.Response.StatusCode = 404;
+				context.Response.End (application.Get404Response());
 				return;
 			}
 
-			ctx.Response.StatusCode = 200;
+			context.Response.StatusCode = 200;
 
 			try {
-				handler.Invoke (app, ctx);
+				handler.Invoke (application, context);
 			} catch (System.Exception e) {
 				Console.Error.WriteLine ("Exception in transaction handler:");
 				Console.Error.WriteLine (e);
-				ctx.Response.StatusCode = 500;
-				ctx.Response.End (app.Get500Response());
+				context.Response.StatusCode = 500;
+				context.Response.End (application.Get500Response());
 				//
 				// TODO: Maybe the cleanest thing to do is
 				// have a HandleError, HandleException thing
@@ -133,21 +133,21 @@ namespace Waser {
 
 			PipePostProcessTarget(handler);
 
-			if (ctx.Response.StatusCode == 404) {
+			if (context.Response.StatusCode == 404) {
 				step = PipelineStep.WaitingForEnd;
-				ctx.Response.End ();
+				context.Response.End ();
 				return;
 			}
 		}
 		
-		private void PipePreProcessTarget(Action<IManosTarget> callback)
+		private void PipePreProcessTarget(Action<ITarget> callback)
 		{
 			if (null != ApplicationHost.Pipes) {
 				for (int i = 0; i < ApplicationHost.Pipes.Count; ++i)
 				{
 					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
-						pipe.OnPreProcessTarget (ctx, callback);
+						pipe.OnPreProcessTarget (context, callback);
 					} catch (System.Exception e) {
 						Console.Error.WriteLine ("Exception in {0}::OnPreProcessTarget.", pipe);
 						Console.Error.WriteLine (e);
@@ -156,7 +156,7 @@ namespace Waser {
 			}
 		}
 
-		private void PipePostProcessTarget(IManosTarget handler)
+		private void PipePostProcessTarget(ITarget handler)
 		{
 			if (null != ApplicationHost.Pipes) {
 				// reset pending pipes
@@ -165,7 +165,7 @@ namespace Waser {
 				for (int i = ApplicationHost.Pipes.Count - 1; i >= 0 ; --i)	{
 					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
-						pipe.OnPostProcessTarget (ctx, handler, StepCompleted);
+						pipe.OnPostProcessTarget (context, handler, StepCompleted);
 					} catch (System.Exception e) {
 						Console.Error.WriteLine ("Exception in {0}::OnPostProcessTarget.", pipe);
 						Console.Error.WriteLine (e);
@@ -188,9 +188,9 @@ namespace Waser {
 				for (int i = ApplicationHost.Pipes.Count - 1; i >= 0 ; --i)	{
 					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
-						pipe.OnPostProcessRequest (app, transaction, StepCompleted);
+						pipe.OnPostProcessRequest (application, transaction, StepCompleted);
 
-						if (ctx.Transaction.Aborted)
+						if (context.Transaction.Aborted)
 							return;
 					} catch (System.Exception e) {
 						pending--;

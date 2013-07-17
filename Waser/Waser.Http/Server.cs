@@ -38,24 +38,24 @@ using Waser.IO;
 namespace Waser.Http
 {
 
-    public delegate void HttpConnectionCallback(IHttpTransaction transaction);
+    public delegate void ConnectionCallback(ITransaction transaction);
 
-    public class HttpServer : IDisposable
+    public class Server : IDisposable
     {
 
         public static readonly string ServerVersion;
 
-        private HttpConnectionCallback callback;
+        private ConnectionCallback callback;
         ITcpServerSocket socket;
         private bool closeOnEnd;
 
-        static HttpServer()
+        static Server()
         {
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
-            ServerVersion = "Manos/" + v.ToString();
+            ServerVersion = "Waser/" + v.ToString();
         }
 
-        public HttpServer(IO.Context context, HttpConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
+        public Server(IO.Context context, ConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
         {
             this.callback = callback;
             this.socket = socket;
@@ -83,14 +83,14 @@ namespace Waser.Http
             }
         }
 
-        public void RunTransaction(HttpTransaction trans)
+        public void RunTransaction(Transaction trans)
         {
             trans.Run();
         }
 
         private void ConnectionAccepted(ITcpSocket socket)
         {
-            HttpTransaction.BeginTransaction(this, socket, callback, closeOnEnd);
+            Transaction.BeginTransaction(this, socket, callback, closeOnEnd);
         }
     }
 }

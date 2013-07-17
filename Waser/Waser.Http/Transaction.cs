@@ -34,12 +34,12 @@ using Waser.Collections;
 
 namespace Waser.Http
 {
-	public class HttpTransaction : ITransaction, IDisposable
+	public class Transaction : ITransaction, IDisposable
 	{
 
-		public static HttpTransaction BeginTransaction (Server server, ITcpSocket socket, ConnectionCallback cb, bool closeOnEnd = false)
+		public static Transaction BeginTransaction (Server server, ITcpSocket socket, ConnectionCallback cb, bool closeOnEnd = false)
 		{
-			HttpTransaction transaction = new HttpTransaction (server, socket, cb, closeOnEnd);
+			Transaction transaction = new Transaction (server, socket, cb, closeOnEnd);
 
 			return transaction;
 		}
@@ -49,7 +49,7 @@ namespace Waser.Http
 		private bool wantClose, responseFinished;
 		private GCHandle gc_handle;
 		
-		public HttpTransaction (Server server, ITcpSocket socket, ConnectionCallback callback, bool closeOnEnd = false)
+		public Transaction (Server server, ITcpSocket socket, ConnectionCallback callback, bool closeOnEnd = false)
 		{
 			Server = server;
 			Socket = socket;
@@ -158,7 +158,7 @@ namespace Waser.Http
 				if (closeOnEnd)
 					Response.OnEnd += () => Response.Complete (OnResponseFinished);
 				Server.RunTransaction (this);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.WriteLine ("Exception while running transaction");
 				Console.WriteLine (e);
 			}

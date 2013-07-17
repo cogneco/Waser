@@ -33,7 +33,7 @@ using Waser.Routing;
 namespace Waser {
 	
 	/// <summary>
-	/// The entry point for your manos app. Derive from this class one time in your manos app and it will get instantiated when the runtime executes.
+	/// The entry point for your Waser app. Derive from this class one time in your Waser app and it will get instantiated when the runtime executes.
 	/// </summary>
 	/// <remarks>
 	/// This is similar in concept to the HttpApplication in the ASP.Net stack.

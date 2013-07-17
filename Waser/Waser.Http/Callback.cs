@@ -31,7 +31,7 @@
 
 namespace Waser.Http {
 
-	public delegate int HttpCallback (HttpParser parser);
+	public delegate int Callback (Parser parser);
 
 }
 

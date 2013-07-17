@@ -41,9 +41,9 @@ using Waser.Collections;
 
 namespace Waser.Http {
 
-	public static class HttpUtility {
+	public static class Utility {
 
-		sealed class HttpQSCollection : DataDictionary
+		sealed class QSCollection : DataDictionary
 		{
 			/*
 			public override string ToString ()
@@ -185,7 +185,7 @@ namespace Waser.Http {
 			if (data[0] == '?')
 				data = data.Substring (1);
 				
-			DataDictionary result = new HttpQSCollection ();
+			DataDictionary result = new QSCollection ();
 			ParseUrlEncodedData (data, encoding, result);
 			return result;
 		}

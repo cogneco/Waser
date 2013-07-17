@@ -64,7 +64,7 @@ namespace Waser.IO.Libev
 				outstanding.TryDequeue (out cb);
 				try {
 					cb ();
-				} catch (Exception e) {
+				} catch (System.Exception e) {
 					Console.WriteLine ("Exception in eio callback:");
 					Console.WriteLine (e.StackTrace);
 				}

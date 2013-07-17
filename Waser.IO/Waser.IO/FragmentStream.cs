@@ -40,7 +40,7 @@ namespace Waser.IO
 		}
 		
 		Action<TFragment> onData;
-		Action<Exception> onError;
+		Action<System.Exception> onError;
 		Action onEndOfStream;
 		IDisposable currentReader;
 		Context context;
@@ -51,7 +51,7 @@ namespace Waser.IO
 		Queue<IEnumerable<TFragment>> writeQueue;
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Manos.IO.FragmentStream{TFragment}"/> class.
+		/// Initializes a new instance of the <see cref="Waser.IO.FragmentStream{TFragment}"/> class.
 		/// </summary>
 		/// <param name='context'>
 		/// The context this instance will be bound to.
@@ -95,7 +95,7 @@ namespace Waser.IO
 			FragmentStream<TFragment> parent;
 			
 			/// <summary>
-			/// Initializes a new instance of the <see cref="Manos.IO.FragmentStream{TFragment}.ReaderHandle"/> class.
+			/// Initializes a new instance of the <see cref="Waser.IO.FragmentStream{TFragment}.ReaderHandle"/> class.
 			/// </summary>
 			public ReaderHandle (FragmentStream<TFragment> parent)
 			{
@@ -120,7 +120,7 @@ namespace Waser.IO
 		/// <exception cref='ArgumentNullException'>
 		/// Is thrown when any argument passed to the method is <see langword="null" /> .
 		/// </exception>
-		public virtual IDisposable Read (Action<TFragment> onData, Action<Exception> onError, Action onEndOfStream)
+		public virtual IDisposable Read (Action<TFragment> onData, Action<System.Exception> onError, Action onEndOfStream)
 		{
 			CheckDisposed ();
 			
@@ -183,7 +183,7 @@ namespace Waser.IO
 		
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="Manos.IO.FragmentStream{TFragment}"/> is
+		/// <see cref="Waser.IO.FragmentStream{TFragment}"/> is
 		/// reclaimed by garbage collection.
 		/// </summary>
 		~FragmentStream ()
@@ -312,13 +312,13 @@ namespace Waser.IO
 		}
 
 		/// <summary>
-		/// Releases all resource used by the <see cref="Manos.IO.FragmentStream{TFragment}"/> object.
+		/// Releases all resource used by the <see cref="Waser.IO.FragmentStream{TFragment}"/> object.
 		/// </summary>
 		/// <remarks>
-		/// Call <see cref="Dispose()"/> when you are finished using the <see cref="Manos.IO.FragmentStream{TFragment}"/>. The
-		/// <see cref="Dispose()"/> method leaves the <see cref="Manos.IO.FragmentStream{TFragment}"/> in an unusable state. After calling
-		/// <see cref="Dispose()"/>, you must release all references to the <see cref="Manos.IO.FragmentStream{TFragment}"/> so the garbage
-		/// collector can reclaim the memory that the <see cref="Manos.IO.FragmentStream{TFragment}"/> was occupying.
+		/// Call <see cref="Dispose()"/> when you are finished using the <see cref="Waser.IO.FragmentStream{TFragment}"/>. The
+		/// <see cref="Dispose()"/> method leaves the <see cref="Waser.IO.FragmentStream{TFragment}"/> in an unusable state. After calling
+		/// <see cref="Dispose()"/>, you must release all references to the <see cref="Waser.IO.FragmentStream{TFragment}"/> so the garbage
+		/// collector can reclaim the memory that the <see cref="Waser.IO.FragmentStream{TFragment}"/> was occupying.
 		/// </remarks>
 		public void Dispose ()
 		{
@@ -378,7 +378,7 @@ namespace Waser.IO
 		/// <summary>
 		/// Raises the error callback, if set.
 		/// </summary>
-		protected virtual void RaiseError (Exception exception)
+		protected virtual void RaiseError (System.Exception exception)
 		{
 			if (onError != null) {
 				onError (exception);

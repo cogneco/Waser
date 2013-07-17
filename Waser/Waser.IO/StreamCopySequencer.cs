@@ -50,7 +50,7 @@ namespace Waser.IO
 			target.ResumeWriting ();
 		}
 
-		void OnSourceError (Exception error)
+		void OnSourceError (System.Exception error)
 		{
 			active = false;
 			target.ResumeWriting ();

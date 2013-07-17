@@ -132,7 +132,7 @@ namespace Waser.IO.Libev
 			base.CancelReader ();
 		}
 
-		public override IDisposable Read (Action<TFragment> onData, Action<Exception> onError, Action onClose)
+		public override IDisposable Read (Action<TFragment> onData, Action<System.Exception> onError, Action onClose)
 		{
 			ResumeReading ();
 			

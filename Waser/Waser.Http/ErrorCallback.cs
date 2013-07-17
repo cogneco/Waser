@@ -34,7 +34,7 @@ using Waser.IO;
 
 namespace Waser.Http {
 
-	public delegate void HttpErrorCallback (HttpParser parser, string message, ByteBuffer buffer, int initial_position);
+	public delegate void ErrorCallback (Parser parser, string message, ByteBuffer buffer, int initial_position);
 }
 
 

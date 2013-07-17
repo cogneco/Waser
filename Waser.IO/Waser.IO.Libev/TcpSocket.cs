@@ -143,7 +143,7 @@ namespace Waser.IO.Libev
 				ManosIPEndpoint ep;
 				var client = SocketFunctions.manos_socket_accept (fd, out ep, out error);
 				if (client < 0 && error != 0) {
-					throw new Exception (string.Format ("Error while accepting: {0}", Errors.ErrorToString (error)));
+					throw new System.Exception (string.Format ("Error while accepting: {0}", Errors.ErrorToString (error)));
 				} else if (client > 0) {
 					var socket = new TcpSocket (Context, AddressFamily, client, LocalEndpoint, ep);
 					callback (socket);
@@ -166,7 +166,7 @@ namespace Waser.IO.Libev
 			base.Dispose(disposing);
 		}
 		
-		public override void Connect (IPEndPoint endpoint, Action callback, Action<Exception> error)
+		public override void Connect (IPEndPoint endpoint, Action callback, Action<System.Exception> error)
 		{
 			CheckDisposed ();
 			

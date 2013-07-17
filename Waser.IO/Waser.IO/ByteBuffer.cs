@@ -37,7 +37,7 @@ namespace Waser.IO
 		byte [] bytes;
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Manos.IO.ByteBuffer"/> class with the exact
+		/// Initializes a new instance of the <see cref="Waser.IO.ByteBuffer"/> class with the exact
 		/// size of the byte buffer.
 		/// </summary>
 		public ByteBuffer (byte [] bytes)
@@ -46,7 +46,7 @@ namespace Waser.IO
 		}
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Manos.IO.ByteBuffer"/> class.
+		/// Initializes a new instance of the <see cref="Waser.IO.ByteBuffer"/> class.
 		/// </summary>
 		public ByteBuffer (byte [] bytes, int position, int length)
 		{

@@ -27,7 +27,7 @@ using System;
 
 namespace Waser.Routing
 {
-	public interface IManosTarget
+	public interface ITarget
 	{
 		Delegate Action {
 			get;

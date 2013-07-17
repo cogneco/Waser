@@ -8,7 +8,7 @@ namespace Waser.IO
 	public class UdpPacket
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Manos.IO.UdpPacket"/> class.
+		/// Initializes a new instance of the <see cref="Waser.IO.UdpPacket"/> class.
 		/// </summary>
 		/// <param name='address'>
 		/// Address the packet was received from/is to be sent to.

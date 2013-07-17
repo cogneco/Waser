@@ -35,7 +35,7 @@ using System.Linq.Expressions;
 using Waser.Http;
 using Waser.Routing;
 using Waser.Caching;
-using Waser.Templates;
+using Waser.Template;
 using Waser.Logging;
 
 
@@ -63,7 +63,7 @@ namespace Waser {
 			}
 		}
 
-		public IManosLogger Log {
+		public ILogger Log {
 			get {
 				return ApplicationHost.Log;
 			}
@@ -96,17 +96,17 @@ namespace Waser {
 		}
 
 
-		private RouteHandler AddRouteHandler (ManosAction action, IMatchOperation[] matchOperations, Method [] methods)
+		private RouteHandler AddRouteHandler (Routing.Action action, IMatchOperation[] matchOperations, Method [] methods)
 		{
 			return AddRouteHandler (new ActionTarget (action), matchOperations, methods);
 		}
 
-		private RouteHandler AddRouteHandler (ManosAction action, string [] patterns, Method [] methods)
+		private RouteHandler AddRouteHandler (Routing.Action action, string [] patterns, Method [] methods)
 		{
 			return AddRouteHandler (new ActionTarget (action), patterns, methods);
 		}
 		
-		private RouteHandler AddRouteHandler (IManosTarget target, IMatchOperation[] matchOperations, Method [] methods)
+		private RouteHandler AddRouteHandler (ITarget target, IMatchOperation[] matchOperations, Method [] methods)
 		{
 			// TODO: Need to decide if this is a good or bad idea
 			// RemoveImplicitHandlers (action);
@@ -123,7 +123,7 @@ namespace Waser {
 			return res;
 		}
 		
-		private RouteHandler AddRouteHandler (IManosTarget target, string [] patterns, Method [] methods)
+		private RouteHandler AddRouteHandler (ITarget target, string [] patterns, Method [] methods)
 		{
 			// TODO: Need to decide if this is a good or bad idea
 			// RemoveImplicitHandlers (action);
@@ -156,13 +156,13 @@ namespace Waser {
 			return module.Routes;
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, string[] patterns, Method[] methods, MatchType matchType)
+		private RouteHandler AddImplicitRouteHandlerForTarget (ITarget target, string[] patterns, Method[] methods, MatchType matchType)
 		{
 			return AddImplicitRouteHandlerForTarget (target, OpsForPatterns (patterns, matchType), methods);
 			//return AddImplicitRouteHandlerForTarget (target, StringOpsForPatterns (patterns), methods);
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, IMatchOperation [] ops, Method [] methods)
+		private RouteHandler AddImplicitRouteHandlerForTarget (ITarget target, IMatchOperation [] ops, Method [] methods)
 		{
 			RouteHandler res = new RouteHandler (ops, methods, target) {
 				IsImplicit = true,
@@ -197,19 +197,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.RouteMethods);
 		}
 
-		public RouteHandler Route (string pattern, ManosAction action)
+		public RouteHandler Route (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.RouteMethods);
 		}
 
-		public RouteHandler Route (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Route (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.GetMethods);
 		}
 
-		public RouteHandler Route (ManosAction action, params string [] patterns)
+		public RouteHandler Route (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.RouteMethods);
 		}
@@ -224,19 +224,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.GetMethods);
 		}
 
-		public RouteHandler Get (string pattern, ManosAction action)
+		public RouteHandler Get (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.GetMethods);
 		}
 
-		public RouteHandler Get (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Get (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.GetMethods);
 		}
 
-		public RouteHandler Get (ManosAction action, params string [] patterns)
+		public RouteHandler Get (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.GetMethods);
 		}
@@ -253,17 +253,17 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.PutMethods);
 		}
 
-		public RouteHandler Put (string pattern, ManosAction action)
+		public RouteHandler Put (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.PutMethods);
 		}
 
-		public RouteHandler Put (ManosAction action, params string [] patterns)
+		public RouteHandler Put (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.PutMethods);
 		}
 
-		public RouteHandler Put (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Put (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
@@ -280,19 +280,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.PostMethods);
 		}
 
-		public RouteHandler Post (string pattern, ManosAction action)
+		public RouteHandler Post (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.PostMethods);
 		}
 
-		public RouteHandler Post (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Post (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.PostMethods);
 		}
 
-		public RouteHandler Post (ManosAction action, params string [] patterns)
+		public RouteHandler Post (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.PostMethods);
 		}
@@ -309,19 +309,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.DeleteMethods);
 		}
 
-		public RouteHandler Delete (string pattern, ManosAction action)
+		public RouteHandler Delete (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.DeleteMethods);
 		}
 
-		public RouteHandler Delete (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Delete (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.DeleteMethods);
 		}
 
-		public RouteHandler Delete (ManosAction action, params string [] patterns)
+		public RouteHandler Delete (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.DeleteMethods);
 		}
@@ -338,19 +338,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.HeadMethods);
 		}
 
-		public RouteHandler Head (string pattern, ManosAction action)
+		public RouteHandler Head (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.HeadMethods);
 		}
 
-		public RouteHandler Head (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Head (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.HeadMethods);
 		}
 
-		public RouteHandler Head (ManosAction action, params string [] patterns)
+		public RouteHandler Head (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.HeadMethods);
 		}
@@ -367,19 +367,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.OptionsMethods);
 		}
 
-		public RouteHandler Options (string pattern, ManosAction action)
+		public RouteHandler Options (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.OptionsMethods);
 		}
 
-		public RouteHandler Options (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Options (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.OptionsMethods);
 		}
 
-		public RouteHandler Options (ManosAction action, params string [] patterns)
+		public RouteHandler Options (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.OptionsMethods);
 		}
@@ -396,19 +396,19 @@ namespace Waser {
 			return AddRouteHandler (module, new string [] { pattern }, HttpMethods.TraceMethods);
 		}
 
-		public RouteHandler Trace (string pattern, ManosAction action)
+		public RouteHandler Trace (string pattern, Routing.Action action)
 		{
 			return AddRouteHandler (action, new string [] { pattern }, HttpMethods.TraceMethods);
 		}
 
-		public RouteHandler Trace (string pattern, MatchType matchType, ManosAction action)
+		public RouteHandler Trace (string pattern, MatchType matchType, Routing.Action action)
 		{
 			IMatchOperation [] ops = OpsForPatterns (new string [] { pattern }, matchType);
 
 			return AddRouteHandler (action, ops, HttpMethods.TraceMethods);
 		}
 
-		public RouteHandler Trace (ManosAction action, params string [] patterns)
+		public RouteHandler Trace (Routing.Action action, params string [] patterns)
 		{
 			return AddRouteHandler (action, patterns, HttpMethods.TraceMethods);
 		}
@@ -443,9 +443,9 @@ namespace Waser {
 			ApplicationHost.AddPipe (pipe);
 		}
 
-		public static void RenderTemplate (Context ctx, string template, object data)
+		public static void RenderTemplate (Context context, string template, object data)
 		{
-			TemplateEngine.RenderToStream (template, ctx.Response.Writer, data);
+			Engine.RenderToStream (template, context.Response.Writer, data);
 		}
 
 		public void StartInternal ()
@@ -542,7 +542,7 @@ namespace Waser {
 
 		private void AddDefaultHandlerForAction (RouteHandler routes, MethodInfo info)
 		{
-			ManosAction action = ActionForMethod (info);
+			Routing.Action action = ActionForMethod (info);
 
 			ActionTarget target = new ActionTarget (action);
 			AddImplicitRouteHandlerForTarget (target, new string [] { "/" + info.Name }, HttpMethods.RouteMethods, MatchType.String);
@@ -550,7 +550,7 @@ namespace Waser {
 
 		private void AddHandlerForAction (RouteHandler routes, HttpMethodAttribute att, MethodInfo info)
 		{
-			ManosAction action = ActionForMethod (info);
+			Routing.Action action = ActionForMethod (info);
 			
 			ActionTarget target = new ActionTarget (action);
 			
@@ -559,14 +559,14 @@ namespace Waser {
 			AddImplicitRouteHandlerForTarget (target, OpsForPatterns (patterns, att.MatchType), att.Methods);
 		}
 		
-		private ManosAction ActionForMethod (MethodInfo info)
+		private Routing.Action ActionForMethod (MethodInfo info)
 		{
-			ManosAction action;
+			Routing.Action action;
 			
 			if (info.IsStatic)
-				action = (ManosAction) Delegate.CreateDelegate (typeof (ManosAction), info);
+				action = (Routing.Action) Delegate.CreateDelegate (typeof (Routing.Action), info);
 			else
-				action = (ManosAction) Delegate.CreateDelegate (typeof (ManosAction), this, info);
+				action = (Routing.Action) Delegate.CreateDelegate (typeof (Routing.Action), this, info);
 			
 			return action;
 		}
@@ -642,7 +642,7 @@ namespace Waser {
 		"  <div class=\"dialog\">" +
 		"    <h1>404 - The page you were looking for doesn't exist.</h1>" +
 		"    <p>You may have mistyped the address or the page may have moved.</p>" +
-		"    <p><small>Powered by <a href=\"http://manosdemono.org\">manos</a></small></p>" +
+		"    <p><small>Powered by <a href=\"http://manosdemono.org\">Waser</a></small></p>" +
 		"  </div>" +
 		"</body>" +
 		"</html>";
@@ -669,7 +669,7 @@ namespace Waser {
 		"<body>" +
 		"  <div class=\"dialog\">" +
 		"    <h1>500 - We're sorry, but something went wrong.</h1>" +
-		"    <p><small>Powered by <a href=\"http://manosdemono.org\">manos</a></small></p>" +
+		"    <p><small>Powered by <a href=\"http://manosdemono.org\">Waser</a></small></p>" +
 		"  </div>" +
 		"</body>" +
 		"</html>";
