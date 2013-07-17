@@ -41,10 +41,6 @@
     <Reference Include="Mono.Posix" />
     <Reference Include="Mono.CSharp" />
     <Reference Include="Mono.C5" />
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c9892194e1b9ec1b">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\Nini.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manos\DeleteAttribute.cs" />
@@ -174,9 +170,9 @@
     <Folder Include="Manos.Collections\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Manos.IO\Manos.IO.csproj">
+    <ProjectReference Include="..\Waser.IO\Waser.IO.csproj">
       <Project>{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}</Project>
-      <Name>Manos.IO</Name>
+      <Name>Waser.IO</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
