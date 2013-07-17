@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2010 Jackson Harper (jackson@manosdemono.com)
+// Copyright (C) 2010 Anirudh Sanjeev (a@ninjagod.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -22,50 +22,40 @@
 //
 //
 
-
 using System;
 
-using Waser.Http;
-using Waser.Routing;
-
-namespace Waser
+namespace Waser.Logging
 {
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
+	public interface IManosLogger
 	{
-		public Pipe ()
-		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
+		LogLevel Level {
+			get;
 		}
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
-		}
+		/// <summary>
+		///  An error that can not be recovered from has occurred.  The application is
+		///  now in a volatile state or has crashed.
+		/// </summary>
+		void Critical (string message, params object[] args);
 
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
+		/// <summary>
+		///  An application error has occurred.  The application should be able to recover
+		///  from this type of error, but there might be an interuption in service.  Such
+		///  as a request not being processed.
+		/// </summary>
+		void Error (string message, params object[] args);
 
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
-		
-		public virtual void OnError (IContext ctx, Action complete)
-		{
-			complete ();
-		}
+		/// <summary>
+		///  Application information, that might be useful to administrators when setting
+		///  up or tuning an application.
+		/// </summary>
+		void Info (string message, params object[] args);
+
+		/// <summary>
+		///  Debug information useful to developers.  Should only be enabled when an
+		///  error is being diagnosed.
+		/// </summary>
+		void Debug (string message, params object[] args);
 	}
 }
 

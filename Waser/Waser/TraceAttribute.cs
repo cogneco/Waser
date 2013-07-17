@@ -51,7 +51,7 @@ namespace Waser {
 		/// </param>
 		public TraceAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_TRACE };
+			Methods = new Method [] { Method.Trace };
 		}
 	}
 }

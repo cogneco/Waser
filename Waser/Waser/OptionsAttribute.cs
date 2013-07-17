@@ -38,12 +38,12 @@ namespace Waser {
 
 		public OptionsAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_OPTIONS };
+			Methods = new Method[] { Method.Options };
 		}
 
 		public OptionsAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_OPTIONS };
+			Methods = new Method [] { Method.Options };
 		}
 	}
 }

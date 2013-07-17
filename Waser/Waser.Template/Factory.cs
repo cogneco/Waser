@@ -22,41 +22,59 @@
 //
 //
 
+
+
+
 using System;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
 
-using Waser.Http;
 
-namespace Waser.Testing
-{
-	public class ManosContextStub : IContext
-	{
-		public ManosContextStub ()
+namespace Waser.Template {
+	
+	public static class Factory {
+		
+		private static Dictionary<string, ITemplate> templates = new Dictionary<string, ITemplate> ();
+		
+		public static ITemplate Get (string name)
 		{
+			ITemplate result = null;
+			
+			if (!TryGet (name, out result))
+				return null;
+			
+			return result;
 		}
-
-		public HttpServer Server {
-			get {
-				throw new NotImplementedException ();
-			}
+		
+		public static bool TryGet (string name, out ITemplate template)
+		{
+			if (name == null)
+				throw new ArgumentNullException ("name");
+			
+			return templates.TryGetValue (name, out template);
 		}
-
-		public IHttpTransaction Transaction {
-			get {
-				throw new NotImplementedException ();
-			}
+		
+		public static void Register (string name, ITemplate template)
+		{
+			if (name == null)
+				throw new ArgumentNullException ("name");
+			if (template == null)
+				throw new ArgumentNullException ("template");
+			
+			if (templates.ContainsKey (name))
+				throw new InvalidOperationException (String.Format ("A template named {0} has already been registered.", name));
+			
+			templates.Add (name, template);
 		}
-
-		public IHttpRequest Request {
-			get {
-				throw new NotImplementedException ();
-			}
+		
+		public static void Clear ()
+		{
+			templates.Clear ();
 		}
-
-		public IHttpResponse Response {
-			get {
-				throw new NotImplementedException ();
-			}
-		}		
 	}
 }
 

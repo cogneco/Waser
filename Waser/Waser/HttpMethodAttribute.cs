@@ -50,7 +50,7 @@ namespace Waser {
 			set;
 		}
 
-		public HttpMethod [] Methods {
+		public Method [] Methods {
 			get;
 			protected set;
 		}

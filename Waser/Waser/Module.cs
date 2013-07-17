@@ -79,7 +79,7 @@ namespace Waser {
 			return default500;
 		}
 		
-		private RouteHandler AddRouteHandler (IModule module, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (IModule module, string [] patterns, Method [] methods)
 		{
 			if (module == null)
 				throw new ArgumentNullException ("module");
@@ -96,17 +96,17 @@ namespace Waser {
 		}
 
 
-		private RouteHandler AddRouteHandler (ManosAction action, IMatchOperation[] matchOperations, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (ManosAction action, IMatchOperation[] matchOperations, Method [] methods)
 		{
 			return AddRouteHandler (new ActionTarget (action), matchOperations, methods);
 		}
 
-		private RouteHandler AddRouteHandler (ManosAction action, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (ManosAction action, string [] patterns, Method [] methods)
 		{
 			return AddRouteHandler (new ActionTarget (action), patterns, methods);
 		}
 		
-		private RouteHandler AddRouteHandler (IManosTarget target, IMatchOperation[] matchOperations, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (IManosTarget target, IMatchOperation[] matchOperations, Method [] methods)
 		{
 			// TODO: Need to decide if this is a good or bad idea
 			// RemoveImplicitHandlers (action);
@@ -123,7 +123,7 @@ namespace Waser {
 			return res;
 		}
 		
-		private RouteHandler AddRouteHandler (IManosTarget target, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddRouteHandler (IManosTarget target, string [] patterns, Method [] methods)
 		{
 			// TODO: Need to decide if this is a good or bad idea
 			// RemoveImplicitHandlers (action);
@@ -140,12 +140,12 @@ namespace Waser {
 			return res;
 		}
 		
-		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, string [] patterns, HttpMethod [] methods)
+		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, string [] patterns, Method [] methods)
 		{
 			return AddImplicitRouteHandlerForModule (module, StringOpsForPatterns (patterns), methods);
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, IMatchOperation [] ops, HttpMethod [] methods)
+		private RouteHandler AddImplicitRouteHandlerForModule (IModule module, IMatchOperation [] ops, Method [] methods)
 		{
 			module.StartInternal ();
 
@@ -156,13 +156,13 @@ namespace Waser {
 			return module.Routes;
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, string[] patterns, HttpMethod[] methods, MatchType matchType)
+		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, string[] patterns, Method[] methods, MatchType matchType)
 		{
 			return AddImplicitRouteHandlerForTarget (target, OpsForPatterns (patterns, matchType), methods);
 			//return AddImplicitRouteHandlerForTarget (target, StringOpsForPatterns (patterns), methods);
 		}
 
-		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, IMatchOperation [] ops, HttpMethod [] methods)
+		private RouteHandler AddImplicitRouteHandlerForTarget (IManosTarget target, IMatchOperation [] ops, Method [] methods)
 		{
 			RouteHandler res = new RouteHandler (ops, methods, target) {
 				IsImplicit = true,
@@ -609,8 +609,8 @@ namespace Waser {
 			if (value == null) {
 				try {
 					value = (Module) Activator.CreateInstance (prop.PropertyType);
-				} catch (Exception e) {
-					throw new Exception (String.Format ("Unable to create default property value for '{0}'", prop), e);
+				} catch (System.Exception e) {
+					throw new Http.Exception (String.Format ("Unable to create default property value for '{0}'", prop), e);
 				}
 				
 				prop.SetValue (this, value, null);

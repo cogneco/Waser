@@ -22,50 +22,21 @@
 //
 //
 
-
 using System;
 
-using Waser.Http;
-using Waser.Routing;
 
-namespace Waser
-{
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
-	{
-		public Pipe ()
+namespace Waser.Http {
+
+	public class HttpException : Exception {
+
+		public HttpException (string error)
 		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
 		}
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
+		public HttpException (string error, Exception cause) : base (error, cause)
 		{
-			// default: don't change the handler
-		}
-
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
-		
-		public virtual void OnError (IContext ctx, Action complete)
-		{
-			complete ();
 		}
 	}
 }
+
 

@@ -23,49 +23,98 @@
 //
 
 
+
 using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 
+using Waser.IO;
 using Waser.Http;
-using Waser.Routing;
+using Waser.Collections;
 
-namespace Waser
-{
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
-	{
-		public Pipe ()
-		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
+namespace Waser.Http {
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
-		}
-
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
+	public interface IHttpRequest : IDisposable {
+		
+		Method Method {
+			get;
+			set;
 		}
 		
-		public virtual void OnError (IContext ctx, Action complete)
-		{
-			complete ();
+		string Path {
+			get;
+			set;
 		}
+
+		DataDictionary Data {
+			get;	
+		}
+		
+		DataDictionary PostData {
+			get;
+		}
+
+		DataDictionary QueryData {
+			get;
+			set;
+		}
+
+		DataDictionary UriData {
+			get;
+			set;
+		}
+		
+		DataDictionary Cookies {
+			get;	
+		}
+
+		Headers Headers {
+			get;
+			set;
+		}
+		
+		Dictionary<string,UploadedFile> Files {
+			get;
+		}
+
+		int MajorVersion {
+			get;
+			set;
+		}
+
+		int MinorVersion {
+			get;
+			set;
+		}
+
+		Encoding ContentEncoding {
+			get;
+		}
+
+		ITcpSocket Socket {
+			get;
+		}
+
+		Dictionary<string,object> Properties {
+			get;
+		}
+
+		string PostBody {
+			get;
+			set;
+		}
+
+		void SetProperty (string name, object o);
+
+		object GetProperty (string name);
+
+		T GetProperty<T> (string name);
+		
+		void Read (Action onClose);
+		void SetWwwFormData (DataDictionary data);
+		void WriteMetadata (StringBuilder builder);
+
 	}
 }
 

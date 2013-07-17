@@ -38,7 +38,7 @@ namespace Waser {
 	/// </remarks>
 	public class Context : IContext {
 
-		public Context (IHttpTransaction transaction)
+		public Context (ITransaction transaction)
 		{
 			Transaction = transaction;
 		}
@@ -49,14 +49,14 @@ namespace Waser {
 		/// <remarks>
 		/// This is a cenvenience method that calls Transaction.Server.
 		/// </remarks>
-		public HttpServer Server {
+		public Server Server {
 			get { return Transaction.Server; }
 		}
 		
 		/// <summary>
 		/// A single request/response interation between the client and this server.
 		/// </summary>
-		public IHttpTransaction Transaction {
+		public ITransaction Transaction {
 			get;
 			private set;
 		}
@@ -67,7 +67,7 @@ namespace Waser {
 		/// <remarks>
 		/// This is a convenience method that calls Transaction.Request.
 		/// </remarks>
-		public IHttpRequest Request {
+		public IRequest Request {
 			get { return Transaction.Request; }
 		}
 		
@@ -77,7 +77,7 @@ namespace Waser {
 		/// <remarks>
 		/// This is a convenience method that calls Transaction.Response.
 		/// </remarks>
-		public IHttpResponse Response {
+		public IResponse Response {
 			get { return Transaction.Response; }
 		}
 	}

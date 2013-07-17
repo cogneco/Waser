@@ -44,7 +44,7 @@ namespace Waser {
 		{
 		}
 
-		public void HandleTransaction (Application app, IHttpTransaction con)
+		public void HandleTransaction (Application app, ITransaction con)
 		{
 			Pipeline pipeline = new Pipeline (app, con);
 

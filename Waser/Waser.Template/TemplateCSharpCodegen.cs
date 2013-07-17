@@ -24,48 +24,64 @@
 
 
 using System;
+using System.IO;
+using System.Text;
 
-using Waser.Http;
-using Waser.Routing;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace Waser
-{
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
-	{
-		public Pipe ()
-		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
+using Manos.Server;
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
-		}
+namespace Manos.Templates {
 
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
+	  public class TemplateCSharpCodegen {
 
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
-		
-		public virtual void OnError (IContext ctx, Action complete)
-		{
-			complete ();
-		}
-	}
+	  	 private TemplateParser parser;
+
+	  	 public void BeginPage (string name)
+		 {
+		 }
+
+		 public void EndPage ()
+		 {
+		 }
+		 
+		 public void EmitExtends (string name)
+		 {
+		 }
+
+		 public void AddData (string data)
+		 {
+		 }
+
+		 public void EmitSinglePrint (Expression expression)
+		 {
+		 }
+
+		 public void EmitPrint (Expression expression)
+		 {
+		 }
+
+		 public void EmitIf (Expression expression)
+		 {
+		 }
+
+		 public void EmitElse (Expression expression)
+		 {
+		 }
+
+		 public void EmitEndIf ()
+		 {
+		 }
+
+		 public void BeginBlock (string name, List<ArgumentDefinition> args)
+		 {
+		 }
+
+		 public void EndBlock (string name)
+		 {
+		 }
+	  }
 }
 

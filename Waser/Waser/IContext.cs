@@ -37,25 +37,25 @@ namespace Waser
 	/// </remarks>
 	public interface IContext
 	{
-		HttpServer Server {
+		Server Server {
 			get;
 		}
 
-		IHttpTransaction Transaction {
+		ITransaction Transaction {
 			get;
 		}
 		
 		/// <summary>
 		/// Information related to the request initiated by the client.
 		/// </summary>
-		IHttpRequest Request {
+		IRequest Request {
 			get;
 		}
 		
 		/// <summary>
 		/// Information related to how this server will respond to the client's request.
 		/// </summary>
-		IHttpResponse Response {
+		IResponse Response {
 			get;
 		}
 	}

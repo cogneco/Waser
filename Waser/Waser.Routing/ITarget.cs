@@ -25,28 +25,15 @@
 
 using System;
 
-namespace Waser.Routing.Testing
+namespace Waser.Routing
 {
-	public class MockManosTarget : IManosTarget
+	public interface IManosTarget
 	{
-		public MockManosTarget ()
-		{
+		Delegate Action {
+			get;
+			set;
 		}
 		
-		public void Invoke (Application app, IContext ctx)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		
-		public Delegate Action {
-			get {
-				throw new System.NotImplementedException();
-			}
-			set {
-				throw new System.NotImplementedException();
-			}
-		}
-		
+		void Invoke (Application app, IContext ctx);
 	}
 }

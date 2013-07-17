@@ -1,4 +1,10 @@
 //
+// Based on http_parser.java: http://github.com/a2800276/http-parser.java
+// which is based on http_parser: http://github.com/ry/http-parser
+//
+//
+// Copyright 2009,2010 Ryan Dahl <ry@tinyclouds.org>
+// Copyright (C) 2010 Tim Becker 
 // Copyright (C) 2010 Jackson Harper (jackson@manosdemono.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -23,49 +29,10 @@
 //
 
 
-using System;
+namespace Waser.Http {
 
-using Waser.Http;
-using Waser.Routing;
+	public delegate int HttpCallback (HttpParser parser);
 
-namespace Waser
-{
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
-	{
-		public Pipe ()
-		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
-		}
-
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
-		}
-
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
-		}
-		
-		public virtual void OnError (IContext ctx, Action complete)
-		{
-			complete ();
-		}
-	}
 }
+
 

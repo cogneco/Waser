@@ -22,15 +22,16 @@
 //
 //
 
-using System;
 
-namespace Waser.Testing
-{
-	public class ManosAppStub : Application
+
+using System;
+using System.IO;
+
+namespace Waser.Templates {
+	
+	public interface IManosTemplate
 	{
-		public ManosAppStub ()
-		{
-		}
-	}
+		void Render (IContext context, Stream stream, object the_arg);
+	}	
 }
 

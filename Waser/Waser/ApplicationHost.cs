@@ -45,7 +45,7 @@ namespace Waser
 		private static Application app;
 		private static List<IPEndPoint> listenEndPoints = new List<IPEndPoint> ();
 		private static Dictionary<IPEndPoint, Tuple<string, string>> secureListenEndPoints = new Dictionary<IPEndPoint, Tuple<string, string>> ();
-		private static List<HttpServer> servers = new List<HttpServer> ();
+		private static List<Server> servers = new List<Server> ();
 		private static ICache cache;
 		private static IManosLogger log;
 		private static List<IPipe> pipes;
@@ -151,7 +151,7 @@ namespace Waser
 			app.StartInternal ();
 
 			foreach (var ep in listenEndPoints) {
-				var server = new HttpServer (Context, HandleTransaction, Context.CreateTcpServerSocket (ep.AddressFamily));
+				var server = new Server (Context, HandleTransaction, Context.CreateTcpServerSocket (ep.AddressFamily));
 				server.Listen (ep.Address.ToString (), ep.Port);
 				
 				servers.Add (server);
@@ -173,7 +173,7 @@ namespace Waser
 			context.Stop ();
 		}
 
-		public static void HandleTransaction (IHttpTransaction con)
+		public static void HandleTransaction (ITransaction con)
 		{
 			app.HandleTransaction (app, con);
 		}

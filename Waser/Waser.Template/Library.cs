@@ -22,34 +22,68 @@
 //
 //
 
+
 using System;
+using System.IO;
+using System.Text;
+using System.Reflection;
+using System.Collections.Generic;
 
-using Waser;
-using Waser.Server;
 
+namespace Waser.Template {
 
-namespace Waser.Templates.Testing
-{
-	public class ManosTemplateStub : IManosTemplate
-	{
-		public ManosTemplateStub ()
+	public static class BuiltinFilters {
+
+		public static string __upper (string input)
 		{
-		}
-	
-		public object RenderedArgument {
-			get;
-			private set;
-		}
-		
-		public void Render (IContext context, object the_arg)
-		{
-			RenderToResponse (context.Response, the_arg);
+			return input.ToUpper ();
 		}
 
-		public void RenderToResponse (IHttpResponse response, object the_arg)
+		public static string __lower (string input)
 		{
-			RenderedArgument = the_arg;
+			return input.ToLower ();
+		}
+
+		public static string __default (string input, string default_value)
+		{
+			if (String.IsNullOrEmpty (input))
+				return default_value;
+
+			return input;
+		}
+
+		public static string __filename (string input)
+		{
+			return Path.GetFileName (input);
+		}
+
+		public static string __filename_noextension (string input)
+		{
+			return Path.GetFileName (input);
+		}
+
+		public static string __remove_extension (string input)
+		{
+			return Path.GetFileNameWithoutExtension (input);
 		}
 	}
+
+	public static class FilterManager {
+
+		public static MethodInfo GetFilter (string filter)
+		{
+			Type bin = typeof (BuiltinFilters);
+
+			MethodInfo res = bin.GetMethod (String.Concat ("__", filter), BindingFlags.Static | BindingFlags.Public);
+
+			return res;
+		}
+	}
+
+	public interface IPage {
+
+		void Render (IContext context, Stream stream, object the_arg);
+	}
 }
+
 

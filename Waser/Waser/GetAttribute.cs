@@ -43,7 +43,7 @@ namespace Waser {
 		/// </summary>
 		public GetAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_GET };
+			Methods = new Method[] { Method.Get };
 		}
 		
 		/// <summary>
@@ -54,7 +54,7 @@ namespace Waser {
 		/// </param>
 		public GetAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_GET };
+			Methods = new Method [] { Method.Get };
 		}
 	}
 }

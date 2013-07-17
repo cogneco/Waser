@@ -23,49 +23,82 @@
 //
 
 
+
 using System;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
-using Waser.Http;
-using Waser.Routing;
+using Waser.IO;
 
-namespace Waser
+namespace Waser.Http
 {
-	/// <summary>
-	/// ManosPipe provides a mechanism to intercept calls before or after the standard Manos Routing has taking place.
-	/// (For example, Gzip compression module could compress content post process)
-	/// </summary>
-	/// <remarks>
-	/// This is similar in concept to the HttpModule in the ASP.Net stack.</remarks>
-	public class Pipe : IPipe
+	public class HttpStreamWriterWrapper : System.IO.Stream
 	{
-		public Pipe ()
+		private Stream stream;
+
+		public HttpStreamWriterWrapper (Stream stream)
 		{
-		}
-			
-		public virtual void OnPreProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
+			this.stream = stream;
 		}
 
-		public virtual void OnPreProcessTarget (IContext ctx, Action<IManosTarget> changeHandler)
-		{
-			// default: don't change the handler
+		
+		public override bool CanRead {
+			get { return stream.CanRead; }
 		}
 
-		public virtual void OnPostProcessTarget (IContext ctx, IManosTarget target, Action complete)
-		{
-			complete ();
+		public override bool CanSeek {
+			get { return stream.CanSeek; }
 		}
 
-		public virtual void OnPostProcessRequest (Application app, ITransaction transaction, Action complete)
-		{
-			complete ();
+		public override bool CanWrite {
+			get { return stream.CanWrite; }
+		}
+
+		public override long Length {
+			get {
+				return stream.Length;
+			}
 		}
 		
-		public virtual void OnError (IContext ctx, Action complete)
+		public override long Position {
+			get {
+				return stream.Position;
+			}
+			set {
+				stream.Position = value;
+			}
+		}
+		
+		public override void Flush ()
 		{
-			complete ();
+			stream.Flush ();
+		}
+
+		public override int Read (byte [] buffer, int offset, int count)
+		{
+			return stream.Read (buffer, offset, count);
+		}
+		
+		public override long Seek (long offset, SeekOrigin origin)
+		{
+			return stream.Seek (offset, origin);
+		}
+
+		public override void SetLength (long value)
+		{
+			stream.SetLength (value);
+		}
+
+		public override void Write (byte[] buffer, int offset, int count)
+		{
+			stream.Write ((byte []) buffer.Clone (), offset, count);
 		}
 	}
+
 }
+
+
 

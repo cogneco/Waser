@@ -42,7 +42,7 @@ namespace Waser
 		///  request.  There is not a valid Response object on the transaction yet and the
 		///  routing information has not been looked up.
 		/// </summary>
-		void OnPreProcessRequest (Application app, IHttpTransaction transaction, Action complete);
+		void OnPreProcessRequest (Application app, ITransaction transaction, Action complete);
 
 		/// <summary>
 		///  Called after the response object has been created but before any routing has been done
@@ -61,7 +61,7 @@ namespace Waser
 		///  The action has been invoked and has had its End method called.  This is the final
 		///  step in the pipeline.
 		/// </summary>
-		void OnPostProcessRequest (Application app, IHttpTransaction transaction, Action complete);
+		void OnPostProcessRequest (Application app, ITransaction transaction, Action complete);
 
 		/// <summary>
 		///  An error has been raised by Manos. (Currently unimplemented).

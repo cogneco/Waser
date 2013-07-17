@@ -38,21 +38,21 @@ namespace Waser {
 	/// </remarks>
 	public static class HttpMethods {
 
-		public static readonly HttpMethod [] GetMethods = new HttpMethod [] { HttpMethod.HTTP_GET };
-		public static readonly HttpMethod [] HeadMethods = new HttpMethod [] { HttpMethod.HTTP_HEAD };
-		public static readonly HttpMethod [] PostMethods = new HttpMethod [] { HttpMethod.HTTP_POST };
-		public static readonly HttpMethod [] PutMethods = new HttpMethod [] { HttpMethod.HTTP_PUT };
-		public static readonly HttpMethod [] DeleteMethods = new HttpMethod [] { HttpMethod.HTTP_DELETE };
-		public static readonly HttpMethod [] TraceMethods = new HttpMethod [] { HttpMethod.HTTP_TRACE };
-		public static readonly HttpMethod [] OptionsMethods = new HttpMethod [] { HttpMethod.HTTP_OPTIONS };
+		public static readonly Method [] GetMethods = new Method [] { Method.Get };
+		public static readonly Method [] HeadMethods = new Method [] { Method.Head };
+		public static readonly Method [] PostMethods = new Method [] { Method.Post };
+		public static readonly Method [] PutMethods = new Method [] { Method.Put };
+		public static readonly Method [] DeleteMethods = new Method [] { Method.Delete };
+		public static readonly Method [] TraceMethods = new Method [] { Method.Trace };
+		public static readonly Method [] OptionsMethods = new Method [] { Method.Options };
 		
-		public static readonly HttpMethod [] RouteMethods = new HttpMethod [] { HttpMethod.HTTP_GET,
-											HttpMethod.HTTP_PUT,
-											HttpMethod.HTTP_POST,
-											HttpMethod.HTTP_HEAD,
-											HttpMethod.HTTP_DELETE,
-											HttpMethod.HTTP_TRACE,
-											HttpMethod.HTTP_OPTIONS };
+		public static readonly Method [] RouteMethods = new Method [] { Method.Get,
+											Method.Put,
+											Method.Post,
+											Method.Head,
+											Method.Delete,
+											Method.Trace,
+											Method.Options };
 
 	}
 }

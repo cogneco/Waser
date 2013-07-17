@@ -23,96 +23,45 @@
 //
 
 
+
 using System;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using Waser.IO;
 
 
-namespace Waser.Http.Testing
-{
-	public class MockHttpTransaction : IHttpTransaction
-	{
+namespace Waser.Http {
 
-		public MockHttpTransaction (IHttpRequest request, IHttpResponse response)
-		{
-			if (request == null)
-			   throw new ArgumentNullException ("request");
-
-			Request = request;
-
-			Response = response;
-		}
+	public interface IHttpTransaction {
 		
-		public String ResponseString{
-			get{
-				return (Response as MockHttpResponse).ResponseString();
-			}
-		}
-		
-		// TODO: I guess we need a mock server?
-		public HttpServer Server {
-			get { return null; }
-		}
-		
-		public Waser.IO.Context Context {
+		IO.Context Context {
 			get;
-			private set;
 		}
-				
-		public IHttpRequest Request {
+
+		IRequest Request {
 			get;
-			private set;
 		}
 
-		public IHttpResponse Response {
+		IResponse Response {
 			get;
-			private set;
 		}
 
-		public bool Aborted {
+		Server Server {
 			get;
-			private set;
 		}
 
-		public bool ResponseReady {
+		bool Aborted {
+			get;	
+		}
+
+		bool ResponseReady {
 			get;
-			private set;
 		}
 
-		public int AbortedStatusCode {
-		       get;
-		       private set;
-		}
+		void OnRequestReady ();
+		void OnResponseFinished ();
 
-		public string AbortedMessage {
-		       get;
-		       private set;
-		}
-
-		public bool Finished {
-		       get;
-		       private set;
-		}
-
-		public void Finish ()
-		{
-			Finished = true;
-		}
-		
-		public void Abort (int status, string message, params object [] p)
-		{
-			Aborted = true;
-			AbortedStatusCode = status;
-			AbortedMessage = String.Format (message, p);
-		}
-
-		public void OnRequestReady()
-		{
-		}
-
-		public void OnResponseFinished ()
-		{
-		}
+		void Abort (int status, string message, params object [] p);
 	}
 }
+

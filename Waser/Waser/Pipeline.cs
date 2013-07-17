@@ -53,13 +53,13 @@ namespace Waser {
 
 		private Application app;
 		private Context ctx;
-		private IHttpTransaction transaction;
+		private ITransaction transaction;
 
 		private int pending;
 		private PipelineStep step;
 		private GCHandle handle;
 
-		public Pipeline (Application app, IHttpTransaction transaction)
+		public Pipeline (Application app, ITransaction transaction)
 		{
 			this.app = app;
 			this.transaction = transaction;
@@ -84,7 +84,7 @@ namespace Waser {
 					
 					if (transaction.Aborted)
 						return;
-				} catch (Exception e) {
+				} catch (System.Exception e) {
 					pending--;
 
 					Console.Error.WriteLine ("Exception in {0}::OnPreProcessRequest.", pipe);
@@ -117,7 +117,7 @@ namespace Waser {
 
 			try {
 				handler.Invoke (app, ctx);
-			} catch (Exception e) {
+			} catch (System.Exception e) {
 				Console.Error.WriteLine ("Exception in transaction handler:");
 				Console.Error.WriteLine (e);
 				ctx.Response.StatusCode = 500;
@@ -148,7 +148,7 @@ namespace Waser {
 					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
 						pipe.OnPreProcessTarget (ctx, callback);
-					} catch (Exception e) {
+					} catch (System.Exception e) {
 						Console.Error.WriteLine ("Exception in {0}::OnPreProcessTarget.", pipe);
 						Console.Error.WriteLine (e);
 					}
@@ -166,7 +166,7 @@ namespace Waser {
 					IPipe pipe = ApplicationHost.Pipes[i];
 					try {
 						pipe.OnPostProcessTarget (ctx, handler, StepCompleted);
-					} catch (Exception e) {
+					} catch (System.Exception e) {
 						Console.Error.WriteLine ("Exception in {0}::OnPostProcessTarget.", pipe);
 						Console.Error.WriteLine (e);
 					}
@@ -192,7 +192,7 @@ namespace Waser {
 
 						if (ctx.Transaction.Aborted)
 							return;
-					} catch (Exception e) {
+					} catch (System.Exception e) {
 						pending--;
 
 						Console.Error.WriteLine ("Exception in {0}::OnPostProcessRequest.", pipe);

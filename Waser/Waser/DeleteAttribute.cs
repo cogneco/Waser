@@ -38,12 +38,12 @@ namespace Waser {
 
 		public DeleteAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_DELETE };
+			Methods = new Method[] { Method.Delete };
 		}
 		
 		public DeleteAttribute (params string[] patterns) : base(patterns)
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_DELETE };
+			Methods = new Method[] { Method.Delete };
 		}
 	}
 }

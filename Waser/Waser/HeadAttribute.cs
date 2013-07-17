@@ -43,7 +43,7 @@ namespace Waser {
 		/// </summary>
 		public HeadAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_HEAD };
+			Methods = new Method[] { Method.Head };
 		}
 		
 		/// <summary>
@@ -54,7 +54,7 @@ namespace Waser {
 		/// </param>
 		public HeadAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_HEAD };
+			Methods = new Method [] { Method.Head };
 		}
 	}
 }

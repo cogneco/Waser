@@ -45,7 +45,7 @@ namespace Waser {
 		/// </remarks>
 		public PostAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_POST };
+			Methods = new Method[] { Method.Post };
 		}
 		
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Waser {
 		/// </param>
 		public PostAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_POST };
+			Methods = new Method [] { Method.Post };
 		}
 	}
 }

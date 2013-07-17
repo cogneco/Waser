@@ -39,7 +39,7 @@ namespace Waser {
 		
 		public PutAttribute ()
 		{
-			Methods = new HttpMethod[] { HttpMethod.HTTP_PUT };
+			Methods = new Method[] { Method.Put };
 		}
 		
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Waser {
 		/// </param>
 		public PutAttribute (params string [] patterns) : base (patterns)
 		{
-			Methods = new HttpMethod [] { HttpMethod.HTTP_PUT };
+			Methods = new Method [] { Method.Put };
 		}
 	}
 }
