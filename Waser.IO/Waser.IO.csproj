@@ -120,4 +120,9 @@
   <Target Name="ListSources">
     <Message Text="@(Compile)" Importance="High" />
   </Target>
+  <ItemGroup>
+    <None Include="Waser.IO.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
