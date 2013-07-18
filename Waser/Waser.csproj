@@ -128,8 +128,6 @@
     <Compile Include="Waser.Routing\Action.cs" />
     <Compile Include="Waser.Logging\ILogger.cs" />
     <Compile Include="Waser.Logging\ConsoleLogger.cs" />
-    <Compile Include="Waser.Template\TemplateParser.cs" />
-    <Compile Include="Waser.Template\TemplateTokenizer.cs" />
     <Compile Include="Waser.Template\ITemplate.cs" />
     <Compile Include="Waser.Template\Expression.cs" />
     <Compile Include="Waser.Template\Environment.cs" />
@@ -138,6 +136,8 @@
     <Compile Include="Waser.Template\Abstract.cs" />
     <Compile Include="Waser.Template\ICodeGenerator.cs" />
     <Compile Include="Waser.Template\Factory.cs" />
+    <Compile Include="Waser.Template\Parser.cs" />
+    <Compile Include="Waser.Template\Tokenizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="ListSources">
