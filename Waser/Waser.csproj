@@ -137,11 +137,11 @@
     <Folder Include="Waser.IO\" />
     <Folder Include="Waser.Threading\" />
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Waser.IO\Waser.IO.csproj">
       <Project>{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}</Project>
       <Name>Waser.IO</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
