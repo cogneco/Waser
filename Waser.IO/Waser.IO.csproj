@@ -21,11 +21,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(IO_COMPILE_FLAGS)' == 'FORCE_MANAGED_IO' ">
     <DefineConstants>ALWAYS_USE_MANAGED_IO</DefineConstants>
@@ -116,4 +117,14 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kean\Core\Kean.Core\Kean.Core.csproj">
+      <Project>{C5A4BC48-C14F-4F6B-9564-E04C0A79B7C1}</Project>
+      <Name>Kean.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kean\Core\Kean.Core.Error\Kean.Core.Error.csproj">
+      <Project>{9EE43841-CE0C-4943-BDFF-1C5E158A0BDB}</Project>
+      <Name>Kean.Core.Error</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

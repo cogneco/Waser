@@ -21,10 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-
-
-
-
 using System;
 using System.IO;
 using System.Text;
@@ -33,226 +29,222 @@ using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-
-
+using Error = Kean.Core.Error;
 using Libev;
 using Waser.IO;
 using Waser.Collections;
 
-namespace Waser.Http {
-
+namespace Waser.Http
+{
 	/// <summary>
 	///  A base class for HttpRequest and HttpResponse.  Generally user code should not care at all about
 	///  this class, it just exists to eliminate some code duplication between the two derived types.
 	/// </summary>
-	public abstract class Entity : IDisposable {
-
-		private static readonly long MAX_BUFFERED_CONTENT_LENGTH = 2621440; // 2.5MB (Eventually this will be an environment var)
-
+	public abstract class Entity : IDisposable
+	{
+		private static readonly long MAX_BUFFERED_CONTENT_LENGTH = 2621440;
+		// 2.5MB (Eventually this will be an environment var)
 		private Headers headers;
-
 		private Parser parser;
 		private ParserSettings parser_settings;
-		private StringBuilder current_header_field = new StringBuilder ();
-		private StringBuilder current_header_value = new StringBuilder ();
-
+		private StringBuilder current_header_field = new StringBuilder();
+		private StringBuilder current_header_value = new StringBuilder();
 		private DataDictionary data;
 		private DataDictionary post_data;
-
 		private Dictionary<string,object> properties;
 		private Dictionary<string,UploadedFile> uploaded_files;
-
 		private IBodyHandler body_handler;
 		private bool finished_reading;
-
 		private IAsyncWatcher end_watcher;
-
-		public Entity (IO.Context context)
+		public Entity(IO.Context context)
 		{
 			this.Context = context;
-			end_watcher = context.CreateAsyncWatcher (HandleEnd);
-			end_watcher.Start ();
+			end_watcher = context.CreateAsyncWatcher(HandleEnd);
+			end_watcher.Start();
 		}
-		
-		public IO.Context Context {
+		public IO.Context Context
+		{
 			get;
 			private set;
 		}
-
 		~Entity ()
 		{
-			Dispose ();
+			Dispose();
 		}
-
-		public void Dispose ()
+		public void Dispose()
 		{
 			Socket = null;
 
-			if (Stream != null) {
-				Stream.Dispose ();
+			if (Stream != null)
+			{
+				Stream.Dispose();
 				Stream = null;
 			}
 
-			if (end_watcher != null) {
-				end_watcher.Dispose ();
+			if (end_watcher != null)
+			{
+				end_watcher.Dispose();
 				end_watcher = null;
 			}
 		}
-
-		public ITcpSocket Socket {
+		public ITcpSocket Socket
+		{
 			get;
 			protected set;
 		}
-
-		public Stream Stream {
+		public Stream Stream
+		{
 			get;
 			protected set;
 		}
-
-		public Headers Headers {
-			get {
+		public Headers Headers
+		{
+			get
+			{
 				if (headers == null)
-					headers = new Headers ();
+					headers = new Headers();
 				return headers;
 			}
-			set {
+			set
+			{
 				headers = value;
 			}
 		}
-
-		public Method Method {
+		public Method Method
+		{
 			get;
 			set;
 		}
-
-		public int MajorVersion {
+		public int MajorVersion
+		{
 			get;
 			set;
 		}
-
-		public int MinorVersion {
+		public int MinorVersion
+		{
 			get;
 			set;
 		}
-
-		public string RemoteAddress {
+		public string RemoteAddress
+		{
 			get;
 			set;
 		}
-
-		public int RemotePort {
+		public int RemotePort
+		{
 			get;
 			set;
 		}
-
-		public string Path {
+		public string Path
+		{
 			get;
 			set;
 		}
-
-		public Encoding ContentEncoding {
+		public Encoding ContentEncoding
+		{
 			get { return Headers.ContentEncoding; }
 			set { Headers.ContentEncoding = value; }
 		}
-
-		
-		public DataDictionary Data {
-			get {
+		public DataDictionary Data
+		{
+			get
+			{
 				if (data == null)
-					data = new DataDictionary ();
+					data = new DataDictionary();
 				return data;
 			}
 		}
-
-		public DataDictionary PostData {
-			get {
-				if (post_data == null) {
-					post_data = new DataDictionary ();
-					Data.Children.Add (post_data);
+		public DataDictionary PostData
+		{
+			get
+			{
+				if (post_data == null)
+				{
+					post_data = new DataDictionary();
+					Data.Children.Add(post_data);
 				}
 				return post_data;
 			}
-			set {
-				SetDataDictionary (post_data, value);
+			set
+			{
+				SetDataDictionary(post_data, value);
 				post_data = value;
 			}
 		}
-
-		public string PostBody {
+		public string PostBody
+		{
 			get;
 			set;
 		}
-
-		public Dictionary<string,UploadedFile> Files {
-			get {
-			    if (uploaded_files == null)
-			       uploaded_files = new Dictionary<string,UploadedFile> ();
-			    return uploaded_files;
+		public Dictionary<string,UploadedFile> Files
+		{
+			get
+			{
+				if (uploaded_files == null)
+					uploaded_files = new Dictionary<string,UploadedFile>();
+				return uploaded_files;
 			}
 		}
-
-		public Dictionary<string,object> Properties {
-			get {
+		public Dictionary<string,object> Properties
+		{
+			get
+			{
 				if (properties == null)
-					properties = new Dictionary<string,object> ();
+					properties = new Dictionary<string,object>();
 				return properties;
 			}
 		}
-
-		public void SetProperty (string name, object o)
+		public void SetProperty(string name, object o)
 		{
 			if (name == null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 
 			if (o == null && properties == null)
 				return;
 
 			if (properties == null)
-				properties = new Dictionary<string,object> ();
+				properties = new Dictionary<string,object>();
 
-			if (o == null) {
-				properties.Remove (name);
+			if (o == null)
+			{
+				properties.Remove(name);
 				if (properties.Count == 0)
 					properties = null;
 				return;
 			}
 
-			properties [name] = o;
+			properties[name] = o;
 		}
-
-		public object GetProperty (string name)
+		public object GetProperty(string name)
 		{
 			if (name == null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 
 			if (properties == null)
 				return null;
 
 			object res = null;
-			if (!properties.TryGetValue (name, out res))
+			if (!properties.TryGetValue(name, out res))
 				return null;
 			return res;
 		}
-
-		public T GetProperty<T> (string name)
+		public T GetProperty<T>(string name)
 		{
-			object res = GetProperty (name);
+			object res = GetProperty(name);
 			if (res == null)
 				return default (T);
-			return (T) res;
+			return (T)res;
 		}
-
-		protected void SetDataDictionary (DataDictionary old, DataDictionary newd)
+		protected void SetDataDictionary(DataDictionary old, DataDictionary newd)
 		{
 			if (data != null && old != null)
-				data.Children.Remove (old);
+				data.Children.Remove(old);
 			if (newd != null)
-				Data.Children.Add (newd);
+				Data.Children.Add(newd);
 		}
-
-		protected void CreateParserSettingsInternal ()
+		protected void CreateParserSettingsInternal()
 		{
-			this.parser_settings = CreateParserSettings ();
+			this.parser_settings = CreateParserSettings();
 
 			parser_settings.OnError = OnParserError;
 
@@ -264,60 +256,57 @@ namespace Waser.Http {
 			parser_settings.OnHeaderValue = OnHeaderValue;
 			parser_settings.OnHeadersComplete = OnHeadersComplete;
 		}
-
-		private int OnMessageBegin (Parser parser)
+		private int OnMessageBegin(Parser parser)
 		{
 			return 0;
 		}
-
-		private int OnMessageComplete (Parser parser)
+		private int OnMessageComplete(Parser parser)
 		{
 			// Upgrade connections will raise this event at the end of OnBytesRead
 			if (!parser.Upgrade) 
-				OnFinishedReading (parser);
+				OnFinishedReading(parser);
 			finished_reading = true;
 			return 0;
 		}
-
-		public int OnHeaderField (Parser parser, ByteBuffer data, int pos, int len)
+		public int OnHeaderField(Parser parser, ByteBuffer data, int pos, int len)
 		{
-			string str = Encoding.ASCII.GetString (data.Bytes, pos, len);
+			string str = Encoding.ASCII.GetString(data.Bytes, pos, len);
 
 			if (current_header_value.Length != 0)
-				FinishCurrentHeader ();
+				FinishCurrentHeader();
 
-			current_header_field.Append (str);
+			current_header_field.Append(str);
 			return 0;
 		}
-
-		public int OnHeaderValue (Parser parser, ByteBuffer data, int pos, int len)
+		public int OnHeaderValue(Parser parser, ByteBuffer data, int pos, int len)
 		{
-			string str = Encoding.ASCII.GetString (data.Bytes, pos, len);
+			string str = Encoding.ASCII.GetString(data.Bytes, pos, len);
 
 			if (current_header_field.Length == 0)
-				throw new System.Exception ("Header Value raised with no header field set.");
+				throw new System.Exception("Header Value raised with no header field set.");
 
-			current_header_value.Append (str);
+			current_header_value.Append(str);
 			return 0;
 		}
-
-		private void FinishCurrentHeader ()
+		private void FinishCurrentHeader()
 		{
-			try {
+			try
+			{
 				if (headers == null)
-					headers = new Headers ();
-				headers.SetHeader (current_header_field.ToString (), current_header_value.ToString ());
+					headers = new Headers();
+				headers.SetHeader(current_header_field.ToString(), current_header_value.ToString());
 				current_header_field.Length = 0;
 				current_header_value.Length = 0;
-			} catch (System.Exception e) {
-				Console.WriteLine (e);
+			}
+			catch (System.Exception e)
+			{
+				Console.WriteLine(e);
 			}
 		}
-
-		protected virtual int OnHeadersComplete (Parser parser)
+		protected virtual int OnHeadersComplete(Parser parser)
 		{
 			if (current_header_field.Length != 0)
-				FinishCurrentHeader ();
+				FinishCurrentHeader();
 
 			MajorVersion = parser.Major;
 			MinorVersion = parser.Minor;
@@ -325,58 +314,55 @@ namespace Waser.Http {
 
 			return 0;
 		}
-
-		public int OnBody (Parser parser, ByteBuffer data, int pos, int len)
+		public int OnBody(Parser parser, ByteBuffer data, int pos, int len)
 		{
 			if (body_handler == null)
-				CreateBodyHandler ();
+				CreateBodyHandler();
 
 			if (body_handler != null)
-				body_handler.HandleData (this, data, pos, len);
+				body_handler.HandleData(this, data, pos, len);
 
 			return 0;
 		}
-
-		
-		private void CreateBodyHandler ()
+		private void CreateBodyHandler()
 		{
 			string ct;
 
-			if (!Headers.TryGetValue ("Content-Type", out ct)) {
-				body_handler = new BufferedBodyHandler ();
+			if (!Headers.TryGetValue("Content-Type", out ct))
+			{
+				body_handler = new BufferedBodyHandler();
 				return;
 			}
 
-			if (ct.StartsWith ("application/x-www-form-urlencoded", StringComparison.InvariantCultureIgnoreCase)) {
-				body_handler = new FormDataHandler ();
+			if (ct.StartsWith("application/x-www-form-urlencoded", StringComparison.InvariantCultureIgnoreCase))
+			{
+				body_handler = new FormDataHandler();
 				return;
 			}
 
-			if (ct.StartsWith ("multipart/form-data", StringComparison.InvariantCultureIgnoreCase)) {
-				string boundary = ParseBoundary (ct);
-				IUploadedFileCreator file_creator = GetFileCreator ();
+			if (ct.StartsWith("multipart/form-data", StringComparison.InvariantCultureIgnoreCase))
+			{
+				string boundary = ParseBoundary(ct);
+				IUploadedFileCreator file_creator = GetFileCreator();
 
-				body_handler = new MultiPartFormDataHandler (boundary, ContentEncoding, file_creator);
+				body_handler = new MultiPartFormDataHandler(boundary, ContentEncoding, file_creator);
 				return;
 			}
 
-			body_handler = new BufferedBodyHandler ();
+			body_handler = new BufferedBodyHandler();
 		}
-
-		private IUploadedFileCreator GetFileCreator ()
+		private IUploadedFileCreator GetFileCreator()
 		{
 			if (Headers.ContentLength == null || Headers.ContentLength >= MAX_BUFFERED_CONTENT_LENGTH)
-				return new TempFileUploadedFileCreator ();
-			return new InMemoryUploadedFileCreator ();
+				return new TempFileUploadedFileCreator();
+			return new InMemoryUploadedFileCreator();
 		}
-
-		private void OnParserError (Parser parser, string message, ByteBuffer buffer, int initial_position)
+		private void OnParserError(Parser parser, string message, ByteBuffer buffer, int initial_position)
 		{
 			// Transaction.Abort (-1, "HttpParser error: {0}", message);
-			Socket.Close ();
+			Socket.Close();
 		}
-
-		public virtual void Reset ()
+		public virtual void Reset()
 		{
 			Path = null;
 			ContentEncoding = null;
@@ -388,32 +374,29 @@ namespace Waser.Http {
 			finished_reading = false;
 
 			if (parser_settings == null)
-				CreateParserSettingsInternal ();
+				CreateParserSettingsInternal();
 
-			parser = new Parser ();
+			parser = new Parser();
 		}
-		
-		public void Read ()
+		public void Read()
 		{
-			Read (() => {});
+			Read(() => {});
 		}
-
-		public void Read (Action onClose)
+		public void Read(Action onClose)
 		{
-			Reset ();
-			Socket.GetSocketStream ().Read (OnBytesRead, (obj) => {}, onClose);
+			Reset();
+			Socket.GetSocketStream().Read(OnBytesRead, (obj) => {}, onClose);
 		}
-
-		private void OnBytesRead (ByteBuffer bytes)
+		void OnBytesRead(ByteBuffer bytes)
 		{
-			try {
-				parser.Execute (parser_settings, bytes);
-			} catch (System.Exception e) {
-				Console.WriteLine ("Exception while parsing");
-				Console.WriteLine (e);
-			}
+			Error.Log.Call<System.Exception>(() => this.parser.Execute(this.parser_settings, bytes), e =>
+			{
+				Console.WriteLine("Exception while parsing");
+				Console.WriteLine(e);
+			});
 
-			if (finished_reading && parser.Upgrade) {
+			if (finished_reading && parser.Upgrade)
+			{
 
 				//
 				// Well, this is a bit of a hack.  Ideally, maybe there should be a putback list
@@ -421,150 +404,138 @@ namespace Waser.Http {
 				// protocol handler can read them out as if they were just reading normally.
 				//
 
-				if (bytes.Position < bytes.Length) {
-					byte [] upgrade_head = new byte [bytes.Length - bytes.Position];
-					Array.Copy (bytes.Bytes, bytes.Position, upgrade_head, 0, upgrade_head.Length);
+				if (bytes.Position < bytes.Length)
+				{
+					byte[] upgrade_head = new byte [bytes.Length - bytes.Position];
+					Array.Copy(bytes.Bytes, bytes.Position, upgrade_head, 0, upgrade_head.Length);
 
-					SetProperty ("UPGRADE_HEAD", upgrade_head);
+					SetProperty("UPGRADE_HEAD", upgrade_head);
 				}
 
 				// This is delayed until here with upgrade connnections.
-				OnFinishedReading (parser);
+				OnFinishedReading(parser);
 			}
 		}
-
-		protected virtual void OnFinishedReading (Parser parser)
+		protected virtual void OnFinishedReading(Parser parser)
 		{
-			if (body_handler != null) {
-				body_handler.Finish (this);
+			if (body_handler != null)
+			{
+				body_handler.Finish(this);
 				body_handler = null;
 			}
 
 			if (OnCompleted != null)
-				OnCompleted ();
+				OnCompleted();
 		}
-
-		public static string ParseBoundary (string ct)
+		public static string ParseBoundary(string ct)
 		{
 			if (ct == null)
 				return null;
 
-			int start = ct.IndexOf ("boundary=");
+			int start = ct.IndexOf("boundary=");
 			if (start < 1)
 				return null;
 			
-			return ct.Substring (start + "boundary=".Length);
+			return ct.Substring(start + "boundary=".Length);
 		}
-
-		
-		public void Write (string str)
+		public void Write(string str)
 		{
-			byte [] data = ContentEncoding.GetBytes (str);
+			byte[] data = ContentEncoding.GetBytes(str);
 
-			WriteToBody (data, 0, data.Length);
+			WriteToBody(data, 0, data.Length);
 		}
-
-		public void Write (byte [] data)
+		public void Write(byte[] data)
 		{
-			WriteToBody (data, 0, data.Length);
+			WriteToBody(data, 0, data.Length);
 		}
-
-		public void Write (byte [] data, int offset, int length)
+		public void Write(byte[] data, int offset, int length)
 		{
-			WriteToBody (data, offset, length);
+			WriteToBody(data, offset, length);
 		}
-
-		public void Write (string str, params object [] prms)
+		public void Write(string str, params object[] prms)
 		{
-			Write (String.Format (str, prms));	
+			Write(String.Format(str, prms));	
 		}
-
-		public void End (string str)
+		public void End(string str)
 		{
-			Write (str);
-			End ();
+			Write(str);
+			End();
 		}
-
-		public void End (byte [] data)
+		public void End(byte[] data)
 		{
-			Write (data);
-			End ();
+			Write(data);
+			End();
 		}
-
-		public void End (byte [] data, int offset, int length)
+		public void End(byte[] data, int offset, int length)
 		{
-			Write (data, offset, length);
-			End ();
+			Write(data, offset, length);
+			End();
 		}
-
-		public void End (string str, params object [] prms)
+		public void End(string str, params object[] prms)
 		{
-			Write (str, prms);
-			End ();
+			Write(str, prms);
+			End();
 		}
-
-		public void End ()
+		public void End()
 		{
-			end_watcher.Send ();
+			end_watcher.Send();
 		}
-
-		internal virtual void HandleEnd ()
+		internal virtual void HandleEnd()
 		{
 			if (OnEnd != null)
-				OnEnd ();
+				OnEnd();
 		}
-
-		public void Complete (Action callback)
+		public void Complete(Action callback)
 		{
 			IAsyncWatcher completeWatcher = null;
-			completeWatcher = Context.CreateAsyncWatcher (delegate {
-				completeWatcher.Dispose ();
-				callback ();
+			completeWatcher = Context.CreateAsyncWatcher(delegate
+			{
+				completeWatcher.Dispose();
+				callback();
 			});
-			completeWatcher.Start ();
-			Stream.End (completeWatcher.Send);
+			completeWatcher.Start();
+			Stream.End(completeWatcher.Send);
 		}
-
-		public void WriteLine (string str)
+		public void WriteLine(string str)
 		{
-			Write (str + Environment.NewLine);	
+			Write(str + Environment.NewLine);	
 		}
-		
-		public void WriteLine (string str, params object [] prms)
+		public void WriteLine(string str, params object[] prms)
 		{
-			WriteLine (String.Format (str, prms));	
+			WriteLine(String.Format(str, prms));	
 		}
-		
-		public void SendFile (string file)
+		public void SendFile(string file)
 		{
-			Stream.SendFile (file);
+			Stream.SendFile(file);
 		}
-
-		private void WriteToBody (byte [] data, int offset, int length)
+		private void WriteToBody(byte[] data, int offset, int length)
 		{
-			Stream.Write (data, offset, length);
+			Stream.Write(data, offset, length);
 		}
-
-		public byte [] GetBody ()
+		public byte [] GetBody()
 		{
 			StringBuilder data = null;
 
-			if (PostBody != null) {
-				data = new StringBuilder ();
-				data.Append (PostBody);
+			if (PostBody != null)
+			{
+				data = new StringBuilder();
+				data.Append(PostBody);
 			}
 
-			if (post_data != null) {
-				data = new StringBuilder ();
+			if (post_data != null)
+			{
+				data = new StringBuilder();
 				bool first = true;
-				foreach (string key in post_data.Keys) {
+				foreach (string key in post_data.Keys)
+				{
 					if (!first)
-						data.Append ('&');
+						data.Append('&');
 					first = false;
 
-					UnsafeString s = post_data.Get (key);
-					if (s != null) {
-						data.AppendFormat ("{0}={1}", key, s.UnsafeValue);
+					UnsafeString s = post_data.Get(key);
+					if (s != null)
+					{
+						data.AppendFormat("{0}={1}", key, s.UnsafeValue);
 						continue;
 					}
 				}
@@ -573,18 +544,14 @@ namespace Waser.Http {
 			if (data == null)
 				return null;
 
-			return ContentEncoding.GetBytes (data.ToString ());
+			return ContentEncoding.GetBytes(data.ToString());
 			
 		}
-
-		public abstract void WriteMetadata (StringBuilder builder);
-		public abstract ParserSettings CreateParserSettings ();
-
-
+		public abstract void WriteMetadata(StringBuilder builder);
+		public abstract ParserSettings CreateParserSettings();
 		public event Action OnEnd;
 		public event Action OnCompleted;
 	}
-
 }
 
 

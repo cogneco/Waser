@@ -26,12 +26,10 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using Waser.IO;
 using Waser.Http;
 using Waser.Caching;
 using Waser.Logging;
-
 using Libev;
 using Waser.Threading;
 
@@ -43,120 +41,117 @@ namespace Waser
 	public static class ApplicationHost
 	{
 		private static Application app;
-		private static List<IPEndPoint> listenEndPoints = new List<IPEndPoint> ();
-		private static Dictionary<IPEndPoint, Tuple<string, string>> secureListenEndPoints = new Dictionary<IPEndPoint, Tuple<string, string>> ();
-		private static List<Server> servers = new List<Server> ();
+		private static List<IPEndPoint> listenEndPoints = new List<IPEndPoint>();
+		private static Dictionary<IPEndPoint, Tuple<string, string>> secureListenEndPoints = new Dictionary<IPEndPoint, Tuple<string, string>>();
+		private static List<Server> servers = new List<Server>();
 		private static ICache cache;
 		private static ILogger log;
 		private static List<IPipe> pipes;
 		private static IO.Context context;
-
-		static ApplicationHost ()
+		static ApplicationHost()
 		{
-			context = IO.Context.Create ();
+			context = IO.Context.Create();
 		}
-
-		public static Application App {
+		public static Application App
+		{
 			get { return app; }	
 		}
-
-		public static ICache Cache {
-			get {
+		public static ICache Cache
+		{
+			get
+			{
 				if (cache == null)
-					cache = new InProcessCache ();
+					cache = new InProcessCache();
 				return cache;
 			}
 		}
-
-		public static ILogger Log {
-			get {
+		public static ILogger Log
+		{
+			get
+			{
 				if (log == null)
-					log = new Waser.Logging.ConsoleLogger ("Waser", LogLevel.Debug);
+					log = new Waser.Logging.ConsoleLogger("Waser", LogLevel.Debug);
 				return log;
 			}
 		}
-
-		public static IO.Context Context {
+		public static IO.Context Context
+		{
 			get { return context; }	
 		}
-
-		public static IList<IPipe> Pipes {
+		public static IList<IPipe> Pipes
+		{
 			get { return pipes; }
 		}
-
-		public static ICollection<IPEndPoint> ListenEndPoints {
-			get {
-				return listenEndPoints.AsReadOnly ();
+		public static ICollection<IPEndPoint> ListenEndPoints
+		{
+			get
+			{
+				return listenEndPoints.AsReadOnly();
 			}
 		}
-
-		public static void ListenAt (IPEndPoint endPoint)
+		public static void ListenAt(IPEndPoint endPoint)
 		{
 			if (endPoint == null)
-				throw new ArgumentNullException ("endPoint");
+				throw new ArgumentNullException("endPoint");
 			
-			if (listenEndPoints.Contains (endPoint) || secureListenEndPoints.ContainsKey (endPoint))
-				throw new InvalidOperationException ("Endpoint already registered");
+			if (listenEndPoints.Contains(endPoint) || secureListenEndPoints.ContainsKey(endPoint))
+				throw new InvalidOperationException("Endpoint already registered");
 			
-			listenEndPoints.Add (endPoint);
+			listenEndPoints.Add(endPoint);
 		}
-
-		public static void SecureListenAt (IPEndPoint endPoint, string cert, string key)
+		public static void SecureListenAt(IPEndPoint endPoint, string cert, string key)
 		{
 			if (endPoint == null)
-				throw new ArgumentNullException ("endPoint");
+				throw new ArgumentNullException("endPoint");
 			if (cert == null)
-				throw new ArgumentNullException ("cert");
+				throw new ArgumentNullException("cert");
 			if (key == null)
-				throw new ArgumentNullException ("key");
+				throw new ArgumentNullException("key");
 			
-			if (secureListenEndPoints.ContainsKey (endPoint) || listenEndPoints.Contains (endPoint))
-				throw new InvalidOperationException ("Endpoint already registered");
+			if (secureListenEndPoints.ContainsKey(endPoint) || listenEndPoints.Contains(endPoint))
+				throw new InvalidOperationException("Endpoint already registered");
 			
-			secureListenEndPoints.Add (endPoint,
-				Tuple.Create (cert, key));
+			secureListenEndPoints.Add(endPoint,
+			                          Tuple.Create(cert, key));
 		}
-
-		public static void InitializeTLS (string priorities)
+		public static void InitializeTLS(string priorities)
 		{
 #if !DISABLETLS
-			manos_tls_global_init (priorities);
-			RegenerateDHParams (1024);
+			manos_tls_global_init(priorities);
+			RegenerateDHParams(1024);
 #endif
 		}
-
-		public static void RegenerateDHParams (int bits)
+		public static void RegenerateDHParams(int bits)
 		{
 #if !DISABLETLS
-			manos_tls_regenerate_dhparams (bits);
+			manos_tls_regenerate_dhparams(bits);
 #endif
 		}
-
-#if !DISABLETLS
+		#if !DISABLETLS
 		[DllImport ("libmanos", CallingConvention = CallingConvention.Cdecl)]
-		private static extern int manos_tls_global_init (string priorities);
-
+		private static extern int manos_tls_global_init(string priorities);
 		[DllImport ("libmanos", CallingConvention = CallingConvention.Cdecl)]
-		private static extern int manos_tls_regenerate_dhparams (int bits);
+		private static extern int manos_tls_regenerate_dhparams(int bits);
 
-#endif
-
-		public static void Start (Application application)
+		#endif
+		public static void Start(Application application)
 		{
 			if (application == null)
-				throw new ArgumentNullException ("application");
+				throw new ArgumentNullException("application");
 			
 			app = application;
 
-			app.StartInternal ();
+			app.StartInternal();
 
-			foreach (var ep in listenEndPoints) {
-				var server = new Server (Context, HandleTransaction, Context.CreateTcpServerSocket (ep.AddressFamily));
-				server.Listen (ep.Address.ToString (), ep.Port);
+			foreach (var ep in listenEndPoints)
+			{
+				var server = new Server(Context, HandleTransaction, Context.CreateTcpServerSocket(ep.AddressFamily));
+				server.Listen(ep.Address.ToString(), ep.Port);
 				
-				servers.Add (server);
+				servers.Add(server);
 			}
-			foreach (var ep in secureListenEndPoints.Keys) {
+			foreach (var ep in secureListenEndPoints.Keys)
+			{
 //				var keypair = secureListenEndPoints [ep];
 //				var socket = Context.CreateSecureSocket (keypair.Item1, keypair.Item2);
 //				var server = new HttpServer (context, HandleTransaction, socket);
@@ -165,45 +160,42 @@ namespace Waser
 //				servers.Add (server);
 			}
 
-			context.Start ();
+			context.Start();
 		}
-
-		public static void Stop ()
+		public static void Stop()
 		{
-			context.Stop ();
+			context.Stop();
 		}
-
-		public static void HandleTransaction (ITransaction con)
+		public static void HandleTransaction(ITransaction con)
 		{
-			app.HandleTransaction (app, con);
+			app.HandleTransaction(app, con);
 		}
-
-		public static void AddPipe (IPipe pipe)
+		public static void AddPipe(IPipe pipe)
 		{
 			if (pipes == null)
-				pipes = new List<IPipe> ();
-			pipes.Add (pipe);
+				pipes = new List<IPipe>();
+			pipes.Add(pipe);
 		}
-
-		public static Timeout AddTimeout (TimeSpan timespan, IRepeatBehavior repeat, object data, TimeoutCallback callback)
+		public static Timeout AddTimeout(TimeSpan timespan, IRepeatBehavior repeat, object data, TimeoutCallback callback)
 		{
-			return AddTimeout (timespan, timespan, repeat, data, callback);
+			return AddTimeout(timespan, timespan, repeat, data, callback);
 		}
-
-		public static Timeout AddTimeout (TimeSpan begin, TimeSpan timespan, IRepeatBehavior repeat, object data, TimeoutCallback callback)
+		public static Timeout AddTimeout(TimeSpan begin, TimeSpan timespan, IRepeatBehavior repeat, object data, TimeoutCallback callback)
 		{
-			Timeout t = new Timeout (begin, timespan, repeat, data, callback);
+			Timeout t = new Timeout(begin, timespan, repeat, data, callback);
 			
 			ITimerWatcher timer = null;
-			timer = context.CreateTimerWatcher (begin, timespan, delegate {
-				t.Run (app);
-				if (!t.ShouldContinueToRepeat ()) {
-					t.Stop ();
-					timer.Dispose ();
+			timer = context.CreateTimerWatcher(begin, timespan, delegate
+			{
+				t.Run(app);
+				if (!t.ShouldContinueToRepeat())
+				{
+					t.Stop();
+					timer.Dispose();
 				}
 			});
 
-			timer.Start ();
+			timer.Start();
 
 			return t;
 		}

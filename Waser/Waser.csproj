@@ -22,11 +22,12 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>$(SolutionDir)\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -142,6 +143,14 @@
     <ProjectReference Include="..\Waser.IO\Waser.IO.csproj">
       <Project>{5E2AA984-1C9C-4890-BEF6-CC2981C49AFF}</Project>
       <Name>Waser.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kean\Core\Kean.Core.Error\Kean.Core.Error.csproj">
+      <Project>{9EE43841-CE0C-4943-BDFF-1C5E158A0BDB}</Project>
+      <Name>Kean.Core.Error</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kean\Core\Kean.Core\Kean.Core.csproj">
+      <Project>{C5A4BC48-C14F-4F6B-9564-E04C0A79B7C1}</Project>
+      <Name>Kean.Core</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

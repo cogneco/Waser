@@ -21,34 +21,31 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-
 using System;
-
 
 namespace Waser.Routing
 {
 	public class ActionTarget : ITarget
 	{
 		private Action action;
-		
-		public ActionTarget (Action action)
+		public ActionTarget(Action action)
 		{
 			Action = action;
 		}
-	
-		public void Invoke (Application app, IContext ctx)
+		public void Invoke(Application app, IContext ctx)
 		{
-			action (ctx);
+			action(ctx);
 		}
-
-		public Delegate Action {
+		public Delegate Action
+		{
 			get { return action; }
-			set {
+			set
+			{
 				if (value == null)
-					throw new ArgumentNullException ("action");
+					throw new ArgumentNullException("action");
 				Action a = value as Action;
 				if (a == null)
-					throw new InvalidOperationException ("A ManosActionTarget::Action can only be of type ManosAction.");
+					throw new InvalidOperationException("A ManosActionTarget::Action can only be of type ManosAction.");
 				action = a;
 			}
 		}

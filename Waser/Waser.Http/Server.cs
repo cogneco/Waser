@@ -21,8 +21,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-
-
 using System;
 using System.IO;
 using System.Text;
@@ -30,69 +28,57 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-
 using Libev;
-
 using Waser.IO;
 
 namespace Waser.Http
 {
-
-    public delegate void ConnectionCallback(ITransaction transaction);
-
-    public class Server : IDisposable
-    {
-
-        public static readonly string ServerVersion;
-
-        private ConnectionCallback callback;
-        ITcpServerSocket socket;
-        private bool closeOnEnd;
-
-        static Server()
-        {
-            Version v = Assembly.GetExecutingAssembly().GetName().Version;
-            ServerVersion = "Waser/" + v.ToString();
-        }
-
-        public Server(IO.Context context, ConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
-        {
-            this.callback = callback;
-            this.socket = socket;
-            this.closeOnEnd = closeOnEnd;
+	public delegate void ConnectionCallback(ITransaction transaction);
+	public class Server : IDisposable
+	{
+		public static readonly string ServerVersion;
+		private ConnectionCallback callback;
+		ITcpServerSocket socket;
+		private bool closeOnEnd;
+		static Server()
+		{
+			Version v = Assembly.GetExecutingAssembly().GetName().Version;
+			ServerVersion = "Waser/" + v.ToString();
+		}
+		public Server(IO.Context context, ConnectionCallback callback, ITcpServerSocket socket, bool closeOnEnd = false)
+		{
+			this.callback = callback;
+			this.socket = socket;
+			this.closeOnEnd = closeOnEnd;
 			this.Context = context;
-        }
-
-        public IO.Context Context
-        {
+		}
+		public IO.Context Context
+		{
 			get;
 			private set;
-        }
-
-        public void Listen(string host, int port)
-        {
-            socket.Bind(new IPEndPoint(IPAddress.Parse (host), port));
-			socket.Listen (128, ConnectionAccepted);
-        }
-
-        public void Dispose()
-        {
-            if (socket != null) {
-                socket.Dispose();
-                socket = null;
-            }
-        }
-
-        public void RunTransaction(Transaction trans)
-        {
-            trans.Run();
-        }
-
-        private void ConnectionAccepted(ITcpSocket socket)
-        {
-            Transaction.BeginTransaction(this, socket, callback, closeOnEnd);
-        }
-    }
+		}
+		public void Listen(string host, int port)
+		{
+			socket.Bind(new IPEndPoint(IPAddress.Parse(host), port));
+			socket.Listen(128, ConnectionAccepted);
+		}
+		public void Dispose()
+		{
+			if (socket != null)
+			{
+				socket.Dispose();
+				socket = null;
+			}
+		}
+		public void RunTransaction(Transaction trans)
+		{
+			trans.Run();
+		}
+		private void ConnectionAccepted(ITcpSocket socket)
+		{
+			Transaction.BeginTransaction(this, socket, callback, closeOnEnd);
+		}
+	}
 }
 
 
