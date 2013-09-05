@@ -8,10 +8,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -30,174 +30,173 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Waser.IO;
 using Waser.Collections;
-using Error = Kean.Core.Error;
-
+using Error = Kean.Error;
 namespace Waser.Http
 {
-	public class Transaction : ITransaction, IDisposable
-	{
-		public static Transaction BeginTransaction(Server server, ITcpSocket socket, ConnectionCallback cb, bool closeOnEnd = false)
-		{
-			Transaction transaction = new Transaction(server, socket, cb, closeOnEnd);
+    public class Transaction : ITransaction, IDisposable
+    {
+        public static Transaction BeginTransaction(Server server, ITcpSocket socket, ConnectionCallback cb, bool closeOnEnd = false)
+        {
+            Transaction transaction = new Transaction(server, socket, cb, closeOnEnd);
 
-			return transaction;
-		}
-		private bool aborted;
-		private bool closeOnEnd;
-		private bool wantClose, responseFinished;
-		private GCHandle gc_handle;
-		public Transaction(Server server, ITcpSocket socket, ConnectionCallback callback, bool closeOnEnd = false)
-		{
-			Server = server;
-			Socket = socket;
-			this.closeOnEnd = closeOnEnd;
+            return transaction;
+        }
+        private bool aborted;
+        private bool closeOnEnd;
+        private bool wantClose, responseFinished;
+        private GCHandle gc_handle;
+        public Transaction(Server server, ITcpSocket socket, ConnectionCallback callback, bool closeOnEnd = false)
+        {
+            Server = server;
+            Socket = socket;
+            this.closeOnEnd = closeOnEnd;
 			
-			Context = server.Context;
+            Context = server.Context;
 			
-			ConnectionCallback = callback;
+            ConnectionCallback = callback;
 
-			gc_handle = GCHandle.Alloc(this);
+            gc_handle = GCHandle.Alloc(this);
 
-			Request = new Request(this, socket);
-			Request.Read(Close);
-		}
-		public void Dispose()
-		{
-			if (Socket != null) 
-				Socket.Close();
+            Request = new Request(this, socket);
+            Request.Read(Close);
+        }
+        public void Dispose()
+        {
+            if (Socket != null)
+                Socket.Close();
 			
-			// Technically the IOStream should call our Close method, but lets be sure
-			if (gc_handle.IsAllocated)
-				gc_handle.Free();
-		}
-		public IO.Context Context
-		{
-			get;
-			private set;
-		}
-		public Server Server
-		{
-			get;
-			private set;
-		}
-		public ITcpSocket Socket
-		{
-			get;
-			private set;
-		}
-		public  ConnectionCallback ConnectionCallback
-		{
-			get;
-			private set;
-		}
-		public IRequest Request
-		{
-			get;
-			private set;
-		}
-		public IResponse Response
-		{
-			get;
-			private set;
-		}
-		public bool Aborted
-		{
-			get { return aborted; }	
-		}
-		public bool ResponseReady
-		{
-			get;
-			private set;
-		}
-		// Force the server to disconnect
-		public bool NoKeepAlive
-		{
-			get;
-			set;
-		}
-		public void Abort(int status, string message, params object[] p)
-		{
-			aborted = true;
-		}
-		public void Close()
-		{
-			if (!responseFinished)
-			{
-				wantClose = true;
-			}
-			else
-			{
-				if (gc_handle.IsAllocated)
-					gc_handle.Free();
+            // Technically the IOStream should call our Close method, but lets be sure
+            if (gc_handle.IsAllocated)
+                gc_handle.Free();
+        }
+        public IO.Context Context
+        {
+            get;
+            private set;
+        }
+        public Server Server
+        {
+            get;
+            private set;
+        }
+        public ITcpSocket Socket
+        {
+            get;
+            private set;
+        }
+        public  ConnectionCallback ConnectionCallback
+        {
+            get;
+            private set;
+        }
+        public IRequest Request
+        {
+            get;
+            private set;
+        }
+        public IResponse Response
+        {
+            get;
+            private set;
+        }
+        public bool Aborted
+        {
+            get { return aborted; }	
+        }
+        public bool ResponseReady
+        {
+            get;
+            private set;
+        }
+        // Force the server to disconnect
+        public bool NoKeepAlive
+        {
+            get;
+            set;
+        }
+        public void Abort(int status, string message, params object[] p)
+        {
+            aborted = true;
+        }
+        public void Close()
+        {
+            if (!responseFinished)
+            {
+                wantClose = true;
+            }
+            else
+            {
+                if (gc_handle.IsAllocated)
+                    gc_handle.Free();
 
-				if (Request != null)
-					Request.Dispose();
+                if (Request != null)
+                    Request.Dispose();
 
-				if (Response != null)
-					Response.Dispose();
+                if (Response != null)
+                    Response.Dispose();
 
-				Socket = null;
-				Request = null;
-				Response = null;
-			}
-		}
-		public void Run()
-		{
-			ConnectionCallback(this);
-		}
-		public void OnRequestReady()
-		{
-			Error.Log.Call<System.Exception>(() =>
-			{
-				this.Response = new Response(this.Context, this.Request, this.Socket);
-				this.ResponseReady = true;
-				if (this.closeOnEnd)
-					this.Response.OnEnd += () => this.Response.Complete(this.OnResponseFinished);
-				this.Server.RunTransaction(this);
-			}, e =>
-			{
-				Console.WriteLine("Exception while running transaction");
-				Console.WriteLine(e);
-			});
-		}
-		public void OnResponseFinished()
-		{
-			Socket.GetSocketStream().Write(ResponseFinishedCallback());
-		}
-		IEnumerable<ByteBuffer> ResponseFinishedCallback()
-		{
-			IBaseWatcher handler = null;
-			handler = Server.Context.CreateIdleWatcher(delegate
-			{
-				handler.Dispose();
-				responseFinished = true;
-				bool disconnect = true;
+                Socket = null;
+                Request = null;
+                Response = null;
+            }
+        }
+        public void Run()
+        {
+            ConnectionCallback(this);
+        }
+        public void OnRequestReady()
+        {
+            Error.Log.Call<System.Exception>(() =>
+            {
+                this.Response = new Response(this.Context, this.Request, this.Socket);
+                this.ResponseReady = true;
+                if (this.closeOnEnd)
+                    this.Response.OnEnd += () => this.Response.Complete(this.OnResponseFinished);
+                this.Server.RunTransaction(this);
+            }, e =>
+            {
+                Console.WriteLine("Exception while running transaction");
+                Console.WriteLine(e);
+            });
+        }
+        public void OnResponseFinished()
+        {
+            Socket.GetSocketStream().Write(ResponseFinishedCallback());
+        }
+        IEnumerable<ByteBuffer> ResponseFinishedCallback()
+        {
+            IBaseWatcher handler = null;
+            handler = Server.Context.CreateIdleWatcher(delegate
+            {
+                handler.Dispose();
+                responseFinished = true;
+                bool disconnect = true;
 
-				if (!NoKeepAlive)
-				{
-					string dis;
-					if (Request.MinorVersion > 0 && Request.Headers.TryGetValue("Connection", out dis))
-						disconnect = (dis == "close");
-				}
+                if (!NoKeepAlive)
+                {
+                    string dis;
+                    if (Request.MinorVersion > 0 && Request.Headers.TryGetValue("Connection", out dis))
+                        disconnect = (dis == "close");
+                }
 
-				if (disconnect)
-				{
-					Socket.Close();
-					if (wantClose)
-					{
-						Close();
-					}
-				}
-				else
-				{
-					responseFinished = false;
-					wantClose = false;
-					Request.Read(Close);
-				}
-			});
-			handler.Start();
-			yield break;
-		}
-	}
+                if (disconnect)
+                {
+                    Socket.Close();
+                    if (wantClose)
+                    {
+                        Close();
+                    }
+                }
+                else
+                {
+                    responseFinished = false;
+                    wantClose = false;
+                    Request.Read(Close);
+                }
+            });
+            handler.Start();
+            yield break;
+        }
+    }
 }
 
