@@ -22,30 +22,22 @@
 //
 //
 
-
-
-
-
 using System;
 using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-
 using Libev;
 using Waser.IO;
 using Waser.Collections;
-
-
-namespace Waser.Http {
-
-	public class Response : Entity, IResponse {
-
+namespace Waser.Http
+{
+	public class Response : Entity, IResponse
+	{
 		private StreamWriter writer;
 		private Dictionary<string, Cookie> cookies;
-
-		public Response (IO.Context context, IRequest request, ITcpSocket socket)
-			: base (context)
+		public Response(IO.Context context, IRequest request, ITcpSocket socket)
+			: base(context)
 		{
 			Request = request;
 			Socket = socket;
@@ -54,153 +46,142 @@ namespace Waser.Http {
 
 			WriteHeaders = true;
 
-			Stream = new Stream (this, socket.GetSocketStream ());
+			Stream = new Stream(this, socket.GetSocketStream());
 			Stream.Chunked = (request.MajorVersion > 0 && request.MinorVersion > 0);
 		}
-
-		public IRequest Request {
+		public IRequest Request
+		{
 			get;
 			private set;
 		}
-
-		public StreamWriter Writer {
-			get {
+		public StreamWriter Writer
+		{
+			get
+			{
 				if (writer == null)
-					writer = new StreamWriter (new StreamWriterWrapper (Stream));
+					writer = new StreamWriter(new StreamWriterWrapper(Stream));
 				return writer;
 			}
 		}
-
-		public int StatusCode {
+		public int StatusCode
+		{
 			get;
 			set;
 		}
-
-		public bool WriteHeaders {
+		public bool WriteHeaders
+		{
 			get;
 			set;
 		}
-
-		public Dictionary<string,Cookie> Cookies {
-			get {
+		public Dictionary<string,Cookie> Cookies
+		{
+			get
+			{
 				if (cookies == null)
-					cookies = new Dictionary<string, Cookie> ();
+					cookies = new Dictionary<string, Cookie>();
 				return cookies;
 			}
 		}
-
-		public void Redirect (string url)
+		public void Redirect(string url)
 		{
-			StatusCode =  302;
-			Headers.SetNormalizedHeader ("Location", url);
+			StatusCode = 302;
+			Headers.SetNormalizedHeader("Location", url);
 			
 //			WriteMetadata ();
-			End ();
+			End();
 		}
-		
-		public override void WriteMetadata (StringBuilder builder)
+		public override void WriteMetadata(StringBuilder builder)
 		{
-			WriteStatusLine (builder);
+			WriteStatusLine(builder);
 
-			if (WriteHeaders) {
+			if (WriteHeaders)
+			{
 				
-				Headers.Write (builder, cookies == null ? null : Cookies.Values, Encoding.ASCII);
+				Headers.Write(builder, cookies == null ? null : Cookies.Values, Encoding.ASCII);
 			}
 		}
-
-		public void SetHeader (string name, string value)
+		public void SetHeader(string name, string value)
 		{
-			Headers.SetHeader (name, value);
+			Headers.SetHeader(name, value);
 		}
-
-		public void SetCookie (string name, Cookie cookie)
+		public void SetCookie(string name, Cookie cookie)
 		{
-			Cookies [name] = cookie;
+			Cookies[name] = cookie;
 		}
-		
-		public Cookie SetCookie (string name, string value)
+		public Cookie SetCookie(string name, string value)
 		{
 			if (name == null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 			if (value == null)
-				throw new ArgumentNullException ("value");
+				throw new ArgumentNullException("value");
 			
-			var cookie = new Cookie (name, value);
+			var cookie = new Cookie(name, value);
 			
-			SetCookie (name, cookie);
+			SetCookie(name, cookie);
 			return cookie;
 		}
-		
-		public Cookie SetCookie (string name, string value, string domain)
+		public Cookie SetCookie(string name, string value, string domain)
 		{
 			if (name == null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 			if (value == null)
-				throw new ArgumentNullException ("value");
+				throw new ArgumentNullException("value");
 			
-			var cookie = new Cookie (name, value);
+			var cookie = new Cookie(name, value);
 			cookie.Domain = domain;
 			
-			SetCookie (name, cookie);
+			SetCookie(name, cookie);
 			return cookie;
 		}
-		
-		public Cookie SetCookie (string name, string value, DateTime expires)
+		public Cookie SetCookie(string name, string value, DateTime expires)
 		{
-			return SetCookie (name, value, null, expires);
+			return SetCookie(name, value, null, expires);
 		}
-		
-		public Cookie SetCookie (string name, string value, string domain, DateTime expires)
+		public Cookie SetCookie(string name, string value, string domain, DateTime expires)
 		{
 			if (name == null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 			if (value == null)
-				throw new ArgumentNullException ("value");
+				throw new ArgumentNullException("value");
 			
-			var cookie = new Cookie (name, value);
+			var cookie = new Cookie(name, value);
 			
 			cookie.Domain = domain;
 			cookie.Expires = expires;
 			
-			SetCookie (name, cookie);
+			SetCookie(name, cookie);
 			return cookie;
 		}
-		
-		public Cookie SetCookie (string name, string value, TimeSpan max_age)
+		public Cookie SetCookie(string name, string value, TimeSpan max_age)
 		{
-			return SetCookie (name, value, DateTime.Now + max_age);
+			return SetCookie(name, value, DateTime.Now + max_age);
 		}
-		
-		public Cookie SetCookie (string name, string value, string domain, TimeSpan max_age)
+		public Cookie SetCookie(string name, string value, string domain, TimeSpan max_age)
 		{
-			return SetCookie (name, value, domain, DateTime.Now + max_age);
+			return SetCookie(name, value, domain, DateTime.Now + max_age);
 		}
-
 		public void RemoveCookie(string name)
 		{
-			var cookie = new Cookie (name, "");
+			var cookie = new Cookie(name, "");
 			cookie.Expires = DateTime.Now.AddYears(-1);
 		
-			SetCookie (name, cookie);
+			SetCookie(name, cookie);
 		}
-		
-		public override void Reset ()
+		public override void Reset()
 		{
 			cookies = null;
-			base.Reset ();
+			base.Reset();
 		}
-
-		public override ParserSettings CreateParserSettings ()
+		public override ParserSettings CreateParserSettings()
 		{
-			ParserSettings settings = new ParserSettings ();
+			ParserSettings settings = new ParserSettings();
 
 			settings.OnBody = OnBody;
 			return settings;
 		}
-
-		protected override int OnHeadersComplete (Parser parser)
+		protected override int OnHeadersComplete(Parser parser)
 		{
-			base.OnHeadersComplete (parser);
+			base.OnHeadersComplete(parser);
 
 			StatusCode = parser.StatusCode;
 
@@ -208,74 +189,118 @@ namespace Waser.Http {
 				return 1;
 			return 0;
 		}
-
-		private void WriteStatusLine (StringBuilder builder)
+		private void WriteStatusLine(StringBuilder builder)
 		{
-			builder.Append ("HTTP/");
-			builder.Append (Request.MajorVersion);
-			builder.Append (".");
-			builder.Append (Request.MinorVersion);
-			builder.Append (" ");
-			builder.Append (StatusCode);
-			builder.Append (" ");
-			builder.Append (GetStatusDescription (StatusCode));
-			builder.Append ("\r\n");
+			builder.Append("HTTP/");
+			builder.Append(Request.MajorVersion);
+			builder.Append(".");
+			builder.Append(Request.MinorVersion);
+			builder.Append(" ");
+			builder.Append(StatusCode);
+			builder.Append(" ");
+			builder.Append(GetStatusDescription(StatusCode));
+			builder.Append("\r\n");
 		}
-
-		private static string GetStatusDescription (int code)
+		private static string GetStatusDescription(int code)
 		{
-			switch (code){
-			case 100: return "Continue";
-			case 101: return "Switching Protocols";
-			case 102: return "Processing";
-			case 200: return "OK";
-			case 201: return "Created";
-			case 202: return "Accepted";
-			case 203: return "Non-Authoritative Information";
-			case 204: return "No Content";
-			case 205: return "Reset Content";
-			case 206: return "Partial Content";
-			case 207: return "Multi-Status";
-			case 300: return "Multiple Choices";
-			case 301: return "Moved Permanently";
-			case 302: return "Found";
-			case 303: return "See Other";
-			case 304: return "Not Modified";
-			case 305: return "Use Proxy";
-			case 307: return "Temporary Redirect";
-			case 400: return "Bad Request";
-			case 401: return "Unauthorized";
-			case 402: return "Payment Required";
-			case 403: return "Forbidden";
-			case 404: return "Not Found";
-			case 405: return "Method Not Allowed";
-			case 406: return "Not Acceptable";
-			case 407: return "Proxy Authentication Required";
-			case 408: return "Request Timeout";
-			case 409: return "Conflict";
-			case 410: return "Gone";
-			case 411: return "Length Required";
-			case 412: return "Precondition Failed";
-			case 413: return "Request Entity Too Large";
-			case 414: return "Request-Uri Too Long";
-			case 415: return "Unsupported Media Type";
-			case 416: return "Requested Range Not Satisfiable";
-			case 417: return "Expectation Failed";
-			case 422: return "Unprocessable Entity";
-			case 423: return "Locked";
-			case 424: return "Failed Dependency";
-			case 500: return "Internal Server Error";
-			case 501: return "Not Implemented";
-			case 502: return "Bad Gateway";
-			case 503: return "Service Unavailable";
-			case 504: return "Gateway Timeout";
-			case 505: return "Http Version Not Supported";
-			case 507: return "Insufficient Storage";
+			switch (code)
+			{
+				case 100:
+					return "Continue";
+				case 101:
+					return "Switching Protocols";
+				case 102:
+					return "Processing";
+				case 200:
+					return "OK";
+				case 201:
+					return "Created";
+				case 202:
+					return "Accepted";
+				case 203:
+					return "Non-Authoritative Information";
+				case 204:
+					return "No Content";
+				case 205:
+					return "Reset Content";
+				case 206:
+					return "Partial Content";
+				case 207:
+					return "Multi-Status";
+				case 300:
+					return "Multiple Choices";
+				case 301:
+					return "Moved Permanently";
+				case 302:
+					return "Found";
+				case 303:
+					return "See Other";
+				case 304:
+					return "Not Modified";
+				case 305:
+					return "Use Proxy";
+				case 307:
+					return "Temporary Redirect";
+				case 400:
+					return "Bad Request";
+				case 401:
+					return "Unauthorized";
+				case 402:
+					return "Payment Required";
+				case 403:
+					return "Forbidden";
+				case 404:
+					return "Not Found";
+				case 405:
+					return "Method Not Allowed";
+				case 406:
+					return "Not Acceptable";
+				case 407:
+					return "Proxy Authentication Required";
+				case 408:
+					return "Request Timeout";
+				case 409:
+					return "Conflict";
+				case 410:
+					return "Gone";
+				case 411:
+					return "Length Required";
+				case 412:
+					return "Precondition Failed";
+				case 413:
+					return "Request Entity Too Large";
+				case 414:
+					return "Request-Uri Too Long";
+				case 415:
+					return "Unsupported Media Type";
+				case 416:
+					return "Requested Range Not Satisfiable";
+				case 417:
+					return "Expectation Failed";
+				case 422:
+					return "Unprocessable Entity";
+				case 423:
+					return "Locked";
+				case 424:
+					return "Failed Dependency";
+				case 500:
+					return "Internal Server Error";
+				case 501:
+					return "Not Implemented";
+				case 502:
+					return "Bad Gateway";
+				case 503:
+					return "Service Unavailable";
+				case 504:
+					return "Gateway Timeout";
+				case 505:
+					return "Http Version Not Supported";
+				case 507:
+					return "Insufficient Storage";
 			}
 			return "";
 		}
 	}
-
 }
 
 
