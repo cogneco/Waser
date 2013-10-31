@@ -29,12 +29,9 @@
 //
 
 using System.IO;
-
 using Waser.IO;
-
-namespace Waser.Http {
-
-	public delegate int DataCallback (Parser parser, ByteBuffer data, int pos, int len);
-
+namespace Waser.Http
+{
+	public delegate int DataCallback(Parser parser,ByteBuffer data,int position,int length);
 }
 

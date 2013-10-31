@@ -22,99 +22,39 @@
 //
 //
 
-
-
 using System;
 using System.Text;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-
 using Waser.IO;
 using Waser.Http;
 using Waser.Collections;
-
-namespace Waser.Http {
-
-	public interface IRequest : IDisposable {
-		
-		Method Method {
-			get;
-			set;
-		}
-		
-		string Path {
-			get;
-			set;
-		}
-
-		DataDictionary Data {
-			get;	
-		}
-		
-		DataDictionary PostData {
-			get;
-		}
-
-		DataDictionary QueryData {
-			get;
-			set;
-		}
-
-		DataDictionary UriData {
-			get;
-			set;
-		}
-		
-		DataDictionary Cookies {
-			get;	
-		}
-
-		Headers Headers {
-			get;
-			set;
-		}
-		
-		Dictionary<string,UploadedFile> Files {
-			get;
-		}
-
-		int MajorVersion {
-			get;
-			set;
-		}
-
-		int MinorVersion {
-			get;
-			set;
-		}
-
-		Encoding ContentEncoding {
-			get;
-		}
-
-		ITcpSocket Socket {
-			get;
-		}
-
-		Dictionary<string,object> Properties {
-			get;
-		}
-
-		string PostBody {
-			get;
-			set;
-		}
-
-		void SetProperty (string name, object o);
-
-		object GetProperty (string name);
-
-		T GetProperty<T> (string name);
-		
-		void Read (Action onClose);
-		void SetWwwFormData (DataDictionary data);
-		void WriteMetadata (StringBuilder builder);
-
+namespace Waser.Http
+{
+	public interface IRequest : IDisposable
+	{
+		ParserSettings ParserSettings { get; }
+		Method Method { get; set; }
+		string Path { get; set; }
+		DataDictionary Data { get; }
+		DataDictionary PostData { get; }
+		DataDictionary QueryData { get; set; }
+		DataDictionary UriData { get; set; }
+		DataDictionary Cookies { get; }
+		Headers Headers { get; set; }
+		Dictionary<string,UploadedFile> Files { get; }
+		int MajorVersion { get; set; }
+		int MinorVersion { get; set; }
+		Encoding ContentEncoding { get; }
+		ITcpSocket Socket { get; }
+		Dictionary<string,object> Properties { get; }
+		string PostBody { get; set; }
+		void SetProperty(string name, object o);
+		object GetProperty(string name);
+		T GetProperty<T>(string name);
+		void Read(Action onClose);
+		void SetWwwFormData(DataDictionary data);
+		void WriteMetadata(StringBuilder builder);
 	}
 }
 

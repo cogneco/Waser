@@ -35,102 +35,102 @@ using Error = Kean.Error;
 using Waser.IO;
 namespace Waser.Http
 {
-    public class ParserSettings
-    {
-        public Callback OnMessageBegin;
-        public DataCallback OnPath;
-        public DataCallback OnQueryString;
-        public DataCallback OnUrl;
-        public DataCallback OnFragment;
-        public DataCallback OnHeaderField;
-        public DataCallback OnHeaderValue;
-        public Callback OnHeadersComplete;
-        public DataCallback OnBody;
-        public Callback OnMessageComplete;
-        public ErrorCallback OnError;
-        public void RaiseOnMessageBegin(Parser p)
-        {
-            Raise(OnMessageBegin, p);
-        }
-        public void RaiseOnMessageComplete(Parser p)
-        {
-            Raise(OnMessageComplete, p);
-        }
-        // this one is a little bit different:
-        // the current `position` of the buffer is the location of the
-        // error, `ini_pos` indicates where the position of
-        // the buffer when it was passed to the `execute` method of the parser, i.e.
-        // using this information and `limit` we'll know all the valid data
-        // in the buffer around the error we can use to print pretty error
-        // messages.
-        public void RaiseOnError(Parser p, string message, ByteBuffer buf, int ini_pos)
-        {
-            if (this.OnError.NotNull())
-                this.OnError(p, message, buf, ini_pos);
+	public class ParserSettings
+	{
+		public Callback OnMessageBegin { get; set; }
+		public DataCallback OnPath { get; set; }
+		public DataCallback OnQueryString { get; set; }
+		public DataCallback OnUrl { get; set; }
+		public DataCallback OnFragment { get; set; }
+		public DataCallback OnHeaderField { get; set; }
+		public DataCallback OnHeaderValue { get; set; }
+		public Callback OnHeadersComplete { get; set; }
+		public DataCallback OnBody { get; set; }
+		public Callback OnMessageComplete { get; set; }
+		public ErrorCallback OnError { get; set; }
+		public void RaiseOnMessageBegin(Parser p)
+		{
+			this.Raise(this.OnMessageBegin, p);
+		}
+		public void RaiseOnMessageComplete(Parser p)
+		{
+			this.Raise(this.OnMessageComplete, p);
+		}
+		// this one is a little bit different:
+		// the current `position` of the buffer is the location of the
+		// error, `ini_pos` indicates where the position of
+		// the buffer when it was passed to the `execute` method of the parser, i.e.
+		// using this information and `limit` we'll know all the valid data
+		// in the buffer around the error we can use to print pretty error
+		// messages.
+		public void RaiseOnError(Parser p, string message, ByteBuffer buf, int ini_pos)
+		{
+			if (this.OnError.NotNull())
+				this.OnError(p, message, buf, ini_pos);
 
 			
-            // if on_error gets called it MUST throw an exception, else the parser 
-            // will attempt to continue parsing, which it can't because it's
-            // in an invalid state.
-            Console.WriteLine("ERROR: '{0}'", message);
-            throw new System.Exception(message);
-        }
-        public void RaiseOnHeaderField(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnHeaderField, p, buf, pos, len);
-        }
-        public void RaiseOnQueryString(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnQueryString, p, buf, pos, len);
-        }
-        public void RaiseOnFragment(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnFragment, p, buf, pos, len);
-        }
-        public void RaiseOnPath(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnPath, p, buf, pos, len);
-        }
-        public void RaiseOnHeaderValue(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnHeaderValue, p, buf, pos, len);
-        }
-        public void RaiseOnUrl(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnUrl, p, buf, pos, len);
-        }
-        public void RaiseOnBody(Parser p, ByteBuffer buf, int pos, int len)
-        {
-            Raise(OnBody, p, buf, pos, len);
-        }
-        public int RaiseOnHeadersComplete(Parser p)
-        {
-            return Raise(OnHeadersComplete, p);
-        }
-        int Raise(Callback callback, Parser parser)
-        {
-            int result = 0;
-            if (callback.NotNull())
-                Error.Log.Call<System.Exception>(() => result = callback(parser), e =>
-                {
-                    Console.WriteLine(e);
-                    this.RaiseOnError(parser, e.Message, null, -1);
-                    result = -1;
-                });
-            return result;
-        }
-        int Raise(DataCallback callback, Parser parser, ByteBuffer buffer, int position, int length)
-        {
-            int result = 0;
-            if (callback.NotNull() && position >= 0)
-                Error.Log.Call<System.Exception>(() => result = callback(parser, buffer, position, length), e =>
-                { 
-                    Console.WriteLine(e);
+			// if on_error gets called it MUST throw an exception, else the parser 
+			// will attempt to continue parsing, which it can't because it's
+			// in an invalid state.
+			Console.WriteLine("ERROR: '{0}'", message);
+			throw new System.Exception(message);
+		}
+		public void RaiseOnHeaderField(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnHeaderField, p, buf, pos, len);
+		}
+		public void RaiseOnQueryString(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnQueryString, p, buf, pos, len);
+		}
+		public void RaiseOnFragment(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnFragment, p, buf, pos, len);
+		}
+		public void RaiseOnPath(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnPath, p, buf, pos, len);
+		}
+		public void RaiseOnHeaderValue(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnHeaderValue, p, buf, pos, len);
+		}
+		public void RaiseOnUrl(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnUrl, p, buf, pos, len);
+		}
+		public void RaiseOnBody(Parser p, ByteBuffer buf, int pos, int len)
+		{
+			Raise(OnBody, p, buf, pos, len);
+		}
+		public int RaiseOnHeadersComplete(Parser p)
+		{
+			return Raise(OnHeadersComplete, p);
+		}
+		int Raise(Callback callback, Parser parser)
+		{
+			int result = 0;
+			if (callback.NotNull())
+				Error.Log.Call<System.Exception>(() => result = callback(parser), e =>
+				{
+					Console.WriteLine(e);
+					this.RaiseOnError(parser, e.Message, null, -1);
+					result = -1;
+				});
+			return result;
+		}
+		int Raise(DataCallback callback, Parser parser, ByteBuffer buffer, int position, int length)
+		{
+			int result = 0;
+			if (callback.NotNull() && position >= 0)
+				Error.Log.Call<System.Exception>(() => result = callback(parser, buffer, position, length), e =>
+				{ 
+					Console.WriteLine(e);
 
-                    RaiseOnError(parser, e.Message, buffer, position);
-                    result = -1;
-                });
-            return result;
-        }
-    }
+					RaiseOnError(parser, e.Message, buffer, position);
+					result = -1;
+				});
+			return result;
+		}
+	}
 }
